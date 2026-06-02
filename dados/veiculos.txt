@@ -1,0 +1,8 @@
+1;9329B-JE23;Pegeout;Preto;2000;true;Carro
+2;82B32-9B;Pegeout;Preto;2010;true;Moto
+3;OEW324-21;DADAUN;dwdada;2000;false;Caminhão
+4;437BFFDS;HYUNDAI;BRANCA;2010;false;Van
+5;9543213BUE;LONIX;PELE;2003;true;Caminhão
+6;3123vvef;diuwdbw;fejufhweyu;2000;true;Carro
+7;21371yfcv;fafafwd;sdsadaw;2001;true;Carro
+8;ABC1234;kdkied;sdadwd;2002;true;Carro

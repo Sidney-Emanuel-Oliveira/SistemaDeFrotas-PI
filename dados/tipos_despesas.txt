@@ -1,0 +1,6 @@
+1;Combustivel
+2;IPVA
+3;Lavagem
+4;Seguro
+5;Manutenção
+6;Multas

@@ -1,0 +1,37 @@
+1;1;1;Abastecimento completo;25/11/2025;150.5;Combustivel;285.12;26.4
+2;1;2;IPVA 2025;15/01/2025;600.0;IPVA;0.0;0.0
+3;2;1;Abastecimento meio tanque;20/11/2025;75.25;Combustivel;422.4;13.2
+4;1;3;Lavagem de Carro;26/11/2025;200.0;Movimentação;0.0;0.0
+6;4;1;Abastecimento;22/11/2025;120.75;Combustivel;194.86;21.18
+8;2;4;Revisao geral;15/11/2025;450.0;Manutencao;0.0;0.0
+10;4;2;IPVA 2025;15/01/2025;550.0;IPVA;0.0;0.0
+11;1;6;Multa de Velocidade;26/11/2025;300.0;Movimentação;0.0;0.0
+12;1;1;Pneu Furou;01/12/2025;60.0;Combustivel;113.72;10.53
+13;3;6;Multa;26/11/2025;320.0;Movimentação;0.0;0.0
+27;1;1;Abastecimento;08/01/2025;142.0;Combustivel;269.03;24.91
+28;2;1;Abastecimento;12/01/2025;79.5;Combustivel;446.4;13.95
+29;4;1;Abastecimento;18/01/2025;122.0;Combustivel;196.88;21.4
+30;1;1;Abastecimento;10/02/2025;138.5;Combustivel;262.44;24.3
+31;3;1;Abastecimento;15/02/2025;92.0;Combustivel;121.05;16.14
+32;5;1;Abastecimento;22/02/2025;108.0;Combustivel;151.6;18.95
+33;2;1;Abastecimento;08/03/2025;81.0;Combustivel;454.72;14.21
+34;4;1;Abastecimento;14/03/2025;127.5;Combustivel;205.8;22.37
+35;1;1;Abastecimento;20/03/2025;149.0;Combustivel;282.31;26.14
+36;3;1;Abastecimento;10/04/2025;96.5;Combustivel;126.97;16.93
+37;2;1;Abastecimento;16/04/2025;83.0;Combustivel;465.92;14.56
+38;4;1;Abastecimento;24/04/2025;129.0;Combustivel;208.2;22.63
+14;1;1;Abastecimento;10/05/2025;145.0;Combustivel;274.75;25.44
+15;2;1;Abastecimento;15/05/2025;80.5;Combustivel;451.84;14.12
+16;4;1;Abastecimento;20/05/2025;125.0;Combustivel;201.76;21.93
+17;1;1;Abastecimento;12/06/2025;152.75;Combustivel;289.44;26.8
+18;3;1;Abastecimento;18/06/2025;95.0;Combustivel;125.03;16.67
+19;2;1;Abastecimento;15/07/2025;78.5;Combustivel;440.64;13.77
+20;4;1;Abastecimento;22/07/2025;130.0;Combustivel;209.85;22.81
+21;1;1;Abastecimento;08/08/2025;148.0;Combustivel;280.37;25.96
+22;5;1;Abastecimento;16/08/2025;110.0;Combustivel;154.4;19.3
+23;2;1;Abastecimento;12/09/2025;82.0;Combustivel;460.48;14.39
+24;4;1;Abastecimento;20/09/2025;128.5;Combustivel;207.37;22.54
+25;1;1;Abastecimento;10/10/2025;155.0;Combustivel;293.65;27.19
+26;3;1;Abastecimento;18/10/2025;98.0;Combustivel;128.93;17.19
+39;1;3;Combustivel;01/12/2025;70.0;Lavagem;0.0;0.0
+40;1;5;Cambio Estragado;01/12/2025;90.0;Manutenção;0.0;0.0
