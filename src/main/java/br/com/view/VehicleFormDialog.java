@@ -12,12 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-
+// Diálogo modal (JDialog) responsável pela captura, validação e persistência de dados de veículos da frota
 public class VehicleFormDialog extends JDialog {
     private VeiculoController controller;
     private Veiculo veiculoEdicao;
     private Runnable onSuccess;
 
+    // Componentes de entrada de dados (Bounded UI Elements)
     private JTextField txtPlaca;
     private JTextField txtMarca;
     private JTextField txtModelo;
@@ -25,18 +26,20 @@ public class VehicleFormDialog extends JDialog {
     private JComboBox<TipoVeiculo> cmbTipo;
     private JCheckBox chkAtivo;
 
+    // Constantes de tipografia corporativa institucionalizada no projeto
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 13);
     private static final Font FIELD_FONT = new Font("Segoe UI", Font.PLAIN, 13);
 
     public VehicleFormDialog(JFrame owner, Veiculo veiculoEdicao) {
+        // O terceiro argumento 'true' ativa o bloqueio modal sobre a TelaPrincipal de origem
         super(owner, veiculoEdicao != null ? "Editar Veículo" : "Novo Veículo", true);
         this.controller = new VeiculoController();
         this.veiculoEdicao = veiculoEdicao;
 
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Libera os recursos nativos de memória ao fechar
         setSize(500, 620);
-        setLocationRelativeTo(owner);
+        setLocationRelativeTo(owner); // Centraliza geometricamente em relação à janela chamadora
         setResizable(false);
 
         initializeComponents();
@@ -47,31 +50,27 @@ public class VehicleFormDialog extends JDialog {
         contentPanel.setBackground(ModernColors.BG_PRIMARY);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        
         JPanel headerPanel = criarPainelCabecalho();
         contentPanel.add(headerPanel, BorderLayout.NORTH);
 
-        
         JPanel mainPanel = new RoundedPanel(12, ModernColors.WHITE);
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(20, 20, 20, 20),
-            BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1)
+                BorderFactory.createEmptyBorder(20, 20, 20, 20),
+                BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1)
         ));
 
-        
+        // Incorpora barra de rolagem vertical para prevenir overflow em displays de baixa resolução
         JPanel formPanel = criarPainelFormulario();
         JScrollPane scrollPane = new JScrollPane(formPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Suaviza o scroll mecânico do mouse
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
-        
         JPanel buttonPanel = criarPainelBotoes();
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        
         JPanel wrapperPanel = new JPanel(new BorderLayout());
         wrapperPanel.setBackground(ModernColors.BG_PRIMARY);
         wrapperPanel.setBorder(BorderFactory.createEmptyBorder(16, 20, 22, 20));
@@ -87,34 +86,30 @@ public class VehicleFormDialog extends JDialog {
         headerPanel.setBackground(ModernColors.NAVY);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
 
-        
+        // Carrega dinamicamente o ícone do veículo baseado na categoria selecionada em tempo de edição
         ImageIcon vehicleIcon = veiculoEdicao != null
-            ? IconLoader.loadIconForType(veiculoEdicao.getTipo(), 40, 40)
-            : IconLoader.loadCarIcon(40, 40);
+                ? IconLoader.loadIconForType(veiculoEdicao.getTipo(), 40, 40)
+                : IconLoader.loadCarIcon(40, 40);
         JLabel iconLabel = new JLabel(vehicleIcon);
         iconLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 15));
 
-        
         String titulo = veiculoEdicao != null ? "Editar Veículo" : "Novo Veículo";
         JLabel lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(TITLE_FONT);
         lblTitulo.setForeground(Color.WHITE);
 
-        
         String subtitulo = veiculoEdicao != null
-            ? "Atualize as informações do veículo"
-            : "Preencha os dados do novo veículo";
+                ? "Atualize as informações do veículo"
+                : "Preencha os dados do novo veículo";
         JLabel lblSubtitulo = new JLabel(subtitulo);
         lblSubtitulo.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         lblSubtitulo.setForeground(new Color(255, 255, 255, 200));
 
-        
         JPanel textoPanel = new JPanel(new GridLayout(2, 1, 0, 3));
         textoPanel.setOpaque(false);
         textoPanel.add(lblTitulo);
         textoPanel.add(lblSubtitulo);
 
-        
         JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         leftPanel.setOpaque(false);
         leftPanel.add(iconLabel);
@@ -131,7 +126,6 @@ public class VehicleFormDialog extends JDialog {
         mainFormPanel.setOpaque(false);
         mainFormPanel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
 
-        
         JLabel secaoBasica = new JLabel("Informações Básicas");
         secaoBasica.setFont(new Font("Segoe UI", Font.BOLD, 14));
         secaoBasica.setForeground(ModernColors.PRIMARY_BLUE);
@@ -139,23 +133,18 @@ public class VehicleFormDialog extends JDialog {
         mainFormPanel.add(secaoBasica);
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        
         mainFormPanel.add(criarCampoFormulario("Placa:", "txtPlaca"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        
         mainFormPanel.add(criarCampoFormulario("Marca:", "txtMarca"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        
         mainFormPanel.add(criarCampoFormulario("Modelo:", "txtModelo"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        
         mainFormPanel.add(criarCampoFormulario("Ano:", "txtAno"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        
         JLabel secaoClassificacao = new JLabel("Classificação");
         secaoClassificacao.setFont(new Font("Segoe UI", Font.BOLD, 14));
         secaoClassificacao.setForeground(ModernColors.PRIMARY_BLUE);
@@ -163,7 +152,6 @@ public class VehicleFormDialog extends JDialog {
         mainFormPanel.add(secaoClassificacao);
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        
         JPanel tipoPanel = new JPanel(new BorderLayout(8, 5));
         tipoPanel.setOpaque(false);
         tipoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
@@ -178,15 +166,14 @@ public class VehicleFormDialog extends JDialog {
         cmbTipo.setFont(FIELD_FONT);
         cmbTipo.setBackground(Color.WHITE);
         cmbTipo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
-            BorderFactory.createEmptyBorder(8, 10, 8, 10)
+                BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
+                BorderFactory.createEmptyBorder(8, 10, 8, 10)
         ));
         tipoPanel.add(cmbTipo, BorderLayout.CENTER);
 
         mainFormPanel.add(tipoPanel);
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 5));
         statusPanel.setOpaque(false);
         statusPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
@@ -202,7 +189,7 @@ public class VehicleFormDialog extends JDialog {
 
         mainFormPanel.add(statusPanel);
 
-        
+        // Cláusula de barreira: Popula os inputs caso o diálogo tenha sido invocado para Edição
         if (veiculoEdicao != null) {
             txtPlaca.setText(veiculoEdicao.getPlaca());
             txtMarca.setText(veiculoEdicao.getMarca());
@@ -229,11 +216,10 @@ public class VehicleFormDialog extends JDialog {
         JTextField field = criarCampoTexto();
         panel.add(field, BorderLayout.CENTER);
 
-        
         switch (fieldName) {
             case "txtPlaca" -> {
                 txtPlaca = field;
-                
+                // Escuta em tempo real o input da placa para forçar caixa alta automática (Upper Case Transform)
                 txtPlaca.addKeyListener(new java.awt.event.KeyAdapter() {
                     @Override
                     public void keyReleased(java.awt.event.KeyEvent e) {
@@ -261,21 +247,21 @@ public class VehicleFormDialog extends JDialog {
                 BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
 
-        
+        // Injeta comportamento dinâmico de foco alterando a espessura e cor da borda ativa
         field.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
                 field.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(ModernColors.PRIMARY_BLUE, 2),
-                    BorderFactory.createEmptyBorder(10, 12, 10, 12)
+                        BorderFactory.createLineBorder(ModernColors.PRIMARY_BLUE, 2),
+                        BorderFactory.createEmptyBorder(10, 12, 10, 12)
                 ));
             }
 
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 field.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
-                    BorderFactory.createEmptyBorder(10, 12, 10, 12)
+                        BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
+                        BorderFactory.createEmptyBorder(10, 12, 10, 12)
                 ));
             }
         });
@@ -304,9 +290,9 @@ public class VehicleFormDialog extends JDialog {
         return panel;
     }
 
+    // Executa o pipeline de validação estrutural dos dados antes de submeter ao Controller
     private void salvar() {
         try {
-            
             String placa = txtPlaca.getText().trim().toUpperCase();
             String marca = txtMarca.getText().trim();
             String modelo = txtModelo.getText().trim();
@@ -315,17 +301,17 @@ public class VehicleFormDialog extends JDialog {
             String tipo = tipoEnum != null ? tipoEnum.getDescricao() : TipoVeiculo.OUTRO.getDescricao();
             Boolean ativo = chkAtivo.isSelected();
 
-            
+            // 1. Validação de presença obrigatória
             if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || ano.isEmpty()) {
                 throw new IllegalArgumentException("Todos os campos são obrigatórios!");
             }
 
-            
+            // 2. Expressão Regular (Regex) para validação unificada: Tradicional (ABC1234) e Mercosul (ABC1D23)
             if (!placa.matches("[A-Z]{3}[0-9][A-Z0-9][0-9]{2}")) {
                 throw new IllegalArgumentException("Placa inválida! Use o formato ABC1234 ou ABC1D23 (Mercosul)");
             }
 
-            
+            // 3. Validação lógica e temporal do ano de fabricação
             try {
                 int anoInt = Integer.parseInt(ano);
                 int anoAtual = java.time.Year.now().getValue();
@@ -336,7 +322,7 @@ public class VehicleFormDialog extends JDialog {
                 throw new IllegalArgumentException("Ano deve ser um número válido!");
             }
 
-            
+            // 4. Sanitização e restrição de tamanho mínimo de strings descritivas
             if (marca.length() < 2) {
                 throw new IllegalArgumentException("Marca deve ter pelo menos 2 caracteres!");
             }
@@ -344,40 +330,41 @@ public class VehicleFormDialog extends JDialog {
                 throw new IllegalArgumentException("Modelo deve ter pelo menos 2 caracteres!");
             }
 
-            
+            // Delegação da persistência baseada na presença do Objeto Base (Edição vs Inclusão)
             if (veiculoEdicao != null) {
                 controller.atualizarVeiculo(veiculoEdicao.getIdVeiculo(), placa, marca, modelo, ano, ativo, tipo);
                 JOptionPane.showMessageDialog(this,
-                    "Veículo atualizado com sucesso!\nPlaca: " + placa,
-                    "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        "Veículo atualizado com sucesso!\nPlaca: " + placa,
+                        "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
             } else {
                 controller.salvarVeiculo(placa, marca, modelo, ano, ativo, tipo);
                 JOptionPane.showMessageDialog(this,
-                    "Veículo cadastrado com sucesso!\nPlaca: " + placa,
-                    "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        "Veículo cadastrado com sucesso!\nPlaca: " + placa,
+                        "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
 
+            // Dispara o callback assíncrono para recarregar a tabela na interface pai sem travamento
             if (onSuccess != null) onSuccess.run();
             dispose();
 
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this,
-                "❌ Erro de Validação:\n" + e.getMessage(),
-                "Erro de Validação",
-                JOptionPane.ERROR_MESSAGE);
+                    "❌ Erro de Validação:\n" + e.getMessage(),
+                    "Erro de Validação",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this,
-                "❌ Erro ao salvar veículo:\n" + e.getMessage() +
-                "\n\nVerifique se não existe outro veículo com a mesma placa.",
-                "Erro de Sistema",
-                JOptionPane.ERROR_MESSAGE);
+                    "❌ Erro ao salvar veículo:\n" + e.getMessage() +
+                            "\n\nVerifique se não existe outro veículo com a mesma placa.",
+                    "Erro de Sistema",
+                    JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                "❌ Erro inesperado:\n" + e.getMessage(),
-                "Erro",
-                JOptionPane.ERROR_MESSAGE);
+                    "❌ Erro inesperado:\n" + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
     }
@@ -386,4 +373,3 @@ public class VehicleFormDialog extends JDialog {
         this.onSuccess = callback;
     }
 }
-

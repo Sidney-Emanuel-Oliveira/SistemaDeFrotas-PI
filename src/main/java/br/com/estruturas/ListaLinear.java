@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
+// Implementação de uma Lista Encadeada Simples genérica com suporte a iteração (foreach)
 public class ListaLinear<T> implements Iterable<T> {
     private No<T> primeiro;
     private No<T> ultimo;
     private int tamanho;
 
+    // Estrutura interna (Nó) que encapsula o valor e guarda a referência para o próximo elemento
     private static class No<T> {
         T valor;
         No<T> proximo;
@@ -19,14 +20,15 @@ public class ListaLinear<T> implements Iterable<T> {
         }
     }
 
+    // Adiciona um novo elemento ao final da lista (complexidade O(1) devido ao ponteiro 'ultimo')
     public void adicionar(T valor) {
         No<T> novo = new No<>(valor);
         if (primeiro == null) {
             primeiro = novo;
             ultimo = novo;
         } else {
-            ultimo.proximo = novo;
-            ultimo = novo;
+            ultimo.proximo = novo; // Conecta o nó antigo ao novo
+            ultimo = novo;         // Atualiza o ponteiro do último elemento
         }
         tamanho++;
     }
@@ -39,6 +41,7 @@ public class ListaLinear<T> implements Iterable<T> {
         return tamanho == 0;
     }
 
+    // Converte a estrutura encadeada atual em uma sublista padrão da Collections API (ArrayList)
     public List<T> paraList() {
         List<T> resultado = new ArrayList<>();
         for (T valor : this) {
@@ -47,10 +50,11 @@ public class ListaLinear<T> implements Iterable<T> {
         return resultado;
     }
 
+    // Implementação do Iterador para permitir o percurso da lista usando laços foreach externos
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {
-            private No<T> atual = primeiro;
+            private No<T> atual = primeiro; // Inicia a varredura a partir do topo da lista
 
             @Override
             public boolean hasNext() {
@@ -60,7 +64,7 @@ public class ListaLinear<T> implements Iterable<T> {
             @Override
             public T next() {
                 T valor = atual.valor;
-                atual = atual.proximo;
+                atual = atual.proximo; // Desloca o ponteiro para o próximo nó da corrente
                 return valor;
             }
         };

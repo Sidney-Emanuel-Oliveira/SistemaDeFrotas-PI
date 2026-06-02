@@ -6,21 +6,21 @@ import java.net.URL;
 import java.io.File;
 import java.text.Normalizer;
 
-
 public class IconLoader {
+    // Caminho utilizado para buscar ícones diretamente na pasta do projeto
     private static final String ICONS_PATH = "src/main/resources/icons/";
+    // Caminho utilizado para buscar ícones empacotados nos recursos da aplicação
     private static final String RESOURCE_PATH = "/icons/";
 
-    
-
-
+    // Tenta carregar um ícone pelo nome informado
     public static ImageIcon loadIcon(String iconName, int width, int height) {
+        // Procura o ícone pelo nome exato
         ImageIcon icon = tryLoadIcon(iconName, width, height);
         if (icon != null) {
             return icon;
         }
 
-        
+        // Caso não encontre, procura um arquivo com nome semelhante
         icon = tryLoadSimilarFile(iconName, width, height);
         if (icon != null) {
             return icon;
@@ -29,6 +29,7 @@ public class IconLoader {
         return new ImageIcon();
     }
 
+    // Tenta carregar um ícone pelo classpath ou diretamente da pasta de recursos
     private static ImageIcon tryLoadIcon(String iconName, int width, int height) {
         if (iconName == null || iconName.trim().isEmpty()) {
             return null;
@@ -55,6 +56,7 @@ public class IconLoader {
         return null;
     }
 
+    // Retorna o primeiro ícone encontrado dentre as opções informadas
     private static ImageIcon tryLoadFirstAvailable(int width, int height, String... names) {
         for (String name : names) {
             ImageIcon icon = tryLoadIcon(name, width, height);
@@ -65,6 +67,7 @@ public class IconLoader {
         return new ImageIcon();
     }
 
+    // Procura um arquivo com nome semelhante ao solicitado
     private static ImageIcon tryLoadSimilarFile(String iconName, int width, int height) {
         try {
             File dir = new File(ICONS_PATH);
@@ -73,8 +76,10 @@ public class IconLoader {
                 return null;
             }
 
+            // Normaliza o nome para facilitar comparações
             String target = normalizar(iconName);
             for (File file : files) {
+                // Verifica se os nomes são iguais ou suficientemente parecidos
                 String current = normalizar(file.getName());
                 if (current.equals(target) || current.contains(target) || target.contains(current)) {
                     return scale(new ImageIcon(file.getAbsolutePath()), width, height);
@@ -86,11 +91,13 @@ public class IconLoader {
         return null;
     }
 
+    // Redimensiona a imagem para o tamanho desejado
     private static ImageIcon scale(ImageIcon icon, int width, int height) {
         Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
 
+    // Remove acentos, espaços e caracteres especiais para facilitar comparações
     private static String normalizar(String texto) {
         String semAcento = Normalizer.normalize(texto == null ? "" : texto, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "");
@@ -104,9 +111,7 @@ public class IconLoader {
                 .toLowerCase();
     }
 
-    
-
-
+    // Carrega o ícone utilizado para veículos do tipo carro
     public static ImageIcon loadCarIcon(int width, int height) {
         return tryLoadFirstAvailable(width, height,
                 "carro.png",
@@ -114,9 +119,7 @@ public class IconLoader {
                 "—Pngtree—vector car icon_3989896.png");
     }
 
-    
-
-
+    // Carrega o ícone utilizado para caminhões
     public static ImageIcon loadTruckIcon(int width, int height) {
         return tryLoadFirstAvailable(width, height,
                 "caminhao.png",
@@ -125,75 +128,49 @@ public class IconLoader {
                 "delivery-truck.png");
     }
 
-    
-
-
+    // Carrega o ícone utilizado para motocicletas
     public static ImageIcon loadMotoIcon(int width, int height) {
         return loadIcon("moto.png", width, height);
     }
 
-    
-
-
+    // Carrega o ícone utilizado para vans
     public static ImageIcon loadVanIcon(int width, int height) {
         return loadIcon("delivery-truck.png", width, height);
     }
 
-    
-
-
+    // Retorna o ícone correspondente ao tipo de veículo informado
     public static ImageIcon loadCombustivelIcon(int width, int height) {
         return loadIcon("bomba-de-gasolina.png", width, height);
     }
-
-    
-
 
     public static ImageIcon loadSeguroIcon(int width, int height) {
         return loadIcon("escudo-seguro.png", width, height);
     }
 
-    
-
-
     public static ImageIcon loadIPVAIcon(int width, int height) {
         return loadIcon("pngwing.com.png", width, height);
     }
-
-    
-
 
     public static ImageIcon loadLavagemIcon(int width, int height) {
         return loadIcon("pngegg.png", width, height);
     }
 
-    
-
-
     public static ImageIcon loadManutencaoIcon(int width, int height) {
         return loadIcon("manutencao.png", width, height);
     }
-
-    
-
 
     public static ImageIcon loadSearchIcon(int width, int height) {
         return loadIcon("motor-de-busca.png", width, height);
     }
 
-    
-
-
     public static ImageIcon loadTableIcon(int width, int height) {
         return loadIcon("tabela.png", width, height);
     }
 
-    
-
-
     public static ImageIcon loadIconForType(String tipo, int width, int height) {
         if (tipo == null) return new ImageIcon();
 
+        // Normaliza o texto para facilitar a identificação do tipo
         String lowerType = normalizar(tipo);
         if (lowerType.contains("carro") || lowerType.contains("car")) {
             return loadCarIcon(width, height);
@@ -208,12 +185,11 @@ public class IconLoader {
         return new ImageIcon();
     }
 
-    
-
-
+    // Retorna o ícone correspondente ao tipo de despesa informado
     public static ImageIcon loadIconForExpenseType(String tipo, int width, int height) {
         if (tipo == null) return new ImageIcon();
 
+        // Identifica a categoria da despesa e retorna o ícone correspondente
         String lowerType = normalizar(tipo);
         if (lowerType.contains("combustivel")) {
             return loadCombustivelIcon(width, height);

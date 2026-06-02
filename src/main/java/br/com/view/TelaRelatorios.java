@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-
+// Painel centralizador de relatórios operacionais e análises matriciais para auditoria da frota
 public class TelaRelatorios extends JPanel {
     private RelatoriosController relatoriosController;
     private VeiculoController veiculoController;
@@ -37,7 +37,6 @@ public class TelaRelatorios extends JPanel {
     private JLabel lblTitulo;
     private JLabel lblTipoRelatorio;
 
-    
     private boolean relatorioGerado = false;
     private String tipoRelatorioAtual = "";
 
@@ -52,11 +51,9 @@ public class TelaRelatorios extends JPanel {
         setBackground(ModernColors.BG_PRIMARY);
         setBorder(BorderFactory.createEmptyBorder(20, 22, 20, 22));
 
-        
         JPanel headerPanel = criarPainelCabecalho();
         add(headerPanel, BorderLayout.NORTH);
 
-        
         JPanel mainPanel = criarPainelPrincipal();
         add(mainPanel, BorderLayout.CENTER);
     }
@@ -89,21 +86,19 @@ public class TelaRelatorios extends JPanel {
         JPanel panel = new JPanel(new BorderLayout(18, 18));
         panel.setOpaque(false);
 
-        
         JPanel filtrosPanel = criarPainelFiltros();
         panel.add(filtrosPanel, BorderLayout.NORTH);
 
-        
         JPanel relatoriosPanel = criarPainelRelatorios();
         panel.add(relatoriosPanel, BorderLayout.CENTER);
 
-        
         JPanel botoesPanel = criarPainelBotoes();
         panel.add(botoesPanel, BorderLayout.SOUTH);
 
         return panel;
     }
 
+    // Configura o painel superior que agrupa os botões de ação e os filtros de seleção
     private JPanel criarPainelFiltros() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout());
@@ -111,7 +106,6 @@ public class TelaRelatorios extends JPanel {
         panel.setPreferredSize(new Dimension(0, 292));
         panel.setMinimumSize(new Dimension(0, 292));
 
-        
         JLabel titleLabel = new JLabel("Filtros e Opções de Relatório");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         titleLabel.setForeground(ModernColors.NAVY);
@@ -121,18 +115,15 @@ public class TelaRelatorios extends JPanel {
         titlePanel.add(titleLabel);
         panel.add(titlePanel, BorderLayout.NORTH);
 
-        
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setOpaque(false);
 
-        
         JPanel botoesRelatorios = criarPainelBotoesRelatorios();
         botoesRelatorios.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(botoesRelatorios);
         contentPanel.add(Box.createVerticalStrut(6));
 
-        
         JPanel seletores = criarPainelSeletores();
         seletores.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(seletores);
@@ -142,29 +133,29 @@ public class TelaRelatorios extends JPanel {
         return panel;
     }
 
+    // Cria as fileiras de botões divididas entre consultas padrões e análises matriciais
     private JPanel criarPainelBotoesRelatorios() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setOpaque(false);
 
-        
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 9, 5));
         panel1.setOpaque(false);
 
-        String[] opcoes = {
-            "Despesas por Veículo",
-            "Despesas por Mês",
-            "Combustível por Mês",
-            "IPVA por Ano",
-            "Veículos Inativos",
-            "Multas por Ano",
-            "Média por Categoria",
-            "Consumo Médio",
-            "Média IPVA",
-            "Maior/Menor Consumo"
+        String[] opecos = {
+                "Despesas por Veículo",
+                "Despesas por Mês",
+                "Combustível por Mês",
+                "IPVA por Ano",
+                "Veículos Inativos",
+                "Multas por Ano",
+                "Média por Categoria",
+                "Consumo Médio",
+                "Média IPVA",
+                "Maior/Menor Consumo"
         };
 
-        for (String opcao : opcoes) {
+        for (String opcao : opecos) {
             ModernButton btn = new ModernButton(opcao, ModernColors.PRIMARY_BLUE);
             btn.setPreferredSize(new Dimension(154, 34));
 
@@ -191,24 +182,22 @@ public class TelaRelatorios extends JPanel {
             panel1.add(btn);
         }
 
-        
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 9, 5));
         panel2.setOpaque(false);
 
-        
         JLabel lblMatrizes = new JLabel("Análise Matricial:");
         lblMatrizes.setFont(new Font("Segoe UI", Font.BOLD, 11));
         lblMatrizes.setForeground(ModernColors.TEAL);
         panel2.add(lblMatrizes);
 
         String[] opcoesMatrizes = {
-            "Matriz A (Abastecimentos)",
-            "Matriz B (Custo Médio)",
-            "Matriz C (Gasto Total)",
-            "Relatório Completo"
+                "Matriz A (Abastecimentos)",
+                "Matriz B (Custo Médio)",
+                "Matriz C (Gasto Total)",
+                "Relatório Completo"
         };
 
-        Color corMatriz = ModernColors.TEAL; 
+        Color corMatriz = ModernColors.TEAL;
 
         for (String opcao : opcoesMatrizes) {
             ModernButton btn = new ModernButton(opcao, corMatriz);
@@ -238,16 +227,15 @@ public class TelaRelatorios extends JPanel {
         return mainPanel;
     }
 
+    // Inicializa e posiciona os seletores temporais e a listagem de veículos da frota
     private JPanel criarPainelSeletores() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setOpaque(false);
 
-        
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 5));
         panel1.setOpaque(false);
 
-        
         JLabel lblAno = new JLabel("Ano:");
         lblAno.setFont(new Font("Segoe UI", Font.BOLD, 11));
         lblAno.setForeground(ModernColors.DARK_GRAY);
@@ -261,7 +249,6 @@ public class TelaRelatorios extends JPanel {
         panel1.add(lblAno);
         panel1.add(cmbAno);
 
-        
         JLabel lblMes = new JLabel("Mês:");
         lblMes.setFont(new Font("Segoe UI", Font.BOLD, 11));
         lblMes.setForeground(ModernColors.DARK_GRAY);
@@ -274,7 +261,6 @@ public class TelaRelatorios extends JPanel {
         panel1.add(lblMes);
         panel1.add(cmbMes);
 
-        
         JLabel lblVeiculo = new JLabel("Veículo:");
         lblVeiculo.setFont(new Font("Segoe UI", Font.BOLD, 11));
         lblVeiculo.setForeground(ModernColors.DARK_GRAY);
@@ -284,7 +270,6 @@ public class TelaRelatorios extends JPanel {
         panel1.add(lblVeiculo);
         panel1.add(cmbVeiculo);
 
-        
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 5));
         panel2.setOpaque(false);
 
@@ -292,11 +277,6 @@ public class TelaRelatorios extends JPanel {
         lblPeriodoMatriz.setFont(new Font("Segoe UI", Font.BOLD, 11));
         lblPeriodoMatriz.setForeground(new Color(0, 150, 136));
         panel2.add(lblPeriodoMatriz);
-
-        
-        JLabel lblAte = new JLabel("até");
-        lblAte.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-        lblAte.setForeground(ModernColors.DARK_GRAY);
 
         JLabel lblMesFinal = new JLabel("Mês:");
         lblMesFinal.setFont(new Font("Segoe UI", Font.BOLD, 11));
@@ -330,12 +310,12 @@ public class TelaRelatorios extends JPanel {
         return mainPanel;
     }
 
+    // Estrutura a visualização em abas para alternar entre formato puramente textual e formato tabular
     private JPanel criarPainelRelatorios() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(0, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(16, 18, 16, 18));
 
-        
         JPanel tituloRelatorioPanel = new JPanel(new BorderLayout());
         tituloRelatorioPanel.setOpaque(false);
         tituloRelatorioPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
@@ -345,7 +325,6 @@ public class TelaRelatorios extends JPanel {
         lblTipoRelatorio.setForeground(ModernColors.PRIMARY_BLUE);
         lblTipoRelatorio.setHorizontalAlignment(SwingConstants.LEFT);
 
-        
         ImageIcon tableIcon = IconLoader.loadTableIcon(20, 20);
         JLabel iconRelatorio = new JLabel(tableIcon);
 
@@ -356,7 +335,6 @@ public class TelaRelatorios extends JPanel {
 
         tituloRelatorioPanel.add(tituloComIcone, BorderLayout.WEST);
 
-        
         JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
         separator.setForeground(ModernColors.BORDER_GRAY);
         separator.setBackground(ModernColors.BORDER_GRAY);
@@ -366,7 +344,6 @@ public class TelaRelatorios extends JPanel {
 
         JTabbedPane abas = new ModernInnerTabbedPane();
 
-        
         areaRelatorio = new JTextArea();
         areaRelatorio.setEditable(false);
         areaRelatorio.setFont(new Font("Consolas", Font.PLAIN, 12));
@@ -377,7 +354,6 @@ public class TelaRelatorios extends JPanel {
         scrollTexto.setBorder(BorderFactory.createLineBorder(ModernColors.BORDER_GRAY));
         abas.addTab("Texto", scrollTexto);
 
-        
         modeloTabela = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -425,9 +401,7 @@ public class TelaRelatorios extends JPanel {
         return panel;
     }
 
-    
-
-
+    // Ponto de entrada para sincronizar e atualizar os itens do ComboBox mantendo o foco do usuário
     public void atualizarDados() {
         if (cmbVeiculo != null) {
             carregarVeiculosPreservandoSelecao(obterIdVeiculoSelecionado());
@@ -441,7 +415,7 @@ public class TelaRelatorios extends JPanel {
     private void carregarVeiculosPreservandoSelecao(String idSelecionado) {
         try {
             cmbVeiculo.removeAllItems();
-            cmbVeiculo.addItem(new VeiculoComboItem()); 
+            cmbVeiculo.addItem(new VeiculoComboItem());
 
             int indiceParaSelecionar = 0;
             List<Veiculo> veiculos = veiculoController.obterTodosVeiculos();
@@ -479,7 +453,6 @@ public class TelaRelatorios extends JPanel {
         relatorioGerado = true;
     }
 
-    
     private void gerarRelatorioDespesasVeiculo() throws IOException {
         VeiculoComboItem itemSelecionado = (VeiculoComboItem) cmbVeiculo.getSelectedItem();
         if (itemSelecionado == null) {
@@ -519,7 +492,6 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio.setText(sb.toString());
         preencherTabelaDespesasVeiculo(movimentacoes, total);
 
-        
         relatorioGerado = true;
         tipoRelatorioAtual = "Despesas por Veículo";
     }
@@ -582,7 +554,6 @@ public class TelaRelatorios extends JPanel {
         modeloTabela.addRow(new Object[]{"", "", "", "", "TOTAL GERAL", String.format("R$ %.2f", totalGeral)});
         tabelaRelatorio.setModel(modeloTabela);
 
-        
         atualizarTituloRelatorio("Despesas - Todos os Veículos");
     }
 
@@ -616,7 +587,6 @@ public class TelaRelatorios extends JPanel {
                     String mesAnoMovimentacao = dataParts[1] + "/" + dataParts[2];
                     boolean mesCorreto = mesAnoMovimentacao.equals(mesAno);
 
-                    
                     if (itemSelecionado != null && !itemSelecionado.isTodos()) {
                         Veiculo veiculoSelecionado = itemSelecionado.getVeiculo();
                         return mesCorreto && m.getIdVeiculo().equals(veiculoSelecionado.getIdVeiculo());
@@ -643,7 +613,7 @@ public class TelaRelatorios extends JPanel {
         for (Movimentacao m : movimentacoesMes) {
             Veiculo veiculo = veiculoController.obterVeiculoPorId(m.getIdVeiculo());
             String nomeVeiculo = veiculo != null ? veiculo.getMarca() + " " + veiculo.getModelo() : "N/A";
-            
+
             String veiculoFormatado = nomeVeiculo.length() > 16 ? nomeVeiculo.substring(0, 13) + "..." : nomeVeiculo;
             String descricaoFormatada = m.getDescricao().length() > 16 ? m.getDescricao().substring(0, 13) + "..." : m.getDescricao();
             String tipoFormatado = m.getTipo().length() > 9 ? m.getTipo().substring(0, 6) + "..." : m.getTipo();
@@ -658,7 +628,6 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio.setText(sb.toString());
         preencherTabelaDespesasMes(movimentacoesMes, total);
 
-        
         String mesNome = java.time.Month.of(mes).getDisplayName(java.time.format.TextStyle.FULL, new java.util.Locale("pt", "BR"));
         atualizarTituloRelatorio("Despesas por Mês - " + mesNome + "/" + ano);
     }
@@ -698,10 +667,9 @@ public class TelaRelatorios extends JPanel {
                 .filter(m -> {
                     String[] dataParts = m.getData().split("/");
                     String mesAnoMovimentacao = dataParts[1] + "/" + dataParts[2];
-                    
+
                     boolean mesCorreto = mesAnoMovimentacao.equals(mesAno) && m.getIdTipoDespesa().equals(1L);
 
-                    
                     if (itemSelecionado != null && !itemSelecionado.isTodos()) {
                         Veiculo veiculoSelecionado = itemSelecionado.getVeiculo();
                         return mesCorreto && m.getIdVeiculo().equals(veiculoSelecionado.getIdVeiculo());
@@ -738,7 +706,6 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio.setText(sb.toString());
         preencherTabelaCombustivelMes(combustivelisMes, total);
 
-        
         String mesNome = java.time.Month.of(mes).getDisplayName(java.time.format.TextStyle.FULL, new java.util.Locale("pt", "BR"));
         atualizarTituloRelatorio("Combustível por Mês - " + mesNome + "/" + ano);
     }
@@ -775,10 +742,9 @@ public class TelaRelatorios extends JPanel {
                 .filter(m -> {
                     String[] dataParts = m.getData().split("/");
                     int anoMovimentacao = Integer.parseInt(dataParts[2]);
-                    
+
                     boolean anoCorreto = anoMovimentacao == anoSelecionado && m.getIdTipoDespesa().equals(2L);
 
-                    
                     if (itemSelecionado != null && !itemSelecionado.isTodos()) {
                         Veiculo veiculoSelecionado = itemSelecionado.getVeiculo();
                         return anoCorreto && m.getIdVeiculo().equals(veiculoSelecionado.getIdVeiculo());
@@ -815,7 +781,6 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio.setText(sb.toString());
         preencherTabelaIPVAAno(ipvasAno, total);
 
-        
         atualizarTituloRelatorio("IPVA por Ano - " + anoSelecionado);
     }
 
@@ -842,7 +807,6 @@ public class TelaRelatorios extends JPanel {
         tabelaRelatorio.setModel(modeloTabela);
     }
 
-    
     private void gerarRelatorioVeiculosInativos() throws IOException {
         List<Veiculo> veiculosInativos = veiculoController.obterTodosVeiculos().stream()
                 .filter(v -> !v.getAtivo())
@@ -871,7 +835,6 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio.setText(sb.toString());
         preencherTabelaVeiculosInativos(veiculosInativos);
 
-        
         atualizarTituloRelatorio("Veículos Inativos");
     }
 
@@ -965,7 +928,6 @@ public class TelaRelatorios extends JPanel {
         modeloTabela.addRow(new Object[]{"", "", "TOTAL", String.format("R$ %.2f", total)});
         tabelaRelatorio.setModel(modeloTabela);
     }
-
 
     private void gerarRelatorioMediaDespesasCategoria() throws IOException {
         Map<String, Double> medias = relatoriosController.obterMediaDespesasPorCategoriaVeiculo();
@@ -1109,27 +1071,26 @@ public class TelaRelatorios extends JPanel {
         atualizarTituloRelatorio("Maior/Menor Custo de Consumo - " + mesAno);
     }
 
+    // Exporta o banco de dados de movimentações filtradas para uma planilha externa formatada em CSV
     private void exportarCSV() {
-        
         if (!relatorioGerado) {
             JOptionPane.showMessageDialog(this,
-                "Por favor, gere um relatório antes de exportar!\n\n" +
-                "Clique em um dos botões:\n" +
-                "• Despesas por Veículo\n" +
-                "• Despesas por Mês\n" +
-                "• Combustível por Mês\n" +
-                "• IPVA por Ano\n" +
-                "• Veículos Inativos\n" +
-                "• Multas por Veículo",
-                "Aviso",
-                JOptionPane.WARNING_MESSAGE);
+                    "Por favor, gere um relatório antes de exportar!\n\n" +
+                            "Clique em um dos botões:\n" +
+                            "• Despesas por Veículo\n" +
+                            "• Despesas por Mês\n" +
+                            "• Combustível por Mês\n" +
+                            "• IPVA por Ano\n" +
+                            "• Veículos Inativos\n" +
+                            "• Multas por Veículo",
+                    "Aviso",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
             List<Movimentacao> movimentacoes = relatoriosController.obterTodasMovimentacoes();
 
-            
             String nomeArquivo = "relatorio_" + tipoRelatorioAtual.toLowerCase()
                     .replace(" ", "_")
                     .replace("á", "a")
@@ -1140,21 +1101,20 @@ public class TelaRelatorios extends JPanel {
 
             GeradorCSV.gerarRelatorioDespesasCSV(movimentacoes, nomeArquivo);
 
-            
             java.io.File arquivo = new java.io.File(nomeArquivo);
             String caminhoCompleto = arquivo.getAbsolutePath();
 
             JOptionPane.showMessageDialog(this,
-                "Relatório exportado com sucesso!\n\n" +
-                "Tipo: " + tipoRelatorioAtual + "\n" +
-                "Local: " + caminhoCompleto,
-                "Sucesso",
-                JOptionPane.INFORMATION_MESSAGE);
+                    "Relatório exportado com sucesso!\n\n" +
+                            "Tipo: " + tipoRelatorioAtual + "\n" +
+                            "Local: " + caminhoCompleto,
+                    "Sucesso",
+                    JOptionPane.INFORMATION_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                "Erro ao exportar: " + e.getMessage(),
-                "Erro",
-                JOptionPane.ERROR_MESSAGE);
+                    "Erro ao exportar: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -1164,47 +1124,37 @@ public class TelaRelatorios extends JPanel {
         lblTitulo.setText("Relatórios");
         lblTipoRelatorio.setText("Selecione um tipo de relatório acima");
 
-        
         relatorioGerado = false;
         tipoRelatorioAtual = "";
     }
 
-    
-
-    
-
-
+    // Processa e plota a Matriz A mapeando o volume total de abastecimentos cruzando Veículos e Meses
     private void gerarRelatorioMatrizA() throws IOException {
-        
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();
         int mesFinal = (int) cmbMesFinal.getSelectedItem();
         int anoFinal = (int) cmbAnoFinal.getSelectedItem();
 
-        
         if (anoInicial * 100 + mesInicial > anoFinal * 100 + mesFinal) {
             JOptionPane.showMessageDialog(this,
-                "O período inicial não pode ser maior que o período final!",
-                "Período Inválido",
-                JOptionPane.WARNING_MESSAGE);
+                    "O período inicial não pode ser maior que o período final!",
+                    "Período Inválido",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        
         VeiculoComboItem itemSelecionado = (VeiculoComboItem) cmbVeiculo.getSelectedItem();
         Long idVeiculoFiltro = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? itemSelecionado.getVeiculo().getIdVeiculo()
-            : null;
+                ? itemSelecionado.getVeiculo().getIdVeiculo()
+                : null;
 
         String relatorio = relatoriosController.gerarRelatorioMatrizAComPeriodo(
                 mesInicial, anoInicial, mesFinal, anoFinal, idVeiculoFiltro);
 
         areaRelatorio.setText(relatorio);
 
-        
         List<Veiculo> veiculos = relatoriosController.obterTodosVeiculos();
 
-        
         if (itemSelecionado != null && itemSelecionado.getVeiculo() != null) {
             veiculos = veiculos.stream()
                     .filter(v -> v.getIdVeiculo().equals(itemSelecionado.getVeiculo().getIdVeiculo()))
@@ -1213,7 +1163,6 @@ public class TelaRelatorios extends JPanel {
 
         List<Movimentacao> movimentacoes = relatoriosController.obterTodasMovimentacoes();
 
-        
         List<Movimentacao> movimentacoesFiltradas = movimentacoes.stream()
                 .filter(m -> br.com.utils.MatrizRelatorios.estaNoPeriodo(m, mesInicial, anoInicial, mesFinal, anoFinal))
                 .toList();
@@ -1224,47 +1173,39 @@ public class TelaRelatorios extends JPanel {
 
         preencherTabelaMatriz(matrizA, veiculos, meses, "Matriz A - Abastecimentos");
 
-        
         String tituloVeiculo = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? " - " + itemSelecionado.getVeiculo().getPlaca()
-            : "";
+                ? " - " + itemSelecionado.getVeiculo().getPlaca()
+                : "";
         atualizarTituloRelatorio("Matriz A - Quantidade de Abastecimentos por Veículo/Mês" + tituloVeiculo);
     }
 
-    
-
-
+    // Processa e plota a Matriz B calculando a média financeira de custos de abastecimento por Marca e Mês
     private void gerarRelatorioMatrizB() throws IOException {
-        
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();
         int mesFinal = (int) cmbMesFinal.getSelectedItem();
         int anoFinal = (int) cmbAnoFinal.getSelectedItem();
 
-        
         if (anoInicial * 100 + mesInicial > anoFinal * 100 + mesFinal) {
             JOptionPane.showMessageDialog(this,
-                "O período inicial não pode ser maior que o período final!",
-                "Período Inválido",
-                JOptionPane.WARNING_MESSAGE);
+                    "O período inicial não pode ser maior que o período final!",
+                    "Período Inválido",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        
         VeiculoComboItem itemSelecionado = (VeiculoComboItem) cmbVeiculo.getSelectedItem();
         Long idVeiculoFiltro = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? itemSelecionado.getVeiculo().getIdVeiculo()
-            : null;
+                ? itemSelecionado.getVeiculo().getIdVeiculo()
+                : null;
 
         String relatorio = relatoriosController.gerarRelatorioMatrizBComPeriodo(
                 mesInicial, anoInicial, mesFinal, anoFinal, idVeiculoFiltro);
 
         areaRelatorio.setText(relatorio);
 
-        
         List<Veiculo> veiculos = relatoriosController.obterTodosVeiculos();
 
-        
         if (itemSelecionado != null && itemSelecionado.getVeiculo() != null) {
             veiculos = veiculos.stream()
                     .filter(v -> v.getIdVeiculo().equals(itemSelecionado.getVeiculo().getIdVeiculo()))
@@ -1273,7 +1214,6 @@ public class TelaRelatorios extends JPanel {
 
         List<Movimentacao> movimentacoes = relatoriosController.obterTodasMovimentacoes();
 
-        
         List<Movimentacao> movimentacoesFiltradas = movimentacoes.stream()
                 .filter(m -> br.com.utils.MatrizRelatorios.estaNoPeriodo(m, mesInicial, anoInicial, mesFinal, anoFinal))
                 .toList();
@@ -1283,7 +1223,6 @@ public class TelaRelatorios extends JPanel {
         List<String> marcas = br.com.utils.MatrizRelatorios.extrairMarcas(veiculos);
         double[][] matrizB = br.com.utils.MatrizRelatorios.gerarMatrizB(meses, marcas, veiculos, movimentacoesFiltradas);
 
-        
         modeloTabela.setColumnIdentifiers(criarCabecalhoTabela(marcas));
         modeloTabela.setRowCount(0);
 
@@ -1296,7 +1235,6 @@ public class TelaRelatorios extends JPanel {
             modeloTabela.addRow(linha);
         }
 
-        
         Object[] linhaTotal = new Object[marcas.size() + 1];
         linhaTotal[0] = "TOTAL GERAL";
         double total = br.com.utils.MatrizRelatorios.calcularTotalGeral(matrizB);
@@ -1308,47 +1246,39 @@ public class TelaRelatorios extends JPanel {
 
         tabelaRelatorio.setModel(modeloTabela);
 
-        
         String tituloVeiculo = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? " - " + itemSelecionado.getVeiculo().getPlaca()
-            : "";
+                ? " - " + itemSelecionado.getVeiculo().getPlaca()
+                : "";
         atualizarTituloRelatorio("Matriz B - Custo Médio por Abastecimento/Marca" + tituloVeiculo);
     }
 
-    
-
-
+    // Processa e plota a Matriz C realizando a multiplicação linear entre as Matrizes A e B para obter gastos totais
     private void gerarRelatorioMatrizC() throws IOException {
-        
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();
         int mesFinal = (int) cmbMesFinal.getSelectedItem();
         int anoFinal = (int) cmbAnoFinal.getSelectedItem();
 
-        
         if (anoInicial * 100 + mesInicial > anoFinal * 100 + mesFinal) {
             JOptionPane.showMessageDialog(this,
-                "O período inicial não pode ser maior que o período final!",
-                "Período Inválido",
-                JOptionPane.WARNING_MESSAGE);
+                    "O período inicial não pode ser maior que o período final!",
+                    "Período Inválido",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        
         VeiculoComboItem itemSelecionado = (VeiculoComboItem) cmbVeiculo.getSelectedItem();
         Long idVeiculoFiltro = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? itemSelecionado.getVeiculo().getIdVeiculo()
-            : null;
+                ? itemSelecionado.getVeiculo().getIdVeiculo()
+                : null;
 
         String relatorio = relatoriosController.gerarRelatorioMatrizCComPeriodo(
                 mesInicial, anoInicial, mesFinal, anoFinal, idVeiculoFiltro);
 
         areaRelatorio.setText(relatorio);
 
-        
         List<Veiculo> veiculos = relatoriosController.obterTodosVeiculos();
 
-        
         if (itemSelecionado != null && itemSelecionado.getVeiculo() != null) {
             veiculos = veiculos.stream()
                     .filter(v -> v.getIdVeiculo().equals(itemSelecionado.getVeiculo().getIdVeiculo()))
@@ -1357,7 +1287,6 @@ public class TelaRelatorios extends JPanel {
 
         List<Movimentacao> movimentacoes = relatoriosController.obterTodasMovimentacoes();
 
-        
         List<Movimentacao> movimentacoesFiltradas = movimentacoes.stream()
                 .filter(m -> br.com.utils.MatrizRelatorios.estaNoPeriodo(m, mesInicial, anoInicial, mesFinal, anoFinal))
                 .toList();
@@ -1370,7 +1299,6 @@ public class TelaRelatorios extends JPanel {
         double[][] matrizB = br.com.utils.MatrizRelatorios.gerarMatrizB(meses, marcas, veiculos, movimentacoesFiltradas);
         double[][] matrizC = br.com.utils.MatrizRelatorios.gerarMatrizC(matrizA, matrizB);
 
-        
         modeloTabela.setColumnIdentifiers(criarCabecalhoTabela(marcas));
         modeloTabela.setRowCount(0);
 
@@ -1383,7 +1311,6 @@ public class TelaRelatorios extends JPanel {
             modeloTabela.addRow(linha);
         }
 
-        
         Object[] linhaTotal = new Object[marcas.size() + 1];
         linhaTotal[0] = "TOTAL GERAL";
         double total = br.com.utils.MatrizRelatorios.calcularTotalGeral(matrizC);
@@ -1395,47 +1322,38 @@ public class TelaRelatorios extends JPanel {
 
         tabelaRelatorio.setModel(modeloTabela);
 
-        
         String tituloVeiculo = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? " - " + itemSelecionado.getVeiculo().getPlaca()
-            : "";
+                ? " - " + itemSelecionado.getVeiculo().getPlaca()
+                : "";
         atualizarTituloRelatorio("Matriz C - Gasto Total de Abastecimento por Marca" + tituloVeiculo);
     }
 
-    
-
-
     private void gerarRelatorioMatrizCompleto() throws IOException {
-        
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();
         int mesFinal = (int) cmbMesFinal.getSelectedItem();
         int anoFinal = (int) cmbAnoFinal.getSelectedItem();
 
-        
         if (anoInicial * 100 + mesInicial > anoFinal * 100 + mesFinal) {
             JOptionPane.showMessageDialog(this,
-                "O período inicial não pode ser maior que o período final!",
-                "Período Inválido",
-                JOptionPane.WARNING_MESSAGE);
+                    "O período inicial não pode ser maior que o período final!",
+                    "Período Inválido",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        
         VeiculoComboItem itemSelecionado = (VeiculoComboItem) cmbVeiculo.getSelectedItem();
         Long idVeiculoFiltro = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? itemSelecionado.getVeiculo().getIdVeiculo()
-            : null;
+                ? itemSelecionado.getVeiculo().getIdVeiculo()
+                : null;
 
         String relatorio = relatoriosController.gerarRelatorioMatrizCompletoComPeriodo(
                 mesInicial, anoInicial, mesFinal, anoFinal, idVeiculoFiltro);
 
         areaRelatorio.setText(relatorio);
 
-        
         List<Veiculo> veiculos = relatoriosController.obterTodosVeiculos();
 
-        
         if (itemSelecionado != null && itemSelecionado.getVeiculo() != null) {
             veiculos = veiculos.stream()
                     .filter(v -> v.getIdVeiculo().equals(itemSelecionado.getVeiculo().getIdVeiculo()))
@@ -1444,7 +1362,6 @@ public class TelaRelatorios extends JPanel {
 
         List<Movimentacao> movimentacoes = relatoriosController.obterTodasMovimentacoes();
 
-        
         List<Movimentacao> movimentacoesFiltradas = movimentacoes.stream()
                 .filter(m -> br.com.utils.MatrizRelatorios.estaNoPeriodo(m, mesInicial, anoInicial, mesFinal, anoFinal))
                 .toList();
@@ -1480,22 +1397,16 @@ public class TelaRelatorios extends JPanel {
 
         tabelaRelatorio.setModel(modeloTabela);
 
-        
         String tituloVeiculo = (itemSelecionado != null && itemSelecionado.getVeiculo() != null)
-            ? " - " + itemSelecionado.getVeiculo().getPlaca()
-            : "";
+                ? " - " + itemSelecionado.getVeiculo().getPlaca()
+                : "";
         atualizarTituloRelatorio("Relatório Completo - Todas as Matrizes (A, B e C)" + tituloVeiculo);
     }
 
-    
-
-
     private void preencherTabelaMatriz(double[][] matriz, List<Veiculo> veiculos, List<String> colunas, String titulo) {
-        
         modeloTabela.setColumnIdentifiers(criarCabecalhoTabela(colunas));
         modeloTabela.setRowCount(0);
 
-        
         for (int i = 0; i < matriz.length; i++) {
             Object[] linha = new Object[colunas.size() + 1];
             linha[0] = br.com.utils.MatrizRelatorios.formatarRotuloVeiculo(veiculos.get(i));
@@ -1506,7 +1417,6 @@ public class TelaRelatorios extends JPanel {
             modeloTabela.addRow(linha);
         }
 
-        
         Object[] linhaTotal = new Object[colunas.size() + 1];
         linhaTotal[0] = "TOTAL";
         double total = br.com.utils.MatrizRelatorios.calcularTotalGeral(matriz);
@@ -1519,9 +1429,6 @@ public class TelaRelatorios extends JPanel {
         tabelaRelatorio.setModel(modeloTabela);
     }
 
-    
-
-
     private String[] criarCabecalhoTabela(List<String> colunas) {
         String[] cabecalho = new String[colunas.size() + 1];
         cabecalho[0] = "Veículo/Período";
@@ -1531,4 +1438,3 @@ public class TelaRelatorios extends JPanel {
         return cabecalho;
     }
 }
-

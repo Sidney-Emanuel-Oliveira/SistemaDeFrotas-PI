@@ -32,7 +32,6 @@ public class Veiculo {
         this.ativo = ativo;
         this.tipo = tipo != null ? tipo : TipoVeiculo.OUTRO;
     }
-
     
     public Long getIdVeiculo() {
         return idVeiculo;
@@ -82,9 +81,6 @@ public class Veiculo {
         this.ativo = ativo;
     }
 
-    
-
-
     public String getTipo() {
         return tipo != null ? tipo.getDescricao() : TipoVeiculo.OUTRO.getDescricao();
     }
@@ -106,6 +102,7 @@ public class Veiculo {
         return placa + " - " + marca + " " + modelo;
     }
 
+    // Um toString mais detalhado com todas as informações
     public String toStringDetailed() {
         return "Veiculo{" +
                 "idVeiculo=" + idVeiculo +

@@ -11,73 +11,45 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
+// Janela principal do ecossistema Swing que gerencia o ciclo de vida e a coordenação dos subpainéis
 public class TelaPrincipal extends JFrame {
 
-    
-
-    
     private JTabbedPane abas;
-
-    
     private TipoDespesaController tipoDespesaController;
 
-    
+    // Subpainéis acoplados à barra de navegação por abas
     private TelaCadastroVeiculo telaCadastroVeiculo;
     private TelaMovimentacao telaMovimentacao;
     private TelaRelatorios telaRelatorios;
     private TelaAbout telaAbout;
 
-    
-
-    
+    // Constantes de dimensionamento estrutural da janela master
     private static final int LARGURA_JANELA = 1200;
-
-    
     private static final int ALTURA_JANELA = 750;
-
-    
     private static final String TITULO_SISTEMA = "Sistema de Controle de Frotas - GynLog";
 
-    
-
-    
-
-
     public TelaPrincipal() {
-        
+        // Inicializa as propriedades cromáticas globais e fontes do Look and Feel antes de desenhar a janela
         configurarAparenciaGlobal();
 
-        
         configurarJanela();
-
-        
         inicializarSistema();
-
-        
         construirInterface();
     }
 
-    
-
-    
-
-
+    // Configura os limites geométricos, o comportamento de fechamento e a centralização do frame na tela
     private void configurarJanela() {
         setTitle(TITULO_SISTEMA);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Finaliza o processo JVM ao fechar a janela
         setSize(LARGURA_JANELA, ALTURA_JANELA);
-        setMinimumSize(new Dimension(1100, 700));
-        setLocationRelativeTo(null); 
+        setMinimumSize(new Dimension(1100, 700)); // Impede o estrangulamento dos subpainéis em redimensionamentos
+        setLocationRelativeTo(null);
         setResizable(true);
 
-        
         getContentPane().setBackground(ModernColors.BG_PRIMARY);
     }
 
-    
-
-
+    // Injeta chaves de propriedades customizadas no Look and Feel Nimbus para padronizar a identidade visual
     private void configurarAparenciaGlobal() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -87,7 +59,7 @@ public class TelaPrincipal extends JFrame {
                 }
             }
         } catch (Exception ignored) {
-            
+
         }
 
         Font fontePadrao = new Font("Segoe UI", Font.PLAIN, 12);
@@ -103,51 +75,37 @@ public class TelaPrincipal extends JFrame {
         UIManager.put("Label.font", fontePadrao);
     }
 
-    
-
-
     private void inicializarSistema() {
         tipoDespesaController = new TipoDespesaController();
         inicializarTiposDespesaPadrao();
     }
 
-    
-
-
     private void construirInterface() {
-        
         criarMenuBar();
-
-        
         criarAbas();
     }
 
-    
-
-
+    // Instancia o contêiner de navegação superior e aninha os subpainéis funcionais
     private void criarAbas() {
         abas = new ModernTabbedPane();
 
-        
         telaCadastroVeiculo = new TelaCadastroVeiculo();
         telaMovimentacao = new TelaMovimentacao();
         telaRelatorios = new TelaRelatorios();
         telaAbout = new TelaAbout();
 
-        
         abas.addTab("Veículos", telaCadastroVeiculo);
         abas.addTab("Movimentações", telaMovimentacao);
         abas.addTab("Relatórios", telaRelatorios);
         abas.addTab("Sobre", telaAbout);
 
+        // Escuta a troca de abas para disparar gatilhos de atualização incremental de dados
         abas.addChangeListener(evento -> atualizarAbaSelecionada());
 
         add(abas);
     }
 
-    
-
-
+    // Intercepta o ganho de foco de uma aba e força o refresh dos dados cadastrados nos arquivos locais
     private void atualizarAbaSelecionada() {
         Component abaSelecionada = abas.getSelectedComponent();
 
@@ -158,15 +116,11 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    
-
-
+    // Garante a integridade referencial inserindo categorias estáticas se o arquivo base estiver limpo
     private void inicializarTiposDespesaPadrao() {
         try {
-            
             List<TipoDespesa> tiposExistentes = tipoDespesaController.obterTodosTipos();
 
-            
             if (tiposExistentes.isEmpty()) {
                 cadastrarTiposPadrao();
             }
@@ -175,17 +129,14 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    
-
-
     private void cadastrarTiposPadrao() throws IOException {
         String[] tiposPadrao = {
-            "Combustível",
-            "Seguro",
-            "Lavagem",
-            "Manutenção",
-            "IPVA",
-            "Multa"
+                "Combustível",
+                "Seguro",
+                "Lavagem",
+                "Manutenção",
+                "IPVA",
+                "Multa"
         };
 
         for (String tipo : tiposPadrao) {
@@ -193,23 +144,14 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    
-
-
     private void exibirErro(String mensagem, Exception erro) {
         System.err.println(mensagem + ": " + erro.getMessage());
         erro.printStackTrace();
     }
 
-    
-
-    
-
-
     private void criarMenuBar() {
         JMenuBar barraMenu = criarBarraMenu();
 
-        
         barraMenu.add(criarMenuArquivo());
         barraMenu.add(criarMenuBancoDados());
         barraMenu.add(criarMenuAjuda());
@@ -217,28 +159,21 @@ public class TelaPrincipal extends JFrame {
         setJMenuBar(barraMenu);
     }
 
-    
-
-
     private JMenuBar criarBarraMenu() {
         JMenuBar barraMenu = new JMenuBar();
         barraMenu.setBackground(ModernColors.WHITE);
         barraMenu.setForeground(ModernColors.DARK_GRAY);
         barraMenu.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(0, 0, 1, 0, ModernColors.BORDER_GRAY),
-            BorderFactory.createEmptyBorder(3, 4, 3, 4)
+                BorderFactory.createMatteBorder(0, 0, 1, 0, ModernColors.BORDER_GRAY),
+                BorderFactory.createEmptyBorder(3, 4, 3, 4)
         ));
         return barraMenu;
     }
-
-    
-
 
     private JMenu criarMenuArquivo() {
         JMenu menuArquivo = new JMenu("Arquivo");
         estilizarMenu(menuArquivo);
 
-        
         JMenuItem itemSair = new JMenuItem("Sair");
         estilizarMenuItem(itemSair);
         itemSair.addActionListener(evento -> encerrarSistema());
@@ -246,10 +181,6 @@ public class TelaPrincipal extends JFrame {
         menuArquivo.add(itemSair);
         return menuArquivo;
     }
-
-
-    
-
 
     private JMenu criarMenuBancoDados() {
         JMenu menuBanco = new JMenu("Banco de Dados");
@@ -268,9 +199,6 @@ public class TelaPrincipal extends JFrame {
         return menuBanco;
     }
 
-    
-
-
     private JMenu criarMenuAjuda() {
         JMenu menuAjuda = new JMenu("Ajuda");
         estilizarMenu(menuAjuda);
@@ -283,93 +211,69 @@ public class TelaPrincipal extends JFrame {
         return menuAjuda;
     }
 
-    
-
-    
-
-
     private void estilizarMenu(JMenu menu) {
         menu.setForeground(ModernColors.DARK_GRAY);
         menu.setFont(new Font("Segoe UI", Font.PLAIN, 12));
     }
 
-    
-
-
     private void estilizarMenuItem(JMenuItem item) {
         item.setFont(new Font("Segoe UI", Font.PLAIN, 12));
     }
 
-
-    
-
-
+    // Aciona a rotina assíncrona ou síncrona de espelhamento dos arquivos locais para o servidor MySQL externo
     private void sincronizarMySQLAgora() {
         try {
             String resultado = MySQLSincronizador.sincronizarAgora();
             JOptionPane.showMessageDialog(
-                this,
-                resultado,
-                "Banco de Dados MySQL",
-                JOptionPane.INFORMATION_MESSAGE
+                    this,
+                    resultado,
+                    "Banco de Dados MySQL",
+                    JOptionPane.INFORMATION_MESSAGE
             );
-        } catch (ClassNotFoundException erro) {
+        } catch (ClassNotFoundException erro) { // Fornece feedback específico se a dependência do conector falhar
             JOptionPane.showMessageDialog(
-                this,
-                "Driver do MySQL não encontrado. Adicione o mysql-connector-j ao projeto Maven ou ao classpath.",
-                "Erro ao sincronizar MySQL",
-                JOptionPane.ERROR_MESSAGE
+                    this,
+                    "Driver do MySQL não encontrado. Adicione o mysql-connector-j ao projeto Maven ou ao classpath.",
+                    "Erro ao sincronizar MySQL",
+                    JOptionPane.ERROR_MESSAGE
             );
         } catch (Exception erro) {
             JOptionPane.showMessageDialog(
-                this,
-                "Não foi possível sincronizar com o MySQL:\n" + erro.getMessage(),
-                "Erro ao sincronizar MySQL",
-                JOptionPane.ERROR_MESSAGE
+                    this,
+                    "Não foi possível sincronizar com o MySQL:\n" + erro.getMessage(),
+                    "Erro ao sincronizar MySQL",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
     }
 
-    
-
-
     private void exibirConfiguracaoMySQL() {
         JOptionPane.showMessageDialog(
-            this,
-            MySQLSincronizador.obterResumoConfiguracao(),
-            "Configuração MySQL",
-            JOptionPane.INFORMATION_MESSAGE
+                this,
+                MySQLSincronizador.obterResumoConfiguracao(),
+                "Configuração MySQL",
+                JOptionPane.INFORMATION_MESSAGE
         );
     }
-
-    
-
 
     private void encerrarSistema() {
         System.exit(0);
     }
 
-    
-
-
     private void exibirSobre() {
         String mensagem = "Sistema de Controle de Frotas v2.0\n" +
-                         "Desenvolvido para GynLog\n" +
-                         "Gerenciamento completo de frotas de veículos";
+                "Desenvolvido para GynLog\n" +
+                "Gerenciamento completo de frotas de veículos";
 
         JOptionPane.showMessageDialog(
-            this,
-            mensagem,
-            "Sobre o Sistema",
-            JOptionPane.INFORMATION_MESSAGE
+                this,
+                mensagem,
+                "Sobre o Sistema",
+                JOptionPane.INFORMATION_MESSAGE
         );
     }
 
-    
-
-    
-
-
+    // Inicializa a linha de execução da interface gráfica de forma segura dentro da Event Dispatch Thread
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TelaPrincipal telaPrincipal = new TelaPrincipal();
@@ -377,4 +281,3 @@ public class TelaPrincipal extends JFrame {
         });
     }
 }
-

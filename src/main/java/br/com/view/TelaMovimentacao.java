@@ -15,7 +15,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
+// Painel de controle que lista as despesas operacionais da frota em formato de pilha vertical
 public class TelaMovimentacao extends JPanel {
     private MovimentacaoController movimentacaoController;
     private VeiculoController veiculoController;
@@ -79,6 +79,7 @@ public class TelaMovimentacao extends JPanel {
         return panel;
     }
 
+    // Configura o contêiner de rolagem com alinhamento vertical para exibir os cartões empilhados
     private JScrollPane criarPainelCards() {
         cardsPanel = new JPanel();
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
@@ -97,12 +98,14 @@ public class TelaMovimentacao extends JPanel {
         return scrollPane;
     }
 
+    // Busca os dados na camada de controle, ordena por ID decrescente e monta os cartões na tela
     private void carregarMovimentacoes() {
         cardsPanel.removeAll();
 
         try {
             List<Movimentacao> movimentacoes = movimentacaoController.obterTodasMovimentacoes();
 
+            // Trata a interface caso não existam registros no arquivo de texto
             if (movimentacoes.isEmpty()) {
                 RoundedPanel emptyPanel = new RoundedPanel(16, ModernColors.WHITE);
                 emptyPanel.setLayout(new BorderLayout());
@@ -118,6 +121,7 @@ public class TelaMovimentacao extends JPanel {
 
                 cardsPanel.add(emptyPanel);
             } else {
+                // Organiza a lista para exibir os registros mais recentes no topo
                 movimentacoes.sort((m1, m2) -> m2.getIdMovimentacao().compareTo(m1.getIdMovimentacao()));
 
                 for (Movimentacao m : movimentacoes) {
@@ -140,34 +144,33 @@ public class TelaMovimentacao extends JPanel {
                     });
 
                     cardsPanel.add(card);
-                    cardsPanel.add(Box.createVerticalStrut(10));
+                    cardsPanel.add(Box.createVerticalStrut(10)); // Espaçamento fixo entre os cartões
                 }
             }
 
+            // Preenche o espaço restante inferior para evitar o esticamento vertical dos cartões
             cardsPanel.add(Box.createVerticalGlue());
 
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this,
-                "Erro ao carregar movimentações: " + e.getMessage(),
-                "Erro",
-                JOptionPane.ERROR_MESSAGE);
+                    "Erro ao carregar movimentações: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         cardsPanel.revalidate();
         cardsPanel.repaint();
     }
 
-    
-
-
+    // Ponto de entrada público para forçar a atualização do painel por outras classes do sistema
     public void atualizarDados() {
         carregarMovimentacoes();
     }
 
     private void abrirDialogNovaMovimentacao() {
         MovementFormDialog dialog = new MovementFormDialog(
-            (JFrame) SwingUtilities.getWindowAncestor(this),
-            null
+                (JFrame) SwingUtilities.getWindowAncestor(this),
+                null
         );
         dialog.setCallback(this::carregarMovimentacoes);
         dialog.setVisible(true);
@@ -175,8 +178,8 @@ public class TelaMovimentacao extends JPanel {
 
     private void abrirDialogEditarMovimentacao(Movimentacao mov) {
         MovementFormDialog dialog = new MovementFormDialog(
-            (JFrame) SwingUtilities.getWindowAncestor(this),
-            mov
+                (JFrame) SwingUtilities.getWindowAncestor(this),
+                mov
         );
         dialog.setCallback(this::carregarMovimentacoes);
         dialog.setVisible(true);
@@ -184,24 +187,24 @@ public class TelaMovimentacao extends JPanel {
 
     private void confirmarDelecao(Movimentacao mov) {
         int resultado = JOptionPane.showConfirmDialog(this,
-            "Deseja deletar esta movimentação?",
-            "Confirmar Exclusão",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE);
+                "Deseja deletar esta movimentação?",
+                "Confirmar Exclusão",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
 
         if (resultado == JOptionPane.YES_OPTION) {
             try {
                 movimentacaoController.deletarMovimentacao(mov.getIdMovimentacao());
                 JOptionPane.showMessageDialog(this,
-                    "Movimentação deletada com sucesso!",
-                    "Sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        "Movimentação deletada com sucesso!",
+                        "Sucesso",
+                        JOptionPane.INFORMATION_MESSAGE);
                 carregarMovimentacoes();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(this,
-                    "Erro ao deletar: " + e.getMessage(),
-                    "Erro",
-                    JOptionPane.ERROR_MESSAGE);
+                        "Erro ao deletar: " + e.getMessage(),
+                        "Erro",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }

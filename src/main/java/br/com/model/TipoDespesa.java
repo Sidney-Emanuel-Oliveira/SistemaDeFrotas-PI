@@ -1,12 +1,15 @@
 package br.com.model;
 
+// Classe de modelo (JavaBean) que representa a entidade ou categoria de uma despesa
 public class TipoDespesa {
     private Long idTipoDespesa;
     private String descricao;
 
+    // Construtor padrão necessário para frameworks de persistência e serialização
     public TipoDespesa() {
     }
 
+    // Construtor completo para inicialização rápida de instâncias na memória
     public TipoDespesa(Long idTipoDespesa, String descricao) {
         this.idTipoDespesa = idTipoDespesa;
         this.descricao = descricao;
@@ -28,9 +31,9 @@ public class TipoDespesa {
         this.descricao = descricao;
     }
 
+    // Sobrescrita para exibir diretamente o nome/descrição em componentes visuais (ex: ComboBox)
     @Override
     public String toString() {
         return descricao;
     }
 }
-
