@@ -1,4 +1,4 @@
-1;NBO8200;Peugeot;Preto;1990;true;Carro
+1;NBO8200;Peugeot;Preto;1990;false;Carro
 2;DIT4349;Peugeot;Preto;2010;true;Moto
 3;JAY0200;DAF;Branco;2000;false;Caminhão
 4;KEN0785;Hyundai;Branca;2010;false;Van
@@ -56,7 +56,7 @@
 56;RFV7902;Honda;Azul;2022;true;Moto
 57;YHN9124;Chevrolet;Branca;2021;true;Carro
 58;UJM0235;Mercedes;Amarelo;2015;true;Ônibus
-59;IKL1346;Scania;Azul;2014;true;Caminhão
+59;IKL1346;Scania;Azul;2014;false;Caminhão
 60;OPP2457;Ford;Preto;2020;true;Caminhonete
 61;MNB4679;Toyota;Prata;2024;true;Carro
 62;VCX5790;Renault;Branca;2023;true;Van
@@ -93,7 +93,7 @@
 93;ABC1125;Volkswagen;Prata;2018;true;Carro
 94;ABC1127;Mercedes;Amarelo;2016;false;Ônibus
 95;ABC1128;Scania;Branco;2015;true;Caminhão
-96;ABC1129;Iveco;Cinza;2014;true;Caminhão
+96;ABC1129;Iveco;Cinza;2014;false;Caminhão
 97;ABC1130;Renault;Preto;2024;true;Van
 98;ABC1132;Honda;Azul;2022;true;Moto
 99;ABC1133;Ford;Prata;2021;false;Caminhonete
@@ -108,16 +108,16 @@
 108;ABC1147;Mercedes;Amarelo;2017;true;Ônibus
 109;ABC1148;Scania;Branco;2016;true;Caminhão
 110;ABC1149;Iveco;Prata;2015;false;Caminhão
-111;ABC1150;Renault;Azul;2024;true;Van
+111;ABC1150;Renault;Azul;2024;false;Van
 112;ABC1152;Honda;Preta;2022;true;Moto
 113;ABC1153;Ford;Branca;2021;true;Caminhonete
-114;ABC1155;Volkswagen;Azul;2019;true;Carro
-115;ABC1157;Mercedes;Amarelo;2017;true;Ônibus
+114;ABC1155;Volkswagen;Azul;2019;false;Carro
+115;ABC1157;Mercedes;Amarelo;2017;false;Ônibus
 116;ABC1158;Scania;Branco;2016;true;Caminhão
 117;ABC1159;Iveco;Prata;2015;true;Caminhão
 118;ABC1160;Renault;Vermelho;2024;false;Van
 119;ABC1162;Honda;Branca;2022;true;Moto
-120;ABC1163;Ford;Cinza;2021;true;Caminhonete
+120;ABC1163;Ford;Cinza;2021;false;Caminhonete
 121;ABC1165;Volkswagen;Prata;2019;false;Carro
 122;ABC1167;Mercedes;Amarelo;2017;true;Ônibus
 123;ABC1168;Scania;Branco;2016;true;Caminhão
@@ -144,7 +144,7 @@
 144;ABC1198;Scania;Branco;2016;false;Caminhão
 145;ABC1199;Iveco;Prata;2015;true;Caminhão
 146;ABC1200;Renault;Vermelho;2024;true;Van
-147;ABC1202;Honda;Branca;2022;true;Moto
+147;ABC1202;Honda;Branca;2022;false;Moto
 148;ABC1203;Ford;Cinza;2021;true;Caminhonete
 149;ABC1205;Volkswagen;Prata;2019;true;Carro
 150;ABC1207;Mercedes;Amarelo;2017;true;Ônibus
@@ -154,7 +154,7 @@
 154;ABC1212;Honda;Azul;2022;true;Moto
 155;ABC1213;Ford;Prata;2021;false;Caminhonete
 156;ABC1215;Volkswagen;Vermelho;2019;true;Carro
-157;ABC1217;Mercedes;Amarelo;2017;true;Ônibus
+157;ABC1217;Mercedes;Amarelo;2017;false;Ônibus
 158;ABC1218;Scania;Prata;2016;false;Caminhão
 159;ABC1219;Iveco;Azul;2015;true;Caminhão
 160;ABC1220;Renault;Cinza;2024;true;Van
