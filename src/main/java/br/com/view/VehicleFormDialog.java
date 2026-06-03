@@ -333,21 +333,17 @@ public class VehicleFormDialog extends JDialog {
                 throw new IllegalArgumentException("Modelo deve ter pelo menos 2 caracteres!");
             }
 
-            
-            if (veiculoEdicao != null) {
-                controller.atualizarVeiculo(veiculoEdicao.getIdVeiculo(), placa, marca, modelo, ano, ativo, tipo);
-                JOptionPane.showMessageDialog(this,
-                        "Veículo atualizado com sucesso!\nPlaca: " + placa,
-                        "Sucesso",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                controller.salvarVeiculo(placa, marca, modelo, ano, ativo, tipo);
-                JOptionPane.showMessageDialog(this,
-                        "Veículo cadastrado com sucesso!\nPlaca: " + placa,
-                        "Sucesso",
-                        JOptionPane.INFORMATION_MESSAGE);
+            try {
+                if (veiculoEdicao != null) {
+                    controller.atualizarVeiculo(veiculoEdicao.getIdVeiculo(), placa, marca, modelo, ano, ativo, tipo);
+                    JOptionPane.showMessageDialog(this, "Veículo atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    controller.salvarVeiculo(placa, marca, modelo, ano, ativo, tipo);
+                    JOptionPane.showMessageDialog(this, "Veículo cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Erro de Validação", JOptionPane.ERROR_MESSAGE);
             }
-
             
             if (onSuccess != null) onSuccess.run();
             dispose();

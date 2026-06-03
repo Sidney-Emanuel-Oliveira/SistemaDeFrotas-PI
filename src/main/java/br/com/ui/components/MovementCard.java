@@ -20,7 +20,6 @@ public class MovementCard extends RoundedPanel {
     private List<MovementCardListener> listeners = new ArrayList<>();
     private TipoDespesaController tipoDespesaController;
     private boolean isHovered = false;
-
     
     public interface MovementCardListener {
         void onEditClicked(Movimentacao mov);
@@ -32,7 +31,6 @@ public class MovementCard extends RoundedPanel {
         super(12, ModernColors.WHITE);
         this.movimentacao = movimentacao;
         this.tipoDespesaController = new TipoDespesaController();
-
         
         setLayout(new BorderLayout(16, 0));
         setBorder(BorderFactory.createEmptyBorder(14, 14, 14, 14));
@@ -42,7 +40,6 @@ public class MovementCard extends RoundedPanel {
 
         initializeComponents();
 
-        
         addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent e) {
@@ -67,7 +64,6 @@ public class MovementCard extends RoundedPanel {
             }
         });
     }
-
     
     @Override
     protected void paintComponent(Graphics g) {
@@ -81,7 +77,6 @@ public class MovementCard extends RoundedPanel {
         g2d.drawRoundRect(2, 2, getWidth() - 9, getHeight() - 9, 14, 14);
         g2d.dispose();
     }
-
     
     private void initializeComponents() {
         
@@ -96,7 +91,6 @@ public class MovementCard extends RoundedPanel {
         JPanel buttonPanel = criarPainelBotoes();
         add(buttonPanel, BorderLayout.EAST);
     }
-
     
     private JPanel criarPainelIcone() {
         JPanel panel = new JPanel() {
@@ -127,7 +121,6 @@ public class MovementCard extends RoundedPanel {
         return panel;
     }
 
-    
     private JPanel criarPainelInformacoes() {
         JPanel panel = new JPanel(new GridLayout(3, 1, 0, 6));
         panel.setOpaque(false);
@@ -146,7 +139,6 @@ public class MovementCard extends RoundedPanel {
 
         linha1.add(veiculoLabel, BorderLayout.WEST);
         linha1.add(tipoLabel, BorderLayout.CENTER);
-
         
         JPanel linha2 = new JPanel(new BorderLayout(10, 0));
         linha2.setOpaque(false);
@@ -161,7 +153,6 @@ public class MovementCard extends RoundedPanel {
 
         linha2.add(dataLabel, BorderLayout.WEST);
         linha2.add(descLabel, BorderLayout.CENTER);
-
         
         JPanel linha3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         linha3.setOpaque(false);
@@ -170,7 +161,6 @@ public class MovementCard extends RoundedPanel {
         valorLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
         valorLabel.setForeground(ModernColors.PRIMARY_BLUE);
         linha3.add(valorLabel);
-
         
         if (movimentacao.possuiDadosConsumo()) {
             JLabel consumoLabel = new JLabel(String.format("  •  %.2f km/L", movimentacao.calcularConsumoMedioKmPorLitro()));
@@ -186,7 +176,6 @@ public class MovementCard extends RoundedPanel {
         return panel;
     }
 
-    
     private JPanel criarPainelBotoes() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 18));
         panel.setOpaque(false);
@@ -205,7 +194,6 @@ public class MovementCard extends RoundedPanel {
         return panel;
     }
 
-    
     private JPanel getButtonPanel() {
         Component[] components = getComponents();
         for (Component comp : components) {
@@ -219,7 +207,6 @@ public class MovementCard extends RoundedPanel {
         return null;
     }
 
-    
     private Color getBackgroundColor() {
         try {
             TipoDespesa tipo = tipoDespesaController.obterTipoPorId(movimentacao.getIdTipoDespesa());
@@ -238,13 +225,11 @@ public class MovementCard extends RoundedPanel {
         return ModernColors.LIGHT_BLUE;
     }
 
-    
     private String getVeiculoInfo() {
         return movimentacao.getDescricao().length() > 30
                 ? movimentacao.getDescricao().substring(0, 27) + "..."
                 : movimentacao.getDescricao();
     }
-
     
     private String getTipoDespesaInfo() {
         try {
@@ -257,7 +242,6 @@ public class MovementCard extends RoundedPanel {
         }
         return "Despesa";
     }
-
     
     private Color getColorForType() {
         try {
@@ -281,7 +265,6 @@ public class MovementCard extends RoundedPanel {
         listeners.add(listener);
     }
 
-    
     private void notifyEditClicked() {
         for (MovementCardListener listener : listeners) {
             listener.onEditClicked(movimentacao);

@@ -7,3 +7,4 @@
 7;MUU2363;fafafwd;sdsadaw;2012;true;Carro
 8;ABC1234;kdkied;sdadwd;2002;true;Carro
 9;JHS4816;sfdhfsgh;adfg4ehsf;1999;true;Caminhonete
+10;HWZ6035;tfdsh;fdnhfn;2005;false;Van
