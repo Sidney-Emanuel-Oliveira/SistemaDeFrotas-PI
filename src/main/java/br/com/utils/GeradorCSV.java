@@ -74,6 +74,7 @@ public class GeradorCSV {
         }
     }
 
+    // Gera CSV com relatório de despesas e consumo de combustível
     public static void gerarRelatorioDespesasCSV(List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
             escreverLinhaCSV(writer, "ID Movimentacao", "ID Veiculo", "ID Tipo Despesa", "Descricao", "Data", "Valor", "Tipo", "Distancia Km", "Litros Combustivel", "Km por Litro");

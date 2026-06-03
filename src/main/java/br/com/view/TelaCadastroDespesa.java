@@ -9,17 +9,26 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * Tela de cadastro e gerenciamento de tipos de despesas
+ * Permite criar, editar e deletar categorias de despesas
+ */
 public class TelaCadastroDespesa extends JPanel {
+    // Controller para operações de tipos de despesas
     private TipoDespesaController controller;
+    // Campo de entrada para descrição
     private JTextField txtDescricao;
+    // Tabela que exibe tipos cadastrados
     private JTable tabela;
+    // Modelo da tabela
     private DefaultTableModel modeloTabela;
+    // Botões de operações
     private JButton btnSalvar, btnLimpar, btnEditar, btnDeletar, btnAtualizar;
 
-    
+    // ID do tipo selecionado para edição
     private Long idSelecionado = null;
 
+    // Construtor que inicializa a tela
     public TelaCadastroDespesa() {
         controller = new TipoDespesaController();
         setLayout(new BorderLayout(10, 10)); 
@@ -35,7 +44,7 @@ public class TelaCadastroDespesa extends JPanel {
         carregarTabela(); 
     }
 
-    
+    // Cria painel com campos de entrada e botões
     private JPanel criarPainelEntrada() {
         JPanel painel = new JPanel(new GridLayout(0, 2, 10, 10));
         painel.setBorder(BorderFactory.createTitledBorder("Cadastro de Tipo de Despesa"));

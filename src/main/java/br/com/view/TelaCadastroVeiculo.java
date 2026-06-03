@@ -17,21 +17,34 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * Tela de cadastro e gerenciamento de veículos
+ * Exibe lista de veículos com cards, filtros e busca por placa
+ */
 public class TelaCadastroVeiculo extends JPanel {
+    // Controller para operações de veículos
     private VeiculoController controller;
+    // Painel principal com lista de veículos
     private JPanel mainPanel;
+    // Scroll com cards de veículos
     private JScrollPane scrollCardsPanel;
+    // Painel de detalhes de um veículo selecionado
     private JPanel detailsPanel;
+    // Botão para criar novo veículo
     private JButton btnNovoVeiculo;
+    // Campo de busca por placa
     private JTextField txtPesquisaPlaca;
+    // Combo para filtrar por tipo de veículo
     private JComboBox<String> cmbFiltroTipo;
+    // Combo para ordenação
     private JComboBox<String> cmbOrdenacao;
+    // Painel que contém os cards de veículos
     private JPanel cardsPanel;
 
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 13);
 
+    // Construtor que inicializa a tela de cadastro de veículos
     public TelaCadastroVeiculo() {
         controller = new VeiculoController();
         setLayout(new BorderLayout());
@@ -63,7 +76,7 @@ public class TelaCadastroVeiculo extends JPanel {
         add(container, BorderLayout.CENTER);
     }
 
-    
+    // Cria painel de cabeçalho com título, filtros e botão novo veículo
     private JPanel criarPainelCabecalho() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(18, 0));

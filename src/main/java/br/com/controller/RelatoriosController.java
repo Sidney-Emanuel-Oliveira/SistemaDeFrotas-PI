@@ -18,18 +18,18 @@ public class RelatoriosController {
     private MovimentacaoDAO movimentacaoDAO;
     private VeiculoDAO veiculoDAO;
 
-    
+
     public RelatoriosController() {
         this.movimentacaoDAO = new MovimentacaoDAO();
         this.veiculoDAO = new VeiculoDAO();
     }
 
-    
+
     public List<Movimentacao> obterDespesasVeiculo(Long idVeiculo) throws IOException {
         return movimentacaoDAO.obterPorVeiculo(idVeiculo);
     }
 
-    
+
     public double obterTotalDespesasVeiculo(Long idVeiculo) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterPorVeiculo(idVeiculo);
         return calcularTotalRecursivo(movimentacoes, 0);
@@ -138,7 +138,7 @@ public class RelatoriosController {
         );
     }
 
-    
+    // Gera Matriz B: Custo médio de combustível por marca/mês
     public String gerarRelatorioMatrizB() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();

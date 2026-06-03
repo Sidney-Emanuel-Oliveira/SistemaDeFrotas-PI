@@ -1,6 +1,6 @@
 package br.com.utils;
 
-public class Validacoes {
+public class  Validacoes {
 
     
     
@@ -70,7 +70,7 @@ public class Validacoes {
         return partes[1] + "/" + partes[2];
     }
 
-    
+    // Extrai apenas o ano de uma data (retorna: YYYY)
     public static String extrairAno(String data) {
 
         

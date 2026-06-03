@@ -50,6 +50,7 @@ public class TelaPrincipal extends JFrame {
     }
 
     
+    // Configura o Look and Feel da aplicação (tema visual Nimbus)
     private void configurarAparenciaGlobal() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

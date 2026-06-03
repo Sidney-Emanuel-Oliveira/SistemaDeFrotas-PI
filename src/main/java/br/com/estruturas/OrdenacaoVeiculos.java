@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OrdenacaoVeiculos {
 
-    
+
     public static List<Veiculo> ordenar(List<Veiculo> veiculos, String criterio) {
         List<Veiculo> ordenados = new ArrayList<>(veiculos);
         Comparator<Veiculo> comparador = obterComparador(criterio);
@@ -64,7 +64,7 @@ public class OrdenacaoVeiculos {
         return texto == null ? "" : texto.toUpperCase();
     }
 
-    
+    // Converte ano de fabricação para int com tratamento de erro
     private static int anoSeguro(Veiculo veiculo) {
         try {
             return Integer.parseInt(veiculo.getFabricateYear());

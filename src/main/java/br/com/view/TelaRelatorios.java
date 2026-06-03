@@ -23,18 +23,26 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Tela de relatórios e análises
+ * Exibe despesas, consumo, IPVA, multas e matrizes de análise com opção de exportar para CSV
+ */
 public class TelaRelatorios extends JPanel {
+    // Controller para obter dados de relatórios
     private RelatoriosController relatoriosController;
+    // Controller para obter dados de veículos
     private VeiculoController veiculoController;
+    // Combos para seleção de período e veículo
     private JComboBox<Integer> cmbAno;
     private JComboBox<Integer> cmbMes;
     private JComboBox<Integer> cmbAnoFinal;
     private JComboBox<Integer> cmbMesFinal;
     private JComboBox<VeiculoComboItem> cmbVeiculo;
+    // Áreas para exibição de relatórios (texto e tabela)
     private JTextArea areaRelatorio;
     private JTable tabelaRelatorio;
     private DefaultTableModel modeloTabela;
+    // Labels para títulos
     private JLabel lblTitulo;
     private JLabel lblTipoRelatorio;
 
@@ -44,6 +52,7 @@ public class TelaRelatorios extends JPanel {
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 12);
 
+    // Construtor que inicializa a tela de relatórios
     public TelaRelatorios() {
         relatoriosController = new RelatoriosController();
         veiculoController = new VeiculoController();
@@ -59,6 +68,7 @@ public class TelaRelatorios extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
+    // Cria painel de cabeçalho com título
     private JPanel criarPainelCabecalho() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(20, 0));

@@ -47,6 +47,7 @@ public class MatrizRelatorios {
 
     
     
+    // Gera Matriz B: Custo médio de combustível por mês/marca (linhas=meses, colunas=marcas)
     public static double[][] gerarMatrizB(List<String> meses, List<String> marcas, List<Veiculo> veiculos, List<Movimentacao> movimentacoes) {
         int n = meses.size();
         int p = marcas.size();

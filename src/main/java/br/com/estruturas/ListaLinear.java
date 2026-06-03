@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-
+/**
+ * Implementação de lista encadeada genérica
+ * Permite adicionar elementos e iterar sobre eles
+ */
 public class ListaLinear<T> implements Iterable<T> {
+    // Referência ao primeiro nó da lista
     private No<T> primeiro;
     private No<T> ultimo;
     private int tamanho;
@@ -50,7 +54,7 @@ public class ListaLinear<T> implements Iterable<T> {
         return resultado;
     }
 
-    
+    // Implementa iterador para percorrer a lista encadeada
     @Override
     public Iterator<T> iterator() {
         return new Iterator<T>() {

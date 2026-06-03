@@ -370,6 +370,7 @@ public final class MySQLSincronizador {
         return movimentacoes;
     }
 
+    // Garante que tipos de despesas referenciados em movimentações existam
     private static void garantirTiposReferenciados(List<TipoDespesa> tipos, List<Movimentacao> movimentacoes) {
         Set<Long> idsExistentes = new HashSet<>();
         for (TipoDespesa tipo : tipos) {

@@ -53,7 +53,7 @@ public enum TipoVeiculo {
 
     private static final Pattern ACENTOS = Pattern.compile("\\p{M}");
 
-    
+    // Remove acentos e normaliza string para comparação (maiúscula)
     private static String normalizar(String texto) {
         return ACENTOS.matcher(
                         Normalizer.normalize(texto, Normalizer.Form.NFD))

@@ -15,12 +15,17 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
+/**
+ * Tela de gerenciamento de movimentações
+ * Exibe histórico de despesas, abastecimentos, multas e manutenções em cards
+ */
 public class TelaMovimentacao extends JPanel {
+    // Controllers para gerenciar dados
     private MovimentacaoController movimentacaoController;
     private VeiculoController veiculoController;
     private TipoDespesaController tipoDespesaController;
 
+    // Componentes visuais
     private JPanel mainPanel;
     private JPanel cardsPanel;
     private JButton btnNovaMovimentacao;
@@ -28,6 +33,7 @@ public class TelaMovimentacao extends JPanel {
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 13);
 
+    // Construtor que inicializa a tela de movimentações
     public TelaMovimentacao() {
         movimentacaoController = new MovimentacaoController();
         veiculoController = new VeiculoController();
@@ -49,6 +55,7 @@ public class TelaMovimentacao extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
+    // Cria painel de cabeçalho com título e botão nova movimentação
     private JPanel criarPainelCabecalho() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(20, 0));
