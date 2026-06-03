@@ -70,7 +70,7 @@ public final class MySQLSincronizador {
             conexao.setAutoCommit(false);
 
             criarEstruturaSeNecessario(conexao);
-            substituirDados(conexao, veiculos, tipos, movimentacoes);
+            importarDados(conexao, veiculos, tipos, movimentacoes);
 
             conexao.commit();
         }
@@ -192,17 +192,9 @@ public final class MySQLSincronizador {
         }
     }
 
-    private static void substituirDados(Connection conexao, List<Veiculo> veiculos,
+    private static void importarDados(Connection conexao, List<Veiculo> veiculos,
             List<TipoDespesa> tipos,
             List<Movimentacao> movimentacoes) throws Exception {
-        try (Statement st = conexao.createStatement()) {
-            st.execute("SET FOREIGN_KEY_CHECKS=0");
-            st.executeUpdate("TRUNCATE TABLE movimentacoes");
-            st.executeUpdate("TRUNCATE TABLE veiculos");
-            st.executeUpdate("TRUNCATE TABLE tipos_despesas");
-            st.execute("SET FOREIGN_KEY_CHECKS=1");
-        }
-
         inserirTipos(conexao, tipos);
         inserirVeiculos(conexao, veiculos);
         inserirMovimentacoes(conexao, movimentacoes);
@@ -210,7 +202,8 @@ public final class MySQLSincronizador {
 
     private static void inserirVeiculos(Connection conexao, List<Veiculo> veiculos) throws Exception {
         String sql = "INSERT INTO veiculos (id_veiculo, placa, marca, modelo, ano_fabricacao, ativo, tipo) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE placa = ?, marca = ?, modelo = ?, ano_fabricacao = ?, ativo = ?, tipo = ?";
         try (PreparedStatement ps = conexao.prepareStatement(sql)) {
             for (Veiculo v : veiculos) {
                 ps.setLong(1, v.getIdVeiculo());
@@ -220,6 +213,12 @@ public final class MySQLSincronizador {
                 ps.setString(5, v.getFabricateYear());
                 ps.setBoolean(6, Boolean.TRUE.equals(v.getAtivo()));
                 ps.setString(7, v.getTipo());
+                ps.setString(8, v.getPlaca());
+                ps.setString(9, v.getMarca());
+                ps.setString(10, v.getModelo());
+                ps.setString(11, v.getFabricateYear());
+                ps.setBoolean(12, Boolean.TRUE.equals(v.getAtivo()));
+                ps.setString(13, v.getTipo());
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -227,11 +226,13 @@ public final class MySQLSincronizador {
     }
 
     private static void inserirTipos(Connection conexao, List<TipoDespesa> tipos) throws Exception {
-        String sql = "INSERT INTO tipos_despesas (id_tipo_despesa, descricao) VALUES (?, ?)";
+        String sql = "INSERT INTO tipos_despesas (id_tipo_despesa, descricao) VALUES (?, ?) " +
+                "ON DUPLICATE KEY UPDATE descricao = ?";
         try (PreparedStatement ps = conexao.prepareStatement(sql)) {
             for (TipoDespesa t : tipos) {
                 ps.setLong(1, t.getIdTipoDespesa());
                 ps.setString(2, t.getDescricao());
+                ps.setString(3, t.getDescricao());
                 ps.addBatch();
             }
             ps.executeBatch();
@@ -241,7 +242,9 @@ public final class MySQLSincronizador {
     private static void inserirMovimentacoes(Connection conexao, List<Movimentacao> movimentacoes) throws Exception {
         String sql = "INSERT INTO movimentacoes (id_movimentacao, id_veiculo, id_tipo_despesa, descricao, " +
                 "data_movimentacao, valor, tipo, distancia_percorrida_km, litros_combustivel) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE id_veiculo = ?, id_tipo_despesa = ?, descricao = ?, " +
+                "data_movimentacao = ?, valor = ?, tipo = ?, distancia_percorrida_km = ?, litros_combustivel = ?";
         try (PreparedStatement ps = conexao.prepareStatement(sql)) {
             for (Movimentacao m : movimentacoes) {
                 ps.setLong(1, m.getIdMovimentacao());
@@ -259,6 +262,18 @@ public final class MySQLSincronizador {
                 ps.setString(7, m.getTipo());
                 ps.setDouble(8, m.getDistanciaPercorridaKm());
                 ps.setDouble(9, m.getLitrosCombustivel());
+                ps.setLong(10, m.getIdVeiculo());
+                ps.setLong(11, m.getIdTipoDespesa());
+                ps.setString(12, m.getDescricao());
+                if (dataSql == null) {
+                    ps.setNull(13, java.sql.Types.DATE);
+                } else {
+                    ps.setDate(13, dataSql);
+                }
+                ps.setDouble(14, m.getValor());
+                ps.setString(15, m.getTipo());
+                ps.setDouble(16, m.getDistanciaPercorridaKm());
+                ps.setDouble(17, m.getLitrosCombustivel());
                 ps.addBatch();
             }
             ps.executeBatch();

@@ -52,7 +52,7 @@ public class MovimentacaoDAO {
             }
         }
 
-        List<Movimentacao> movimentacoes = obterTodos();
+        List<Movimentacao> movimentacoes = obterTodosArquivo();
 
         boolean encontrado = false;
 
@@ -70,7 +70,7 @@ public class MovimentacaoDAO {
 
         escreverArquivo(movimentacoes);
 
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
@@ -127,7 +127,7 @@ public class MovimentacaoDAO {
             }
         }
         escreverArquivo(movimentacoes);
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
@@ -166,6 +166,10 @@ public class MovimentacaoDAO {
             }
         }
 
+        return obterTodosArquivo();
+    }
+
+    private List<Movimentacao> obterTodosArquivo() throws IOException {
         List<Movimentacao> movimentacoes = new ArrayList<>();
 
         if (!Files.exists(Paths.get(ARQUIVO_MOVIMENTACOES))) {
@@ -277,7 +281,7 @@ public class MovimentacaoDAO {
             }
         }
 
-        List<Movimentacao> movimentacoes = obterTodos();
+        List<Movimentacao> movimentacoes = obterTodosArquivo();
         List<Movimentacao> resultado = new ArrayList<>();
 
         for (Movimentacao m : movimentacoes) {
@@ -369,13 +373,13 @@ public class MovimentacaoDAO {
             }
         }
 
-        List<Movimentacao> movimentacoes = obterTodos();
+        List<Movimentacao> movimentacoes = obterTodosArquivo();
 
         movimentacoes.removeIf(m -> m.getIdMovimentacao().equals(id));
 
         escreverArquivo(movimentacoes);
 
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }

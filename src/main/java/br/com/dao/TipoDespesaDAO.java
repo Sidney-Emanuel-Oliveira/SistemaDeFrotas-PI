@@ -49,7 +49,7 @@ public class TipoDespesaDAO {
             }
         }
 
-        List<TipoDespesa> tipos = obterTodos();
+        List<TipoDespesa> tipos = obterTodosArquivo();
 
         boolean encontrado = false;
 
@@ -67,7 +67,7 @@ public class TipoDespesaDAO {
 
         escreverArquivo(tipos);
 
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
@@ -95,7 +95,7 @@ public class TipoDespesaDAO {
             }
         }
         escreverArquivo(tipos);
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
@@ -122,6 +122,10 @@ public class TipoDespesaDAO {
             }
         }
 
+        return obterTodosArquivo();
+    }
+
+    private List<TipoDespesa> obterTodosArquivo() throws IOException {
         List<TipoDespesa> tipos = new ArrayList<>();
 
         if (!Files.exists(Paths.get(ARQUIVO_TIPOS))) {
@@ -201,13 +205,13 @@ public class TipoDespesaDAO {
             }
         }
 
-        List<TipoDespesa> tipos = obterTodos();
+        List<TipoDespesa> tipos = obterTodosArquivo();
 
         tipos.removeIf(t -> t.getIdTipoDespesa().equals(id));
 
         escreverArquivo(tipos);
 
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }

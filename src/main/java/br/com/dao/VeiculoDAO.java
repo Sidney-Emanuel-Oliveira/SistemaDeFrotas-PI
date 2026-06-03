@@ -49,7 +49,7 @@ public class VeiculoDAO {
             }
         }
 
-        List<Veiculo> veiculos = obterTodos();
+        List<Veiculo> veiculos = obterTodosArquivo();
 
         boolean encontrado = false;
 
@@ -67,7 +67,7 @@ public class VeiculoDAO {
 
         escreverArquivo(veiculos);
 
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
@@ -108,7 +108,7 @@ public class VeiculoDAO {
             }
         }
         escreverArquivo(veiculos);
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
@@ -145,6 +145,10 @@ public class VeiculoDAO {
             }
         }
 
+        return obterTodosArquivo();
+    }
+
+    private List<Veiculo> obterTodosArquivo() throws IOException {
         List<Veiculo> veiculos = new ArrayList<>();
 
         if (!Files.exists(Paths.get(ARQUIVO_VEICULOS))) {
@@ -246,13 +250,13 @@ public class VeiculoDAO {
             }
         }
 
-        List<Veiculo> veiculos = obterTodos();
+        List<Veiculo> veiculos = obterTodosArquivo();
 
         veiculos.removeIf(v -> v.getIdVeiculo().equals(id));
 
         escreverArquivo(veiculos);
 
-        if (!MySQLSincronizador.isHabilitado()) {
+        if (MySQLSincronizador.isHabilitado()) {
             MySQLSincronizador.sincronizarSilenciosamente();
         }
     }
