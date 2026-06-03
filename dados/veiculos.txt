@@ -7,7 +7,7 @@
 7;JHS4816;Chevrolet;Preta;1999;true;Caminhonete
 8;HWZ6035;Renault;Branca;2005;false;Van
 9;HRV6537;Mercedes;Amarelo;1998;true;Ônibus
-10;WSX5678;Honda;Branco;2019;true;Moto
+10;TES2T34;joel;kael;2000;true;Ônibus
 11;EDC9012;Volvo;Azul;2015;true;Caminhão
 12;TGB7890;Chevrolet;Vermelho;2017;false;Caminhonete
 13;YHN2345;Mercedes;Branco;2014;true;Ônibus

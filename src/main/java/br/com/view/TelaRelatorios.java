@@ -387,8 +387,8 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio = new JTextArea();
         areaRelatorio.setEditable(false);
         areaRelatorio.setFont(new Font("Consolas", Font.PLAIN, 12));
-        areaRelatorio.setBackground(ModernColors.WHITE);
-        areaRelatorio.setForeground(ModernColors.DARK_GRAY);
+        areaRelatorio.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : ModernColors.WHITE);
+        areaRelatorio.setForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.DARK_GRAY);
         areaRelatorio.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JScrollPane scrollTexto = new JScrollPane(areaRelatorio);
         scrollTexto.setPreferredSize(new Dimension(0, 390));
@@ -404,21 +404,22 @@ public class TelaRelatorios extends JPanel {
         tabelaRelatorio = new JTable(modeloTabela);
         tabelaRelatorio.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         tabelaRelatorio.setRowHeight(28);
-        tabelaRelatorio.setBackground(ModernColors.WHITE);
+        tabelaRelatorio.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : ModernColors.WHITE);
+        tabelaRelatorio.setForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.DARK_GRAY);
         tabelaRelatorio.setGridColor(ModernColors.BORDER_GRAY);
         tabelaRelatorio.setSelectionBackground(ModernColors.LIGHT_BLUE);
-        tabelaRelatorio.setSelectionForeground(ModernColors.DARK_GRAY);
+        tabelaRelatorio.setSelectionForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.DARK_GRAY);
         tabelaRelatorio.setFillsViewportHeight(true);
 
         JTableHeader header = tabelaRelatorio.getTableHeader();
         header.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : new Color(15, 23, 42));
-        header.setForeground(ModernColors.WHITE);
+        header.setForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.WHITE);
         header.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
         JScrollPane scrollTabela = new JScrollPane(tabelaRelatorio);
         scrollTabela.setPreferredSize(new Dimension(0, 390));
         scrollTabela.setBorder(BorderFactory.createLineBorder(ModernColors.BORDER_GRAY));
-        abas.addTab("Tabela", scrollTabela);
+        abas.addTab("Tabela", IconLoader.loadTableIcon(16, 16), scrollTabela);
 
         panel.add(abas, BorderLayout.CENTER);
 
