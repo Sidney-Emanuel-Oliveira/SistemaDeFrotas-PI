@@ -34,4 +34,8 @@
 25;1;1;Abastecimento;10/10/2025;155.0;Combustivel;293.65;27.19
 26;3;1;Abastecimento;18/10/2025;98.0;Combustivel;128.93;17.19
 39;1;3;Combustivel;01/12/2025;70.0;Lavagem;0.0;0.0
-40;1;5;Cambio Estragado;01/12/2025;90.0;Manutenção;0.0;0.0
+40;1;1;Cambio Estragado;03/06/2026;193.0;Combustivel;124.0;81.0
+41;1;3;Carro tava sujo;03/06/2026;123.0;Lavagem;0.0;0.0
+42;8;4;Seguro de veiculo;03/06/2026;432.0;Seguro;0.0;0.0
+43;1;6;foi pego dirigindo com 4kg de cocaina no rabo;03/06/2026;120.5;Multas;0.0;0.0
+44;5;2;Dando migalhas para o governo;03/06/2026;12405.33;IPVA;0.0;0.0

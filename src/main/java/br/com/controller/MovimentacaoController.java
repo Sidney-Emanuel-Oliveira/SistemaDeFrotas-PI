@@ -43,25 +43,22 @@ public class MovimentacaoController {
         atualizarMovimentacao(id, idVeiculo, idTipoDespesa, descricao, data, valor, tipo, "", "");
     }
 
-    
+
+    // br/com/controller/MovimentacaoController.java (dentro do método atualizarMovimentacao)
     public void atualizarMovimentacao(Long id, Long idVeiculo, Long idTipoDespesa, String descricao,
-                                     String data, String valor, String tipo,
-                                     String distanciaPercorridaKm, String litrosCombustivel) throws IOException {
+                                      String data, String valor, String tipo,
+                                      String distanciaPercorridaKm, String litrosCombustivel) throws IOException {
         validarMovimentacao(idVeiculo, idTipoDespesa, descricao, data, valor, distanciaPercorridaKm, litrosCombustivel);
 
-        Movimentacao existente = movimentacaoDAO.obterPorId(id);
-        String dataFinal = data;
-        if (existente != null && existente.getData() != null && !existente.getData().isBlank()) {
-            
-            dataFinal = existente.getData();
-        }
+        // Movimentacao existente = movimentacaoDAO.obterPorId(id); // Não é mais necessário obter o existente apenas para a data
+        String dataFinal = data; // A data a ser usada é a que veio no parâmetro
 
         double valorParsed = parseValor(valor);
         double distancia = parseValorOpcional(distanciaPercorridaKm);
         double litros = parseValorOpcional(litrosCombustivel);
 
         Movimentacao movimentacao = new Movimentacao(id, idVeiculo, idTipoDespesa,
-                                                      descricao, dataFinal, valorParsed, tipo, distancia, litros);
+                descricao, dataFinal, valorParsed, tipo, distancia, litros);
         movimentacaoDAO.salvar(movimentacao);
     }
 

@@ -1,330 +1,262 @@
 package br.com.utils;
 
 import br.com.model.Veiculo;
-import br.com.model.TipoDespesa;
 import br.com.model.Movimentacao;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+/**
+ * Classe utilitária para geração de relatórios em formato CSV.
+ * Versão refatorada para evitar duplicação de código e garantir consistência dos dados.
+ */
 public class GeradorCSV {
 
-    
-    public static void gerarRelatorioVeiculosCSV(List<Veiculo> veiculos, String caminhoArquivo) throws IOException {
+    private static final String DELIMITADOR = ";";
+    private static final DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    /**
+     * Método auxiliar genérico para escrever uma linha no CSV tratando caracteres especiais.
+     */
+    private static void escreverLinhaCSV(BufferedWriter writer, Object... valores) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < valores.length; i++) {
+            String valorStr = valores[i] != null ? valores[i].toString().trim() : "";
+
+            // Tratamento de caracteres especiais: se contiver o delimitador ou aspas, envolve em aspas e escapa aspas internas
+            if (valorStr.contains(DELIMITADOR) || valorStr.contains("\"") || valorStr.contains("\n")) {
+                valorStr = "\"" + valorStr.replace("\"", "\"\"") + "\"";
+            }
+
+            sb.append(valorStr);
+            if (i < valores.length - 1) {
+                sb.append(DELIMITADOR);
+            }
+        }
+        writer.write(sb.toString());
+        writer.newLine();
+    }
+
+    private static BufferedWriter inicializarWriter(String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
-        
         File parentDir = arquivo.getParentFile();
         if (parentDir != null) {
             parentDir.mkdirs();
         }
 
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
+        FileOutputStream fos = new FileOutputStream(arquivo);
+        OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+        BufferedWriter writer = new BufferedWriter(osw);
 
-            
-            writer.write('\ufeff');
+        // Escreve o BOM (Byte Order Mark) para que o Excel reconheça o UTF-8 corretamente
+        writer.write('\ufeff');
+        return writer;
+    }
 
-            
-            writer.write("ID;Placa;Marca;Modelo;Ano;Status;Tipo");
-            writer.newLine();
+    public static void gerarRelatorioVeiculosCSV(List<Veiculo> veiculos, String caminhoArquivo) throws IOException {
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "ID", "Placa", "Marca", "Modelo", "Ano", "Status", "Tipo");
 
-            
             for (Veiculo v : veiculos) {
-                String linha = v.getIdVeiculo() + ";" +
-                        v.getPlaca() + ";" +
-                        v.getMarca() + ";" +
-                        v.getModelo() + ";" +
-                        v.getFabricateYear() + ";" +
-                        (v.getAtivo() ? "Ativo" : "Inativo") + ";" +
-                        (v.getTipo() != null ? v.getTipo() : "");
-                writer.write(linha);
-                writer.newLine();
+                escreverLinhaCSV(writer,
+                        v.getIdVeiculo(),
+                        v.getPlaca(),
+                        v.getMarca(),
+                        v.getModelo(),
+                        v.getFabricateYear(),
+                        (v.getAtivo() ? "Ativo" : "Inativo"),
+                        (v.getTipo() != null ? v.getTipo() : "")
+                );
             }
         }
     }
 
-    
     public static void gerarRelatorioDespesasCSV(List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
-        File arquivo = new File(caminhoArquivo);
-        File parentDir = arquivo.getParentFile();
-        if (parentDir != null) {
-            parentDir.mkdirs();
-        }
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
-
-            
-            writer.write('\ufeff');
-
-            writer.write("ID Movimentacao;ID Veiculo;ID Tipo Despesa;Descricao;Data;Valor;Tipo;Distancia Km;Litros Combustivel;Km por Litro");
-            writer.newLine();
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "ID Movimentacao", "ID Veiculo", "ID Tipo Despesa", "Descricao", "Data", "Valor", "Tipo", "Distancia Km", "Litros Combustivel", "Km por Litro");
 
             for (Movimentacao m : movimentacoes) {
-                String linha = m.getIdMovimentacao() + ";" +
-                        m.getIdVeiculo() + ";" +
-                        m.getIdTipoDespesa() + ";" +
-                        "\"" + m.getDescricao() + "\";" +  
-                        "\"" + m.getData() + "                    \";" +  
-                        String.format("%.2f", m.getValor()).replace(".", ",") + ";" +  
-                        "\"" + (m.getTipo() != null ? m.getTipo() : "") + "\"";  
-                writer.write(linha);
-                writer.newLine();
+                escreverLinhaCSV(writer,
+                        m.getIdMovimentacao(),
+                        m.getIdVeiculo(),
+                        m.getIdTipoDespesa(),
+                        m.getDescricao(),
+                        m.getData(),
+                        String.format("%.2f", m.getValor()).replace(".", ","),
+                        (m.getTipo() != null ? m.getTipo() : ""),
+                        String.format("%.2f", m.getDistanciaPercorridaKm()).replace(".", ","),
+                        String.format("%.2f", m.getLitrosCombustivel()).replace(".", ","),
+                        String.format("%.2f", m.calcularConsumoMedioKmPorLitro()).replace(".", ",")
+                );
             }
         }
     }
 
-    
     public static void gerarRelatorioDespesasVeiculoCSV(Long idVeiculo, Veiculo veiculo, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
-        File arquivo = new File(caminhoArquivo);
-        File parentDir = arquivo.getParentFile();
-        if (parentDir != null) {
-            parentDir.mkdirs();
-        }
-
-        
-        double totalDespesas = movimentacoes.stream()
-                .filter(m -> m.getIdVeiculo().equals(idVeiculo))
-                .mapToDouble(Movimentacao::getValor)
-                .sum();
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
-
-            
-            writer.write('\ufeff');
-
-            writer.write("RELATORIO DE DESPESAS DO VEICULO");
-            writer.newLine();
-            writer.write("Data: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            writer.newLine();
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "RELATORIO DE DESPESAS DO VEICULO");
+            escreverLinhaCSV(writer, "Data de Emissao", LocalDate.now().format(FORMATO_DATA));
             writer.newLine();
 
             if (veiculo != null) {
-                writer.write("Veiculo: " + veiculo.getMarca() + " " + veiculo.getModelo());
-                writer.newLine();
-                writer.write("Placa: " + veiculo.getPlaca());
-                writer.newLine();
-                writer.write("Ano: " + veiculo.getFabricateYear());
-                writer.newLine();
+                escreverLinhaCSV(writer, "Veiculo", veiculo.getMarca() + " " + veiculo.getModelo());
+                escreverLinhaCSV(writer, "Placa", veiculo.getPlaca());
+                escreverLinhaCSV(writer, "Ano", veiculo.getFabricateYear());
                 writer.newLine();
             }
 
-            writer.write("ID Movimentacao;Data                    ;Descricao;Tipo;Valor");
-            writer.newLine();
+            escreverLinhaCSV(writer, "ID Movimentacao", "Data", "Descricao", "Tipo", "Valor");
 
+            double totalDespesas = 0;
             for (Movimentacao m : movimentacoes) {
                 if (m.getIdVeiculo().equals(idVeiculo)) {
-                    String linha = m.getIdMovimentacao() + ";" +
-                            "\"" + m.getData() + "                    \";" +
-                            "\"" + m.getDescricao() + "\";" +
-                            "\"" + m.getTipo() + "\";" +
-                            String.format("%.2f", m.getValor()).replace(".", ",");
-                    writer.write(linha);
-                    writer.newLine();
-                }
-            }
-
-            writer.newLine();
-            writer.write("TOTAL DESPESAS;" + String.format("%.2f", totalDespesas).replace(".", ","));
-            writer.newLine();
-        }
-    }
-
-    
-    public static void gerarRelatorioDespesasPorMesCSV(String mesAno, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
-        File arquivo = new File(caminhoArquivo);
-        File parentDir = arquivo.getParentFile();
-
-        
-        if (parentDir != null) {
-            parentDir.mkdirs();
-        }
-
-        double totalDespesas = 0;
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
-            
-            writer.write('\ufeff');
-
-            writer.write("RELATORIO DE DESPESAS - " + mesAno);
-            writer.newLine();
-            writer.write("Data de Emissao: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            writer.newLine();
-            writer.newLine();
-
-            writer.write("ID Movimentacao;ID Veiculo;Data                    ;Descricao;Tipo;Valor");
-            writer.newLine();
-
-            for (Movimentacao m : movimentacoes) {
-                
-                String[] dataParts = m.getData().split("/");
-                String mesAnoMovimentacao = dataParts[1] + "/" + dataParts[2];
-                if (mesAnoMovimentacao.equals(mesAno)) {
-                    String linha = m.getIdMovimentacao() + ";" +
-                            m.getIdVeiculo() + ";" +
-                            "\"" + m.getData() + "                    \";" +
-                            "\"" + m.getDescricao() + "\";" +
-                            "\"" + m.getTipo() + "\";" +
-                            String.format("%.2f", m.getValor()).replace(".", ",");
-                    writer.write(linha);
-                    writer.newLine();
+                    escreverLinhaCSV(writer,
+                            m.getIdMovimentacao(),
+                            m.getData(),
+                            m.getDescricao(),
+                            m.getTipo(),
+                            String.format("%.2f", m.getValor()).replace(".", ",")
+                    );
                     totalDespesas += m.getValor();
                 }
             }
 
             writer.newLine();
-            writer.write("TOTAL DO MES;" + String.format("%.2f", totalDespesas).replace(".", ","));
-            writer.newLine();
+            escreverLinhaCSV(writer, "TOTAL DESPESAS", String.format("%.2f", totalDespesas).replace(".", ","));
         }
     }
 
-    
+    public static void gerarRelatorioDespesasPorMesCSV(String mesAno, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "RELATORIO DE DESPESAS - " + mesAno);
+            escreverLinhaCSV(writer, "Data de Emissao", LocalDate.now().format(FORMATO_DATA));
+            writer.newLine();
+
+            escreverLinhaCSV(writer, "ID Movimentacao", "ID Veiculo", "Data", "Descricao", "Tipo", "Valor");
+
+            double totalDespesas = 0;
+            for (Movimentacao m : movimentacoes) {
+                if (correspondeMesAno(m.getData(), mesAno)) {
+                    escreverLinhaCSV(writer,
+                            m.getIdMovimentacao(),
+                            m.getIdVeiculo(),
+                            m.getData(),
+                            m.getDescricao(),
+                            m.getTipo(),
+                            String.format("%.2f", m.getValor()).replace(".", ",")
+                    );
+                    totalDespesas += m.getValor();
+                }
+            }
+
+            writer.newLine();
+            escreverLinhaCSV(writer, "TOTAL DO MES", String.format("%.2f", totalDespesas).replace(".", ","));
+        }
+    }
+
     public static void gerarRelatorioCombustivelCSV(String mesAno, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
-        File arquivo = new File(caminhoArquivo);
-        File parentDir = arquivo.getParentFile();
-        if (parentDir != null) {
-            parentDir.mkdirs();
-        }
-
-        double totalCombustivel = 0;
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
-            
-            writer.write('\ufeff');
-
-            writer.write("RELATORIO DE COMBUSTIVEL - " + mesAno);
-            writer.newLine();
-            writer.write("Data de Emissao: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            writer.newLine();
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "RELATORIO DE COMBUSTIVEL - " + mesAno);
+            escreverLinhaCSV(writer, "Data de Emissao", LocalDate.now().format(FORMATO_DATA));
             writer.newLine();
 
-            writer.write("ID Movimentacao;ID Veiculo;Data;Descricao;Valor");
-            writer.newLine();
+            escreverLinhaCSV(writer, "ID Movimentacao", "ID Veiculo", "Data", "Descricao", "Valor", "Distancia Km", "Litros", "Consumo (Km/L)");
 
+            double totalCombustivel = 0;
             for (Movimentacao m : movimentacoes) {
-                
-                if (m.getTipo() != null && m.getTipo().equalsIgnoreCase("Combustivel")) {
-                    String[] dataParts = m.getData().split("/");
-                    String mesAnoMovimentacao = dataParts[1] + "/" + dataParts[2];
-                    if (mesAnoMovimentacao.equals(mesAno)) {
-                        String linha = m.getIdMovimentacao() + ";" +
-                                m.getIdVeiculo() + ";" +
-                                "\"" + m.getData() + "                    \";" +
-                                "\"" + m.getDescricao() + "\";" +
-                                String.format("%.2f", m.getValor()).replace(".", ",");
-                        writer.write(linha);
-                        writer.newLine();
-                        totalCombustivel += m.getValor();
-                    }
+                if (isTipo(m, "Combustivel") && correspondeMesAno(m.getData(), mesAno)) {
+                    escreverLinhaCSV(writer,
+                            m.getIdMovimentacao(),
+                            m.getIdVeiculo(),
+                            m.getData(),
+                            m.getDescricao(),
+                            String.format("%.2f", m.getValor()).replace(".", ","),
+                            String.format("%.2f", m.getDistanciaPercorridaKm()).replace(".", ","),
+                            String.format("%.2f", m.getLitrosCombustivel()).replace(".", ","),
+                            String.format("%.2f", m.calcularConsumoMedioKmPorLitro()).replace(".", ",")
+                    );
+                    totalCombustivel += m.getValor();
                 }
             }
 
             writer.newLine();
-            writer.write("TOTAL COMBUSTIVEL;" + String.format("%.2f", totalCombustivel).replace(".", ","));
-            writer.newLine();
+            escreverLinhaCSV(writer, "TOTAL COMBUSTIVEL", String.format("%.2f", totalCombustivel).replace(".", ","));
         }
     }
 
-    
     public static void gerarRelatorioIPVACSV(String ano, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
-        File arquivo = new File(caminhoArquivo);
-        File parentDir = arquivo.getParentFile();
-        if (parentDir != null) {
-            parentDir.mkdirs();
-        }
-
-        double totalIPVA = 0;
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
-
-            
-            writer.write('\ufeff');
-
-            writer.write("RELATORIO DE IPVA - ANO " + ano);
-            writer.newLine();
-            writer.write("Data de Emissao: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            writer.newLine();
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "RELATORIO DE IPVA - ANO " + ano);
+            escreverLinhaCSV(writer, "Data de Emissao", LocalDate.now().format(FORMATO_DATA));
             writer.newLine();
 
-            writer.write("ID Movimentacao;ID Veiculo;Data                    ;Descricao;Valor");
-            writer.newLine();
+            escreverLinhaCSV(writer, "ID Movimentacao", "ID Veiculo", "Data", "Descricao", "Valor");
 
+            double totalIPVA = 0;
             for (Movimentacao m : movimentacoes) {
-                
-                if (m.getTipo() != null && m.getTipo().equalsIgnoreCase("IPVA")) {
-                    String[] dataParts = m.getData().split("/");
-                    String anoMovimentacao = dataParts[2];
-                    if (anoMovimentacao.equals(ano)) {
-                        String linha = m.getIdMovimentacao() + ";" +
-                                m.getIdVeiculo() + ";" +
-                                "\"" + m.getData() + "                    \";" +
-                                "\"" + m.getDescricao() + "\";" +
-                                String.format("%.2f", m.getValor()).replace(".", ",");
-                        writer.write(linha);
-                        writer.newLine();
-                        totalIPVA += m.getValor();
-                    }
+                if (isTipo(m, "IPVA") && correspondeAno(m.getData(), ano)) {
+                    escreverLinhaCSV(writer,
+                            m.getIdMovimentacao(),
+                            m.getIdVeiculo(),
+                            m.getData(),
+                            m.getDescricao(),
+                            String.format("%.2f", m.getValor()).replace(".", ",")
+                    );
+                    totalIPVA += m.getValor();
                 }
             }
 
             writer.newLine();
-            writer.write("TOTAL IPVA;" + String.format("%.2f", totalIPVA).replace(".", ","));
-            writer.newLine();
+            escreverLinhaCSV(writer, "TOTAL IPVA", String.format("%.2f", totalIPVA).replace(".", ","));
         }
     }
 
-    
     public static void gerarRelatorioMultasCSV(Long idVeiculo, String ano, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
-        File arquivo = new File(caminhoArquivo);
-        File parentDir = arquivo.getParentFile();
-        if (parentDir != null) {
-            parentDir.mkdirs();
-        }
-
-        double totalMultas = 0;
-
-        try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
-             BufferedWriter writer = new BufferedWriter(osw)) {
-
-            writer.write('\ufeff');
-
-            writer.write("RELATORIO DE MULTAS - ANO " + ano);
-            writer.newLine();
-            writer.write("Data de Emissao: " + LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-            writer.newLine();
+        try (BufferedWriter writer = inicializarWriter(caminhoArquivo)) {
+            escreverLinhaCSV(writer, "RELATORIO DE MULTAS - ANO " + ano);
+            escreverLinhaCSV(writer, "Data de Emissao", LocalDate.now().format(FORMATO_DATA));
             writer.newLine();
 
-            writer.write("ID Movimentacao;Data                    ;Descricao;Valor");
-            writer.newLine();
+            escreverLinhaCSV(writer, "ID Movimentacao", "Data", "Descricao", "Valor");
 
+            double totalMultas = 0;
             for (Movimentacao m : movimentacoes) {
-                
-                if (m.getIdVeiculo().equals(idVeiculo) &&
-                    m.getTipo() != null && m.getTipo().equalsIgnoreCase("Multa")) {
-                    String[] dataParts = m.getData().split("/");
-                    String anoMovimentacao = dataParts[2];
-                    if (anoMovimentacao.equals(ano)) {
-                        String linha = m.getIdMovimentacao() + ";" +
-                                "\"" + m.getData() + "                    \";" +
-                                "\"" + m.getDescricao() + "\";" +
-                                String.format("%.2f", m.getValor()).replace(".", ",");
-                        writer.write(linha);
-                        writer.newLine();
-                        totalMultas += m.getValor();
-                    }
+                if (m.getIdVeiculo().equals(idVeiculo) && isTipo(m, "Multa") && correspondeAno(m.getData(), ano)) {
+                    escreverLinhaCSV(writer,
+                            m.getIdMovimentacao(),
+                            m.getData(),
+                            m.getDescricao(),
+                            String.format("%.2f", m.getValor()).replace(".", ",")
+                    );
+                    totalMultas += m.getValor();
                 }
             }
 
             writer.newLine();
-            writer.write("TOTAL MULTAS;" + String.format("%.2f", totalMultas).replace(".", ","));
-            writer.newLine();
+            escreverLinhaCSV(writer, "TOTAL MULTAS", String.format("%.2f", totalMultas).replace(".", ","));
         }
+    }
+
+    // Métodos auxiliares de filtragem para manter o código limpo
+
+    private static boolean correspondeMesAno(String data, String mesAno) {
+        if (data == null || !data.contains("/")) return false;
+        String[] partes = data.split("/");
+        if (partes.length < 3) return false;
+        return (partes[1] + "/" + partes[2]).equals(mesAno);
+    }
+
+    private static boolean correspondeAno(String data, String ano) {
+        if (data == null || !data.contains("/")) return false;
+        String[] partes = data.split("/");
+        if (partes.length < 3) return false;
+        return partes[2].equals(ano);
+    }
+
+    private static boolean isTipo(Movimentacao m, String tipoBusca) {
+        return m.getTipo() != null && m.getTipo().equalsIgnoreCase(tipoBusca);
     }
 }
-
