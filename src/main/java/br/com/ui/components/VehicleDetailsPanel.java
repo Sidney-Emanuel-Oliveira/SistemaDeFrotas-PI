@@ -16,7 +16,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-// Painel de exibição detalhada que consolida os dados cadastrais do veículo e suas despesas recentes
+
 public class VehicleDetailsPanel extends RoundedPanel {
     private Veiculo veiculo;
     private VeiculoController veiculoController;
@@ -39,7 +39,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
     }
 
     private void initializeComponents() {
-        // --- SEÇÃO SUPERIOR: Cabeçalho e Botões de Controle ---
+        
         RoundedPanel headerPanel = new RoundedPanel(10, new Color(245, 247, 250));
         headerPanel.setLayout(new BorderLayout(20, 0));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
@@ -65,14 +65,14 @@ public class VehicleDetailsPanel extends RoundedPanel {
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setOpaque(false);
 
-        // Despacha a ação de retorno para o Runnable configurado pela tela pai
+        
         ModernButton backBtn = new ModernButton("Voltar", ModernColors.TEXT_GRAY);
         backBtn.setPreferredSize(new Dimension(100, 38));
         backBtn.addActionListener(e -> {
             if (onBackCallback != null) onBackCallback.run();
         });
 
-        // Despacha a ação de edição para o Runnable configurado pela tela pai
+        
         ModernButton editBtn = new ModernButton("Editar", ModernColors.PRIMARY_BLUE);
         editBtn.setPreferredSize(new Dimension(100, 38));
         editBtn.addActionListener(e -> {
@@ -86,7 +86,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
         headerPanel.add(buttonsPanel, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-        // --- SEÇÃO CENTRAL: Grid Splitter (Informações | Despesas) ---
+        
         JPanel centralPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         centralPanel.setOpaque(false);
         centralPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
@@ -100,7 +100,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
         add(centralPanel, BorderLayout.CENTER);
     }
 
-    // Constrói o bloco esquerdo contendo a ficha técnica com linhas estilizadas e selo de status
+    
     private JPanel criarPainelInformacoes() {
         JPanel containerPanel = new JPanel(new BorderLayout(0, 15));
         containerPanel.setOpaque(false);
@@ -171,7 +171,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
         return separador;
     }
 
-    // Renderiza uma linha customizada adicionando uma pequena barra vertical azul à esquerda do rótulo
+    
     private JPanel criarLinhaInfoMelhorada(String label, String value) {
         JPanel panel = new JPanel(new BorderLayout(15, 0));
         panel.setOpaque(false);
@@ -203,7 +203,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
         return panel;
     }
 
-    // Constrói o bloco direito contendo a tabela com as 10 movimentações mais recentes do veículo
+    
     private JPanel criarPainelDespesas() {
         JPanel containerPanel = new JPanel(new BorderLayout(0, 15));
         containerPanel.setOpaque(false);
@@ -225,15 +225,15 @@ public class VehicleDetailsPanel extends RoundedPanel {
         ));
 
         try {
-            // Filtra e classifica as movimentações da frota associadas a este veículo específico
+            
             List<Movimentacao> movimentacoes = movimentacaoController.obterTodasMovimentacoes();
             movimentacoes = movimentacoes.stream()
                     .filter(m -> m.getIdVeiculo().equals(veiculo.getIdVeiculo()))
-                    .sorted((a, b) -> b.getIdMovimentacao().compareTo(a.getIdMovimentacao())) // Ordem decrescente (ID)
+                    .sorted((a, b) -> b.getIdMovimentacao().compareTo(a.getIdMovimentacao())) 
                     .limit(10)
                     .toList();
 
-            // Exibe tela vazia amigável caso não existam lançamentos históricos
+            
             if (movimentacoes.isEmpty()) {
                 JPanel emptyPanel = new JPanel(new BorderLayout());
                 emptyPanel.setOpaque(false);
@@ -247,7 +247,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
                 emptyPanel.add(emptyLabel, BorderLayout.CENTER);
                 tableCard.add(emptyPanel, BorderLayout.CENTER);
             } else {
-                // Instancia o modelo da tabela desativando a edição direta das células pelo usuário
+                
                 DefaultTableModel tableModel = new DefaultTableModel(
                         new String[]{"Data", "Tipo", "Descrição", "Valor"}, 0) {
                     @Override
@@ -280,7 +280,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
                 table.setSelectionBackground(new Color(232, 240, 254));
                 table.setSelectionForeground(ModernColors.DARK_GRAY);
 
-                // Estilização customizada do cabeçalho da tabela
+                
                 table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
                 table.getTableHeader().setBackground(new Color(248, 249, 250));
                 table.getTableHeader().setForeground(ModernColors.DARK_GRAY);
@@ -293,7 +293,7 @@ public class VehicleDetailsPanel extends RoundedPanel {
                 scrollPane.setBorder(BorderFactory.createEmptyBorder());
                 tableCard.add(scrollPane, BorderLayout.CENTER);
 
-                // Adiciona o painel de rodapé consolidando o somatório total financeiro filtrado
+                
                 if (totalDespesas > 0) {
                     JPanel footerContainer = new JPanel(new BorderLayout());
                     footerContainer.setOpaque(false);

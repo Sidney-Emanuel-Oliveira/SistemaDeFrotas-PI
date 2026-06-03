@@ -18,24 +18,24 @@ public class RelatoriosController {
     private MovimentacaoDAO movimentacaoDAO;
     private VeiculoDAO veiculoDAO;
 
-    // Inicializa os DAOs utilizados nos relatórios
+    
     public RelatoriosController() {
         this.movimentacaoDAO = new MovimentacaoDAO();
         this.veiculoDAO = new VeiculoDAO();
     }
 
-    // Retorna todas as despesas de um veículo
+    
     public List<Movimentacao> obterDespesasVeiculo(Long idVeiculo) throws IOException {
         return movimentacaoDAO.obterPorVeiculo(idVeiculo);
     }
 
-    // Calcula o total de despesas de um veículo
+    
     public double obterTotalDespesasVeiculo(Long idVeiculo) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterPorVeiculo(idVeiculo);
         return calcularTotalRecursivo(movimentacoes, 0);
     }
 
-    // Calcula o total de despesas de um mês
+    
     public double obterTotalDespesasMes(String mesAno) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
         List<Movimentacao> filtradas = movimentacoes.stream()
@@ -44,7 +44,7 @@ public class RelatoriosController {
         return calcularTotalRecursivo(filtradas, 0);
     }
 
-    // Calcula o total gasto com combustível em um mês
+    
     public double obterTotalCombustivelMes(String mesAno) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
         List<Movimentacao> filtradas = movimentacoes.stream()
@@ -54,7 +54,7 @@ public class RelatoriosController {
         return calcularTotalRecursivo(filtradas, 0);
     }
 
-    // Calcula o total gasto com IPVA em um ano
+    
     public double obterTotalIPVAAno(String ano) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
         List<Movimentacao> filtradas = movimentacoes.stream()
@@ -64,7 +64,7 @@ public class RelatoriosController {
         return calcularTotalRecursivo(filtradas, 0);
     }
 
-    // Retorna todos os veículos inativos
+    
     public List<Veiculo> obterVeiculosInativos() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         return veiculos.stream()
@@ -72,7 +72,7 @@ public class RelatoriosController {
                 .toList();
     }
 
-    // Calcula o total gasto com multas por veículo em um ano
+    
     public double obterTotalMultasVeiculoAno(Long idVeiculo, String ano) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterPorVeiculo(idVeiculo);
         List<Movimentacao> filtradas = movimentacoes.stream()
@@ -82,7 +82,7 @@ public class RelatoriosController {
         return calcularTotalRecursivo(filtradas, 0);
     }
 
-    // Retorna as multas de um veículo em determinado ano
+    
     public List<Movimentacao> obterMultasVeiculoAno(Long idVeiculo, String ano) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterPorVeiculo(idVeiculo);
         return movimentacoes.stream()
@@ -91,7 +91,7 @@ public class RelatoriosController {
                 .toList();
     }
 
-    // Agrupa as despesas por veículo em um mês
+    
     public Map<Long, Double> obterDespesasPorVeiculoMes(String mesAno) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
         Map<Long, Double> despesasPorVeiculo = new HashMap<>();
@@ -107,17 +107,17 @@ public class RelatoriosController {
         return despesasPorVeiculo;
     }
 
-    // Retorna todas as movimentações cadastradas
+    
     public List<Movimentacao> obterTodasMovimentacoes() throws IOException {
         return movimentacaoDAO.obterTodos();
     }
 
-    // Retorna todos os veículos cadastrados
+    
     public List<Veiculo> obterTodosVeiculos() throws IOException {
         return veiculoDAO.obterTodos();
     }
 
-    // Gera a Matriz A de abastecimentos por veículo e mês
+    
     public String gerarRelatorioMatrizA() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -138,7 +138,7 @@ public class RelatoriosController {
         );
     }
 
-    // Gera a Matriz B de custo médio por abastecimento e marca
+    
     public String gerarRelatorioMatrizB() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -156,7 +156,7 @@ public class RelatoriosController {
         );
     }
 
-    // Gera a Matriz C resultante da multiplicação A × B
+    
     public String gerarRelatorioMatrizC() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -181,7 +181,7 @@ public class RelatoriosController {
         );
     }
 
-    // Gera o relatório completo contendo as matrizes A, B e C
+    
     public String gerarRelatorioMatrizCompleto() throws IOException {
         StringBuilder sb = new StringBuilder();
 
@@ -201,7 +201,7 @@ public class RelatoriosController {
         return sb.toString();
     }
 
-    // Gera a Matriz A para um período específico
+    
     public String gerarRelatorioMatrizAComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal) throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -234,7 +234,7 @@ public class RelatoriosController {
         return br.com.utils.MatrizRelatorios.formatarMatriz(matrizA, rotulosVeiculos, meses, titulo);
     }
 
-    // Gera a Matriz B para um período específico
+    
     public String gerarRelatorioMatrizBComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal) throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -264,7 +264,7 @@ public class RelatoriosController {
         return br.com.utils.MatrizRelatorios.formatarMatriz(matrizB, meses, marcas, titulo);
     }
 
-    // Gera a Matriz C para um período específico
+    
     public String gerarRelatorioMatrizCComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal) throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -301,7 +301,7 @@ public class RelatoriosController {
         return br.com.utils.MatrizRelatorios.formatarMatriz(matrizC, rotulosVeiculos, marcas, titulo);
     }
 
-    // Gera o relatório matricial completo para um período
+    
     public String gerarRelatorioMatrizCompletoComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal) throws IOException {
         StringBuilder sb = new StringBuilder();
 
@@ -322,7 +322,7 @@ public class RelatoriosController {
         return sb.toString();
     }
 
-    // Gera a Matriz A filtrando por período e veículo
+    
     public String gerarRelatorioMatrizAComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal, Long idVeiculo) throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         
@@ -362,7 +362,7 @@ public class RelatoriosController {
         return br.com.utils.MatrizRelatorios.formatarMatriz(matrizA, rotulosVeiculos, meses, titulo);
     }
 
-    // Gera a Matriz B filtrando por período e veículo
+    
     public String gerarRelatorioMatrizBComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal, Long idVeiculo) throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
 
@@ -400,7 +400,7 @@ public class RelatoriosController {
         return br.com.utils.MatrizRelatorios.formatarMatriz(matrizB, meses, marcas, titulo);
     }
 
-    // Gera a Matriz C filtrando por período e veículo
+    
     public String gerarRelatorioMatrizCComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal, Long idVeiculo) throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
 
@@ -444,7 +444,7 @@ public class RelatoriosController {
         return br.com.utils.MatrizRelatorios.formatarMatriz(matrizC, rotulosVeiculos, marcas, titulo);
     }
 
-    // Gera o relatório matricial completo filtrando por período e veículo
+    
     public String gerarRelatorioMatrizCompletoComPeriodo(int mesInicial, int anoInicial, int mesFinal, int anoFinal, Long idVeiculo) throws IOException {
         StringBuilder sb = new StringBuilder();
 
@@ -465,7 +465,7 @@ public class RelatoriosController {
         return sb.toString();
     }
 
-    // Soma recursivamente os valores de uma lista de movimentações
+    
     public double calcularTotalRecursivo(List<Movimentacao> movimentacoes, int indice) {
         if (movimentacoes == null || indice >= movimentacoes.size()) {
             return 0.0;
@@ -473,7 +473,7 @@ public class RelatoriosController {
         return movimentacoes.get(indice).getValor() + calcularTotalRecursivo(movimentacoes, indice + 1);
     }
 
-    // Calcula a média de despesas por categoria de veículo
+    
     public Map<String, Double> obterMediaDespesasPorCategoriaVeiculo() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
@@ -498,7 +498,7 @@ public class RelatoriosController {
         return medias;
     }
 
-    // Calcula indicadores de consumo por veículo
+    
     public Map<Long, ConsumoVeiculo> obterConsumoMedioPorVeiculo(String mesAno) throws IOException {
         List<Movimentacao> movimentacoes = movimentacaoDAO.obterTodos();
         Map<Long, ConsumoVeiculo> resultado = new LinkedHashMap<>();
@@ -522,7 +522,7 @@ public class RelatoriosController {
         return resultado;
     }
 
-    // Calcula o custo médio anual de IPVA
+    
     public double obterCustoMedioIPVAAno(String ano) throws IOException {
         List<Movimentacao> ipvas = movimentacaoDAO.obterTodos().stream()
                 .filter(this::isIPVA)
@@ -535,7 +535,7 @@ public class RelatoriosController {
         return calcularTotalRecursivo(ipvas, 0) / ipvas.size();
     }
 
-    // Identifica os veículos com maior e menor custo por quilômetro
+    
     public Map<String, ConsumoVeiculo> identificarMaiorMenorCustoConsumo(String mesAno) throws IOException {
         Map<Long, ConsumoVeiculo> consumos = obterConsumoMedioPorVeiculo(mesAno);
         Map<String, ConsumoVeiculo> resultado = new LinkedHashMap<>();
@@ -560,7 +560,7 @@ public class RelatoriosController {
         return resultado;
     }
 
-    // Extrai o mês e ano da data da movimentação
+    
     public String obterMesAno(Movimentacao movimentacao) {
         String[] dataParts = movimentacao.getData().split("/");
         if (dataParts.length >= 3) {
@@ -569,7 +569,7 @@ public class RelatoriosController {
         return "";
     }
 
-    // Extrai o ano da data da movimentação
+    
     public String obterAno(Movimentacao movimentacao) {
         String[] dataParts = movimentacao.getData().split("/");
         if (dataParts.length >= 3) {
@@ -578,22 +578,22 @@ public class RelatoriosController {
         return "";
     }
 
-    // Verifica se a movimentação é do tipo combustível
+    
     public boolean isCombustivel(Movimentacao movimentacao) {
         return movimentacao != null && (Long.valueOf(1L).equals(movimentacao.getIdTipoDespesa()) || normalizar(movimentacao.getTipo()).contains("COMBUSTIVEL"));
     }
 
-    // Verifica se a movimentação é do tipo IPVA
+    
     public boolean isIPVA(Movimentacao movimentacao) {
         return movimentacao != null && (Long.valueOf(2L).equals(movimentacao.getIdTipoDespesa()) || normalizar(movimentacao.getTipo()).contains("IPVA"));
     }
 
-    // Verifica se a movimentação é do tipo multa
+    
     public boolean isMulta(Movimentacao movimentacao) {
         return movimentacao != null && (Long.valueOf(6L).equals(movimentacao.getIdTipoDespesa()) || normalizar(movimentacao.getTipo()).contains("MULTA"));
     }
 
-    // Remove acentos e padroniza o texto para comparação
+    
     private String normalizar(String texto) {
         if (texto == null) {
             return "";
@@ -604,7 +604,7 @@ public class RelatoriosController {
                 .toUpperCase();
     }
 
-    // Armazena informações de consumo de um veículo
+    
     public static class ConsumoVeiculo {
         private final Long idVeiculo;
         private double distanciaKm;
@@ -636,12 +636,12 @@ public class RelatoriosController {
             return quantidadeRegistros;
         }
 
-        // Calcula a média de quilômetros por litro
+        
         public double getKmPorLitro() {
             return litros > 0 ? distanciaKm / litros : 0.0;
         }
 
-        //  Calcula o custo médio por quilômetro rodado
+        
         public double getCustoPorKm() {
             return distanciaKm > 0 ? custoCombustivel / distanciaKm : 0.0;
         }

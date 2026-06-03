@@ -108,7 +108,7 @@ public class Movimentacao {
         return distanciaPercorridaKm > 0 && litrosCombustivel > 0;
     }
 
-    // Calcula o consumo médio em km por litro.
+    
     public double calcularConsumoMedioKmPorLitro() {
         if (!possuiDadosConsumo()) {
             return 0.0;

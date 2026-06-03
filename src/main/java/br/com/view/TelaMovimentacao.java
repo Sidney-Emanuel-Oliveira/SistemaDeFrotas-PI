@@ -15,7 +15,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-// Painel de controle que lista as despesas operacionais da frota em formato de pilha vertical
+
 public class TelaMovimentacao extends JPanel {
     private MovimentacaoController movimentacaoController;
     private VeiculoController veiculoController;
@@ -79,7 +79,7 @@ public class TelaMovimentacao extends JPanel {
         return panel;
     }
 
-    // Configura o contêiner de rolagem com alinhamento vertical para exibir os cartões empilhados
+    
     private JScrollPane criarPainelCards() {
         cardsPanel = new JPanel();
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
@@ -98,14 +98,14 @@ public class TelaMovimentacao extends JPanel {
         return scrollPane;
     }
 
-    // Busca os dados na camada de controle, ordena por ID decrescente e monta os cartões na tela
+    
     private void carregarMovimentacoes() {
         cardsPanel.removeAll();
 
         try {
             List<Movimentacao> movimentacoes = movimentacaoController.obterTodasMovimentacoes();
 
-            // Trata a interface caso não existam registros no arquivo de texto
+            
             if (movimentacoes.isEmpty()) {
                 RoundedPanel emptyPanel = new RoundedPanel(16, ModernColors.WHITE);
                 emptyPanel.setLayout(new BorderLayout());
@@ -121,7 +121,7 @@ public class TelaMovimentacao extends JPanel {
 
                 cardsPanel.add(emptyPanel);
             } else {
-                // Organiza a lista para exibir os registros mais recentes no topo
+                
                 movimentacoes.sort((m1, m2) -> m2.getIdMovimentacao().compareTo(m1.getIdMovimentacao()));
 
                 for (Movimentacao m : movimentacoes) {
@@ -144,11 +144,11 @@ public class TelaMovimentacao extends JPanel {
                     });
 
                     cardsPanel.add(card);
-                    cardsPanel.add(Box.createVerticalStrut(10)); // Espaçamento fixo entre os cartões
+                    cardsPanel.add(Box.createVerticalStrut(10)); 
                 }
             }
 
-            // Preenche o espaço restante inferior para evitar o esticamento vertical dos cartões
+            
             cardsPanel.add(Box.createVerticalGlue());
 
         } catch (IOException e) {
@@ -162,7 +162,7 @@ public class TelaMovimentacao extends JPanel {
         cardsPanel.repaint();
     }
 
-    // Ponto de entrada público para forçar a atualização do painel por outras classes do sistema
+    
     public void atualizarDados() {
         carregarMovimentacoes();
     }

@@ -10,6 +10,7 @@ import br.com.ui.RoundedPanel;
 import br.com.ui.ModernButton;
 import br.com.ui.ModernInnerTabbedPane;
 import br.com.ui.ModernComboBox;
+import br.com.ui.WrapLayout;
 import br.com.utils.GeradorCSV;
 import br.com.utils.IconLoader;
 
@@ -22,7 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-// Painel centralizador de relatórios operacionais e análises matriciais para auditoria da frota
+
 public class TelaRelatorios extends JPanel {
     private RelatoriosController relatoriosController;
     private VeiculoController veiculoController;
@@ -54,7 +55,7 @@ public class TelaRelatorios extends JPanel {
         JPanel headerPanel = criarPainelCabecalho();
         add(headerPanel, BorderLayout.NORTH);
 
-        JPanel mainPanel = criarPainelPrincipal();
+        JComponent mainPanel = criarPainelPrincipal();
         add(mainPanel, BorderLayout.CENTER);
     }
 
@@ -82,29 +83,46 @@ public class TelaRelatorios extends JPanel {
         return panel;
     }
 
-    private JPanel criarPainelPrincipal() {
-        JPanel panel = new JPanel(new BorderLayout(18, 18));
-        panel.setOpaque(false);
+    private JComponent criarPainelPrincipal() {
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(ModernColors.BG_PRIMARY);
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
         JPanel filtrosPanel = criarPainelFiltros();
-        panel.add(filtrosPanel, BorderLayout.NORTH);
+        filtrosPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        filtrosPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 280));
+        contentPanel.add(filtrosPanel);
+        contentPanel.add(Box.createVerticalStrut(14));
 
         JPanel relatoriosPanel = criarPainelRelatorios();
-        panel.add(relatoriosPanel, BorderLayout.CENTER);
+        relatoriosPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        relatoriosPanel.setPreferredSize(new Dimension(0, 520));
+        relatoriosPanel.setMinimumSize(new Dimension(0, 420));
+        relatoriosPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 720));
+        contentPanel.add(relatoriosPanel);
+        contentPanel.add(Box.createVerticalStrut(14));
 
         JPanel botoesPanel = criarPainelBotoes();
-        panel.add(botoesPanel, BorderLayout.SOUTH);
+        botoesPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        botoesPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 58));
+        contentPanel.add(botoesPanel);
 
-        return panel;
+        JScrollPane scroll = new JScrollPane(contentPanel);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        scroll.setBackground(ModernColors.BG_PRIMARY);
+        scroll.getViewport().setBackground(ModernColors.BG_PRIMARY);
+        scroll.getVerticalScrollBar().setUnitIncrement(18);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        return scroll;
     }
 
-    // Configura o painel superior que agrupa os botões de ação e os filtros de seleção
     private JPanel criarPainelFiltros() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(16, 18, 16, 18));
-        panel.setPreferredSize(new Dimension(0, 292));
-        panel.setMinimumSize(new Dimension(0, 292));
+        panel.setBorder(BorderFactory.createEmptyBorder(12, 18, 12, 18));
+        panel.setPreferredSize(new Dimension(0, 270));
+        panel.setMinimumSize(new Dimension(0, 260));
 
         JLabel titleLabel = new JLabel("Filtros e Opções de Relatório");
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -122,7 +140,7 @@ public class TelaRelatorios extends JPanel {
         JPanel botoesRelatorios = criarPainelBotoesRelatorios();
         botoesRelatorios.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(botoesRelatorios);
-        contentPanel.add(Box.createVerticalStrut(6));
+        contentPanel.add(Box.createVerticalStrut(8));
 
         JPanel seletores = criarPainelSeletores();
         seletores.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -133,14 +151,16 @@ public class TelaRelatorios extends JPanel {
         return panel;
     }
 
-    // Cria as fileiras de botões divididas entre consultas padrões e análises matriciais
+    
     private JPanel criarPainelBotoesRelatorios() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setOpaque(false);
 
-        JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 9, 5));
+        JPanel panel1 = new JPanel(new WrapLayout(FlowLayout.LEFT, 8, 4));
         panel1.setOpaque(false);
+        panel1.setPreferredSize(new Dimension(0, 72));
+        panel1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 72));
 
         String[] opecos = {
                 "Despesas por Veículo",
@@ -157,7 +177,7 @@ public class TelaRelatorios extends JPanel {
 
         for (String opcao : opecos) {
             ModernButton btn = new ModernButton(opcao, ModernColors.PRIMARY_BLUE);
-            btn.setPreferredSize(new Dimension(154, 34));
+            btn.setPreferredSize(new Dimension(148, 30));
 
             btn.addActionListener(e -> {
                 try {
@@ -182,8 +202,10 @@ public class TelaRelatorios extends JPanel {
             panel1.add(btn);
         }
 
-        JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 9, 5));
+        JPanel panel2 = new JPanel(new WrapLayout(FlowLayout.LEFT, 8, 4));
         panel2.setOpaque(false);
+        panel2.setPreferredSize(new Dimension(0, 42));
+        panel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
 
         JLabel lblMatrizes = new JLabel("Análise Matricial:");
         lblMatrizes.setFont(new Font("Segoe UI", Font.BOLD, 11));
@@ -201,7 +223,7 @@ public class TelaRelatorios extends JPanel {
 
         for (String opcao : opcoesMatrizes) {
             ModernButton btn = new ModernButton(opcao, corMatriz);
-            btn.setPreferredSize(new Dimension(166, 34));
+            btn.setPreferredSize(new Dimension(166, 30));
 
             btn.addActionListener(e -> {
                 try {
@@ -221,20 +243,22 @@ public class TelaRelatorios extends JPanel {
         }
 
         mainPanel.add(panel1);
-        mainPanel.add(Box.createVerticalStrut(3));
+        mainPanel.add(Box.createVerticalStrut(5));
         mainPanel.add(panel2);
 
         return mainPanel;
     }
 
-    // Inicializa e posiciona os seletores temporais e a listagem de veículos da frota
+    
     private JPanel criarPainelSeletores() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setOpaque(false);
 
-        JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 5));
+        JPanel panel1 = new JPanel(new WrapLayout(FlowLayout.LEFT, 14, 3));
         panel1.setOpaque(false);
+        panel1.setPreferredSize(new Dimension(0, 42));
+        panel1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
 
         JLabel lblAno = new JLabel("Ano:");
         lblAno.setFont(new Font("Segoe UI", Font.BOLD, 11));
@@ -245,7 +269,7 @@ public class TelaRelatorios extends JPanel {
             cmbAno.addItem(i);
         }
         cmbAno.setSelectedItem(anoAtual);
-        cmbAno.setPreferredSize(new Dimension(96, 34));
+        cmbAno.setPreferredSize(new Dimension(118, 32));
         panel1.add(lblAno);
         panel1.add(cmbAno);
 
@@ -257,7 +281,7 @@ public class TelaRelatorios extends JPanel {
             cmbMes.addItem(i);
         }
         cmbMes.setSelectedItem(LocalDate.now().getMonthValue());
-        cmbMes.setPreferredSize(new Dimension(96, 34));
+        cmbMes.setPreferredSize(new Dimension(92, 32));
         panel1.add(lblMes);
         panel1.add(cmbMes);
 
@@ -266,12 +290,14 @@ public class TelaRelatorios extends JPanel {
         lblVeiculo.setForeground(ModernColors.DARK_GRAY);
         cmbVeiculo = new ModernComboBox<>();
         carregarVeiculos();
-        cmbVeiculo.setPreferredSize(new Dimension(230, 34));
+        cmbVeiculo.setPreferredSize(new Dimension(260, 32));
         panel1.add(lblVeiculo);
         panel1.add(cmbVeiculo);
 
-        JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT, 16, 5));
+        JPanel panel2 = new JPanel(new WrapLayout(FlowLayout.LEFT, 14, 3));
         panel2.setOpaque(false);
+        panel2.setPreferredSize(new Dimension(0, 42));
+        panel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 42));
 
         JLabel lblPeriodoMatriz = new JLabel("Período (Matrizes):");
         lblPeriodoMatriz.setFont(new Font("Segoe UI", Font.BOLD, 11));
@@ -286,7 +312,7 @@ public class TelaRelatorios extends JPanel {
             cmbMesFinal.addItem(i);
         }
         cmbMesFinal.setSelectedItem(LocalDate.now().getMonthValue());
-        cmbMesFinal.setPreferredSize(new Dimension(82, 34));
+        cmbMesFinal.setPreferredSize(new Dimension(88, 32));
 
         JLabel lblAnoFinal = new JLabel("Ano:");
         lblAnoFinal.setFont(new Font("Segoe UI", Font.BOLD, 11));
@@ -296,7 +322,7 @@ public class TelaRelatorios extends JPanel {
             cmbAnoFinal.addItem(i);
         }
         cmbAnoFinal.setSelectedItem(anoAtual);
-        cmbAnoFinal.setPreferredSize(new Dimension(86, 34));
+        cmbAnoFinal.setPreferredSize(new Dimension(118, 32));
 
         panel2.add(lblMesFinal);
         panel2.add(cmbMesFinal);
@@ -304,21 +330,23 @@ public class TelaRelatorios extends JPanel {
         panel2.add(cmbAnoFinal);
 
         mainPanel.add(panel1);
-        mainPanel.add(Box.createVerticalStrut(3));
+        mainPanel.add(Box.createVerticalStrut(5));
         mainPanel.add(panel2);
 
         return mainPanel;
     }
 
-    // Estrutura a visualização em abas para alternar entre formato puramente textual e formato tabular
+    
     private JPanel criarPainelRelatorios() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(0, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(16, 18, 16, 18));
+        panel.setBorder(BorderFactory.createEmptyBorder(12, 18, 12, 18));
+        panel.setPreferredSize(new Dimension(0, 520));
+        panel.setMinimumSize(new Dimension(0, 420));
 
         JPanel tituloRelatorioPanel = new JPanel(new BorderLayout());
         tituloRelatorioPanel.setOpaque(false);
-        tituloRelatorioPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        tituloRelatorioPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
 
         lblTipoRelatorio = new JLabel("Selecione um tipo de relatório acima");
         lblTipoRelatorio.setFont(new Font("Segoe UI", Font.BOLD, 17));
@@ -343,6 +371,8 @@ public class TelaRelatorios extends JPanel {
         panel.add(tituloRelatorioPanel, BorderLayout.NORTH);
 
         JTabbedPane abas = new ModernInnerTabbedPane();
+        abas.setPreferredSize(new Dimension(0, 430));
+        abas.setMinimumSize(new Dimension(0, 330));
 
         areaRelatorio = new JTextArea();
         areaRelatorio.setEditable(false);
@@ -351,6 +381,7 @@ public class TelaRelatorios extends JPanel {
         areaRelatorio.setForeground(ModernColors.DARK_GRAY);
         areaRelatorio.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JScrollPane scrollTexto = new JScrollPane(areaRelatorio);
+        scrollTexto.setPreferredSize(new Dimension(0, 390));
         scrollTexto.setBorder(BorderFactory.createLineBorder(ModernColors.BORDER_GRAY));
         abas.addTab("Texto", scrollTexto);
 
@@ -366,13 +397,16 @@ public class TelaRelatorios extends JPanel {
         tabelaRelatorio.setBackground(ModernColors.WHITE);
         tabelaRelatorio.setGridColor(ModernColors.BORDER_GRAY);
         tabelaRelatorio.setSelectionBackground(ModernColors.LIGHT_BLUE);
+        tabelaRelatorio.setSelectionForeground(ModernColors.DARK_GRAY);
+        tabelaRelatorio.setFillsViewportHeight(true);
 
         JTableHeader header = tabelaRelatorio.getTableHeader();
-        header.setBackground(ModernColors.NAVY);
+        header.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : new Color(15, 23, 42));
         header.setForeground(ModernColors.WHITE);
         header.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
         JScrollPane scrollTabela = new JScrollPane(tabelaRelatorio);
+        scrollTabela.setPreferredSize(new Dimension(0, 390));
         scrollTabela.setBorder(BorderFactory.createLineBorder(ModernColors.BORDER_GRAY));
         abas.addTab("Tabela", scrollTabela);
 
@@ -385,14 +419,14 @@ public class TelaRelatorios extends JPanel {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 12, 10, 12));
-        panel.setPreferredSize(new Dimension(0, 58));
+        panel.setPreferredSize(new Dimension(0, 56));
 
         ModernButton btnExportar = new ModernButton("Exportar CSV", ModernColors.PRIMARY_BLUE);
-        btnExportar.setPreferredSize(new Dimension(132, 36));
+        btnExportar.setPreferredSize(new Dimension(132, 34));
         btnExportar.addActionListener(e -> exportarCSV());
 
         ModernButton btnLimpar = new ModernButton("Limpar", ModernColors.TEXT_GRAY);
-        btnLimpar.setPreferredSize(new Dimension(104, 36));
+        btnLimpar.setPreferredSize(new Dimension(104, 34));
         btnLimpar.addActionListener(e -> limparResultado());
 
         panel.add(btnExportar);
@@ -401,7 +435,7 @@ public class TelaRelatorios extends JPanel {
         return panel;
     }
 
-    // Ponto de entrada para sincronizar e atualizar os itens do ComboBox mantendo o foco do usuário
+    
     public void atualizarDados() {
         if (cmbVeiculo != null) {
             carregarVeiculosPreservandoSelecao(obterIdVeiculoSelecionado());
@@ -1071,7 +1105,7 @@ public class TelaRelatorios extends JPanel {
         atualizarTituloRelatorio("Maior/Menor Custo de Consumo - " + mesAno);
     }
 
-    // Exporta o banco de dados de movimentações filtradas para uma planilha externa formatada em CSV
+    
     private void exportarCSV() {
         if (!relatorioGerado) {
             JOptionPane.showMessageDialog(this,
@@ -1128,7 +1162,7 @@ public class TelaRelatorios extends JPanel {
         tipoRelatorioAtual = "";
     }
 
-    // Processa e plota a Matriz A mapeando o volume total de abastecimentos cruzando Veículos e Meses
+    
     private void gerarRelatorioMatrizA() throws IOException {
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();
@@ -1179,7 +1213,7 @@ public class TelaRelatorios extends JPanel {
         atualizarTituloRelatorio("Matriz A - Quantidade de Abastecimentos por Veículo/Mês" + tituloVeiculo);
     }
 
-    // Processa e plota a Matriz B calculando a média financeira de custos de abastecimento por Marca e Mês
+    
     private void gerarRelatorioMatrizB() throws IOException {
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();
@@ -1252,7 +1286,7 @@ public class TelaRelatorios extends JPanel {
         atualizarTituloRelatorio("Matriz B - Custo Médio por Abastecimento/Marca" + tituloVeiculo);
     }
 
-    // Processa e plota a Matriz C realizando a multiplicação linear entre as Matrizes A e B para obter gastos totais
+    
     private void gerarRelatorioMatrizC() throws IOException {
         int mesInicial = (int) cmbMes.getSelectedItem();
         int anoInicial = (int) cmbAno.getSelectedItem();

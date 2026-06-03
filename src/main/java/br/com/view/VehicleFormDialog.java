@@ -12,13 +12,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-// Diálogo modal (JDialog) responsável pela captura, validação e persistência de dados de veículos da frota
+
 public class VehicleFormDialog extends JDialog {
     private VeiculoController controller;
     private Veiculo veiculoEdicao;
     private Runnable onSuccess;
 
-    // Componentes de entrada de dados (Bounded UI Elements)
+    
     private JTextField txtPlaca;
     private JTextField txtMarca;
     private JTextField txtModelo;
@@ -26,20 +26,20 @@ public class VehicleFormDialog extends JDialog {
     private JComboBox<TipoVeiculo> cmbTipo;
     private JCheckBox chkAtivo;
 
-    // Constantes de tipografia corporativa institucionalizada no projeto
+    
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 13);
     private static final Font FIELD_FONT = new Font("Segoe UI", Font.PLAIN, 13);
 
     public VehicleFormDialog(JFrame owner, Veiculo veiculoEdicao) {
-        // O terceiro argumento 'true' ativa o bloqueio modal sobre a TelaPrincipal de origem
+        
         super(owner, veiculoEdicao != null ? "Editar Veículo" : "Novo Veículo", true);
         this.controller = new VeiculoController();
         this.veiculoEdicao = veiculoEdicao;
 
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); // Libera os recursos nativos de memória ao fechar
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE); 
         setSize(500, 620);
-        setLocationRelativeTo(owner); // Centraliza geometricamente em relação à janela chamadora
+        setLocationRelativeTo(owner); 
         setResizable(false);
 
         initializeComponents();
@@ -60,11 +60,11 @@ public class VehicleFormDialog extends JDialog {
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1)
         ));
 
-        // Incorpora barra de rolagem vertical para prevenir overflow em displays de baixa resolução
+        
         JPanel formPanel = criarPainelFormulario();
         JScrollPane scrollPane = new JScrollPane(formPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Suaviza o scroll mecânico do mouse
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16); 
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -83,10 +83,10 @@ public class VehicleFormDialog extends JDialog {
 
     private JPanel criarPainelCabecalho() {
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(ModernColors.NAVY);
+        headerPanel.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : new Color(15, 23, 42));
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
 
-        // Carrega dinamicamente o ícone do veículo baseado na categoria selecionada em tempo de edição
+        
         ImageIcon vehicleIcon = veiculoEdicao != null
                 ? IconLoader.loadIconForType(veiculoEdicao.getTipo(), 40, 40)
                 : IconLoader.loadCarIcon(40, 40);
@@ -162,9 +162,10 @@ public class VehicleFormDialog extends JDialog {
         lblTipo.setForeground(ModernColors.DARK_GRAY);
         tipoPanel.add(lblTipo, BorderLayout.NORTH);
 
-        cmbTipo = new JComboBox<>(TipoVeiculo.values());
+        cmbTipo = new JComboBox<>(TipoVeiculo.valuesCadastro());
         cmbTipo.setFont(FIELD_FONT);
-        cmbTipo.setBackground(Color.WHITE);
+        cmbTipo.setBackground(ModernColors.WHITE);
+        cmbTipo.setForeground(ModernColors.DARK_GRAY);
         cmbTipo.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
                 BorderFactory.createEmptyBorder(8, 10, 8, 10)
@@ -189,7 +190,7 @@ public class VehicleFormDialog extends JDialog {
 
         mainFormPanel.add(statusPanel);
 
-        // Cláusula de barreira: Popula os inputs caso o diálogo tenha sido invocado para Edição
+        
         if (veiculoEdicao != null) {
             txtPlaca.setText(veiculoEdicao.getPlaca());
             txtMarca.setText(veiculoEdicao.getMarca());
@@ -219,7 +220,7 @@ public class VehicleFormDialog extends JDialog {
         switch (fieldName) {
             case "txtPlaca" -> {
                 txtPlaca = field;
-                // Escuta em tempo real o input da placa para forçar caixa alta automática (Upper Case Transform)
+                
                 txtPlaca.addKeyListener(new java.awt.event.KeyAdapter() {
                     @Override
                     public void keyReleased(java.awt.event.KeyEvent e) {
@@ -241,13 +242,15 @@ public class VehicleFormDialog extends JDialog {
     private JTextField criarCampoTexto() {
         JTextField field = new JTextField();
         field.setFont(FIELD_FONT);
-        field.setBackground(Color.WHITE);
+        field.setBackground(ModernColors.WHITE);
+        field.setForeground(ModernColors.DARK_GRAY);
+        field.setCaretColor(ModernColors.DARK_GRAY);
         field.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
                 BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
 
-        // Injeta comportamento dinâmico de foco alterando a espessura e cor da borda ativa
+        
         field.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
@@ -290,7 +293,7 @@ public class VehicleFormDialog extends JDialog {
         return panel;
     }
 
-    // Executa o pipeline de validação estrutural dos dados antes de submeter ao Controller
+    
     private void salvar() {
         try {
             String placa = txtPlaca.getText().trim().toUpperCase();
@@ -298,20 +301,20 @@ public class VehicleFormDialog extends JDialog {
             String modelo = txtModelo.getText().trim();
             String ano = txtAno.getText().trim();
             TipoVeiculo tipoEnum = (TipoVeiculo) cmbTipo.getSelectedItem();
-            String tipo = tipoEnum != null ? tipoEnum.getDescricao() : TipoVeiculo.OUTRO.getDescricao();
+            String tipo = tipoEnum != null ? tipoEnum.getDescricao() : TipoVeiculo.CARRO.getDescricao();
             Boolean ativo = chkAtivo.isSelected();
 
-            // 1. Validação de presença obrigatória
+            
             if (placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || ano.isEmpty()) {
                 throw new IllegalArgumentException("Todos os campos são obrigatórios!");
             }
 
-            // 2. Expressão Regular (Regex) para validação unificada: Tradicional (ABC1234) e Mercosul (ABC1D23)
+            
             if (!placa.matches("[A-Z]{3}[0-9][A-Z0-9][0-9]{2}")) {
                 throw new IllegalArgumentException("Placa inválida! Use o formato ABC1234 ou ABC1D23 (Mercosul)");
             }
 
-            // 3. Validação lógica e temporal do ano de fabricação
+            
             try {
                 int anoInt = Integer.parseInt(ano);
                 int anoAtual = java.time.Year.now().getValue();
@@ -322,7 +325,7 @@ public class VehicleFormDialog extends JDialog {
                 throw new IllegalArgumentException("Ano deve ser um número válido!");
             }
 
-            // 4. Sanitização e restrição de tamanho mínimo de strings descritivas
+            
             if (marca.length() < 2) {
                 throw new IllegalArgumentException("Marca deve ter pelo menos 2 caracteres!");
             }
@@ -330,7 +333,7 @@ public class VehicleFormDialog extends JDialog {
                 throw new IllegalArgumentException("Modelo deve ter pelo menos 2 caracteres!");
             }
 
-            // Delegação da persistência baseada na presença do Objeto Base (Edição vs Inclusão)
+            
             if (veiculoEdicao != null) {
                 controller.atualizarVeiculo(veiculoEdicao.getIdVeiculo(), placa, marca, modelo, ano, ativo, tipo);
                 JOptionPane.showMessageDialog(this,
@@ -345,7 +348,7 @@ public class VehicleFormDialog extends JDialog {
                         JOptionPane.INFORMATION_MESSAGE);
             }
 
-            // Dispara o callback assíncrono para recarregar a tabela na interface pai sem travamento
+            
             if (onSuccess != null) onSuccess.run();
             dispose();
 

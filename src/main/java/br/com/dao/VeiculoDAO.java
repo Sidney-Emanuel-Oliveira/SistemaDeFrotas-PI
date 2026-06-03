@@ -11,7 +11,7 @@ import java.util.List;
 
 public class VeiculoDAO {
 
-    // Caminho do arquivo responsável por armazenar os veículos
+    
     private static final String ARQUIVO_VEICULOS = "dados/veiculos.txt";
 
     public VeiculoDAO() {
@@ -19,7 +19,7 @@ public class VeiculoDAO {
         criarArquivoSeNaoExistir();
     }
 
-    // Cria o diretório de dados caso ele não exista
+    
     private void criarDiretorioSeNaoExistir() {
         File dir = new File("dados");
 
@@ -28,7 +28,7 @@ public class VeiculoDAO {
         }
     }
 
-    // Cria o arquivo de veículos caso ele não exista
+    
     private void criarArquivoSeNaoExistir() {
         File arquivo = new File(ARQUIVO_VEICULOS);
 
@@ -41,7 +41,7 @@ public class VeiculoDAO {
         }
     }
 
-    // Salva um veículo novo ou atualiza um já existente
+    
     public void salvar(Veiculo veiculo) throws IOException {
         List<Veiculo> veiculos = obterTodos();
 
@@ -55,24 +55,24 @@ public class VeiculoDAO {
             }
         }
 
-        // Adiciona o veículo caso ele ainda não exista
+        
         if (!encontrado) {
             veiculos.add(veiculo);
         }
 
         escreverArquivo(veiculos);
 
-        // Mantém os dados sincronizados com o MySQL
+        
         MySQLSincronizador.sincronizarSilenciosamente();
     }
 
-    // Salva uma lista completa de veículos
+    
     public void salvarTodos(List<Veiculo> veiculos) throws IOException {
         escreverArquivo(veiculos);
         MySQLSincronizador.sincronizarSilenciosamente();
     }
 
-    // Grava todos os veículos no arquivo
+    
     private void escreverArquivo(List<Veiculo> veiculos) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_VEICULOS))) {
 
@@ -85,7 +85,7 @@ public class VeiculoDAO {
         }
     }
 
-    // Converte um objeto Veiculo para uma linha de texto
+    
     private String formatarVeiculo(Veiculo v) {
         return v.getIdVeiculo() + ";" +
                 v.getPlaca() + ";" +
@@ -96,7 +96,7 @@ public class VeiculoDAO {
                 (v.getTipo() != null ? v.getTipo() : "");
     }
 
-    // Retorna todos os veículos cadastrados
+    
     public List<Veiculo> obterTodos() throws IOException {
         List<Veiculo> veiculos = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class VeiculoDAO {
         return veiculos;
     }
 
-    // Converte uma linha do arquivo em um objeto Veiculo
+    
     private Veiculo parseVeiculo(String linha) {
         try {
             String[] partes = linha.split(";");
@@ -147,7 +147,7 @@ public class VeiculoDAO {
         return null;
     }
 
-    // Busca um veículo pelo identificador
+    
     public Veiculo obterPorId(Long id) throws IOException {
         List<Veiculo> veiculos = obterTodos();
 
@@ -160,7 +160,7 @@ public class VeiculoDAO {
         return null;
     }
 
-    // Busca um veículo pela placa
+    
     public Veiculo obterPorPlaca(String placa) throws IOException {
         List<Veiculo> veiculos = obterTodos();
 
@@ -173,7 +173,7 @@ public class VeiculoDAO {
         return null;
     }
 
-    // Remove um veículo pelo identificador
+    
     public void deletar(Long id) throws IOException {
         List<Veiculo> veiculos = obterTodos();
 
@@ -181,11 +181,11 @@ public class VeiculoDAO {
 
         escreverArquivo(veiculos);
 
-        // Atualiza a base MySQL após a exclusão
+        
         MySQLSincronizador.sincronizarSilenciosamente();
     }
 
-    // Retorna o próximo ID disponível para cadastro
+    
     public Long obterProximoId() throws IOException {
         List<Veiculo> veiculos = obterTodos();
 

@@ -13,16 +13,13 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-// Componente visual customizado para exibição e gerenciamento rápido de um veículo
+
 public class VehicleCard extends RoundedPanel {
     private Veiculo veiculo;
     private List<VehicleCardListener> listeners = new ArrayList<>();
     private boolean isHovered = false;
-    private static final Color BORDER_COLOR = ModernColors.BORDER_GRAY;
-    private static final Color HOVER_COLOR = ModernColors.CARD_HOVER;
-    private static final Color HOVER_BORDER_COLOR = ModernColors.PRIMARY_BLUE;
 
-    // Interface de callback para despachar os eventos do card para a tela principal
+    
     public interface VehicleCardListener {
         void onEditClicked(Veiculo veiculo);
         void onDeleteClicked(Veiculo veiculo);
@@ -33,19 +30,19 @@ public class VehicleCard extends RoundedPanel {
         super(16, ModernColors.WHITE);
         this.veiculo = veiculo;
 
-        // Configuração de dimensionamento fixo para grids e comportamento do cursor
+        
         setPreferredSize(new Dimension(286, 194));
         setLayout(new BorderLayout(10, 8));
         setBorder(BorderFactory.createEmptyBorder(16, 16, 14, 16));
         setOpaque(false);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        // Ouvinte responsável pelas transições visuais de feedback visual
+        
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
                 isHovered = true;
-                setBackgroundColor(HOVER_COLOR);
+                setBackgroundColor(ModernColors.CARD_HOVER);
                 repaint();
             }
 
@@ -66,7 +63,7 @@ public class VehicleCard extends RoundedPanel {
         initializeComponents();
     }
 
-    // Customização gráfica da borda externa e efeito de foco ao passar o mouse
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -76,16 +73,16 @@ public class VehicleCard extends RoundedPanel {
 
         int shadowSize = 5;
         int arcRadius = 16;
-        g2d.setColor(isHovered ? HOVER_BORDER_COLOR : BORDER_COLOR);
+        g2d.setColor(isHovered ? ModernColors.PRIMARY_BLUE : ModernColors.BORDER_GRAY);
         g2d.setStroke(new BasicStroke(isHovered ? 2.2f : 1.2f));
         g2d.drawRoundRect(2, 2, getWidth() - shadowSize - 4, getHeight() - shadowSize - 4, arcRadius, arcRadius);
 
         g2d.dispose();
     }
 
-    // Constrói e aninha as seções internas do card utilizando as regiões do BorderLayout
+    
     private void initializeComponents() {
-        // --- SEÇÃO SUPERIOR: Bloco de Informações Gerais ---
+        
         JPanel topPanel = new JPanel(new BorderLayout(12, 0));
         topPanel.setOpaque(false);
 
@@ -117,7 +114,7 @@ public class VehicleCard extends RoundedPanel {
         topPanel.add(infoPanel, BorderLayout.CENTER);
         add(topPanel, BorderLayout.NORTH);
 
-        // --- SEÇÃO CENTRAL: Badge/Etiqueta de Status ---
+        
         JPanel statusPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         statusPanel.setOpaque(false);
         JLabel statusLabel = new JLabel();
@@ -126,7 +123,7 @@ public class VehicleCard extends RoundedPanel {
         statusLabel.setOpaque(true);
         statusLabel.setBorder(BorderFactory.createEmptyBorder(5, 11, 5, 11));
 
-        // Altera dinamicamente a cor do selo de status com base na disponibilidade do veículo
+        
         if (veiculo.getAtivo()) {
             statusLabel.setText("● Ativo");
             statusLabel.setBackground(ModernColors.SUCCESS_GREEN);
@@ -138,7 +135,7 @@ public class VehicleCard extends RoundedPanel {
         statusPanel.add(statusLabel);
         add(statusPanel, BorderLayout.CENTER);
 
-        // --- SEÇÃO INFERIOR: Painel de Botões de Ação ---
+        
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         buttonPanel.setOpaque(false);
 
@@ -155,15 +152,18 @@ public class VehicleCard extends RoundedPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    // Desenha o contêiner arredondado do ícone do veículo (Carro, Caminhão, etc)
+    
     private JPanel criarPainelIcone() {
         JPanel iconWrapper = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.setColor(ModernColors.LIGHT_BLUE);
+                g2d.setColor(Color.WHITE);
                 g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+                g2d.setColor(ModernColors.BORDER_GRAY);
+                g2d.setStroke(new BasicStroke(1f));
+                g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 12, 12);
                 g2d.dispose();
                 super.paintComponent(g);
             }
@@ -182,7 +182,7 @@ public class VehicleCard extends RoundedPanel {
         listeners.add(listener);
     }
 
-    // Métodos encarregados de propagar os eventos de interação para a View/Controller principal
+    
     private void notifyEditClicked() {
         for (VehicleCardListener listener : listeners) {
             listener.onEditClicked(veiculo);

@@ -11,10 +11,10 @@ import java.util.List;
 
 public class GeradorCSV {
 
-    // Gera um relatório CSV contendo todos os veículos
+    
     public static void gerarRelatorioVeiculosCSV(List<Veiculo> veiculos, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
-        // Cria a estrutura de pastas caso ela não exista
+        
         File parentDir = arquivo.getParentFile();
         if (parentDir != null) {
             parentDir.mkdirs();
@@ -23,14 +23,14 @@ public class GeradorCSV {
         try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(arquivo), StandardCharsets.UTF_8);
              BufferedWriter writer = new BufferedWriter(osw)) {
 
-            // Adiciona o BOM para evitar problemas de acentuação no Excel
+            
             writer.write('\ufeff');
 
-            // Escreve o cabeçalho do relatório
+            
             writer.write("ID;Placa;Marca;Modelo;Ano;Status;Tipo");
             writer.newLine();
 
-            // Escreve os dados de cada veículo
+            
             for (Veiculo v : veiculos) {
                 String linha = v.getIdVeiculo() + ";" +
                         v.getPlaca() + ";" +
@@ -45,7 +45,7 @@ public class GeradorCSV {
         }
     }
 
-    // Gera um relatório CSV contendo todas as despesas
+    
     public static void gerarRelatorioDespesasCSV(List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
         File parentDir = arquivo.getParentFile();
@@ -76,7 +76,7 @@ public class GeradorCSV {
         }
     }
 
-    // Gera um relatório de despesas de um veículo específico
+    
     public static void gerarRelatorioDespesasVeiculoCSV(Long idVeiculo, Veiculo veiculo, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
         File parentDir = arquivo.getParentFile();
@@ -84,7 +84,7 @@ public class GeradorCSV {
             parentDir.mkdirs();
         }
 
-        // Calcula o total de despesas do veículo selecionado
+        
         double totalDespesas = movimentacoes.stream()
                 .filter(m -> m.getIdVeiculo().equals(idVeiculo))
                 .mapToDouble(Movimentacao::getValor)
@@ -133,12 +133,12 @@ public class GeradorCSV {
         }
     }
 
-    // Gera um relatório das despesas de um determinado mês
+    
     public static void gerarRelatorioDespesasPorMesCSV(String mesAno, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
         File parentDir = arquivo.getParentFile();
 
-        // Exibe as informações do veículo no relatório
+        
         if (parentDir != null) {
             parentDir.mkdirs();
         }
@@ -160,7 +160,7 @@ public class GeradorCSV {
             writer.newLine();
 
             for (Movimentacao m : movimentacoes) {
-                // Verifica se a movimentação pertence ao mês e ano selecionados
+                
                 String[] dataParts = m.getData().split("/");
                 String mesAnoMovimentacao = dataParts[1] + "/" + dataParts[2];
                 if (mesAnoMovimentacao.equals(mesAno)) {
@@ -182,7 +182,7 @@ public class GeradorCSV {
         }
     }
 
-    // Gera um relatório dos gastos com combustível
+    
     public static void gerarRelatorioCombustivelCSV(String mesAno, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
         File parentDir = arquivo.getParentFile();
@@ -207,7 +207,7 @@ public class GeradorCSV {
             writer.newLine();
 
             for (Movimentacao m : movimentacoes) {
-                // Considera apenas movimentações classificadas como combustível
+                
                 if (m.getTipo() != null && m.getTipo().equalsIgnoreCase("Combustivel")) {
                     String[] dataParts = m.getData().split("/");
                     String mesAnoMovimentacao = dataParts[1] + "/" + dataParts[2];
@@ -230,7 +230,7 @@ public class GeradorCSV {
         }
     }
 
-    // Gera um relatório dos pagamentos de IPVA
+    
     public static void gerarRelatorioIPVACSV(String ano, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
         File parentDir = arquivo.getParentFile();
@@ -256,7 +256,7 @@ public class GeradorCSV {
             writer.newLine();
 
             for (Movimentacao m : movimentacoes) {
-                // Considera apenas movimentações classificadas como IPVA
+                
                 if (m.getTipo() != null && m.getTipo().equalsIgnoreCase("IPVA")) {
                     String[] dataParts = m.getData().split("/");
                     String anoMovimentacao = dataParts[2];
@@ -279,7 +279,7 @@ public class GeradorCSV {
         }
     }
 
-    // Gera um relatório das multas de um veículo em determinado ano
+    
     public static void gerarRelatorioMultasCSV(Long idVeiculo, String ano, List<Movimentacao> movimentacoes, String caminhoArquivo) throws IOException {
         File arquivo = new File(caminhoArquivo);
         File parentDir = arquivo.getParentFile();
@@ -304,7 +304,7 @@ public class GeradorCSV {
             writer.newLine();
 
             for (Movimentacao m : movimentacoes) {
-                // Filtra multas do veículo selecionado no ano informado
+                
                 if (m.getIdVeiculo().equals(idVeiculo) &&
                     m.getTipo() != null && m.getTipo().equalsIgnoreCase("Multa")) {
                     String[] dataParts = m.getData().split("/");

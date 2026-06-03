@@ -17,7 +17,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-// Painel principal de gerenciamento de frotas, responsável pela listagem em grid de cards e filtros dinâmicos
+
 public class TelaCadastroVeiculo extends JPanel {
     private VeiculoController controller;
     private JPanel mainPanel;
@@ -37,7 +37,7 @@ public class TelaCadastroVeiculo extends JPanel {
         setLayout(new BorderLayout());
         setBackground(ModernColors.BG_PRIMARY);
 
-        // 1. Inicializa o painel master da listagem (Contém cabeçalho/filtros e o grid de cartões)
+        
         mainPanel = new JPanel(new BorderLayout(0, 18));
         mainPanel.setBackground(ModernColors.BG_PRIMARY);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 22, 20, 22));
@@ -48,12 +48,12 @@ public class TelaCadastroVeiculo extends JPanel {
         scrollCardsPanel = criarPainelCards();
         mainPanel.add(scrollCardsPanel, BorderLayout.CENTER);
 
-        // 2. Inicializa o painel secundário dedicado à exibição de telemetria e detalhes (inicialmente oculto)
+        
         detailsPanel = new JPanel(new BorderLayout());
         detailsPanel.setBackground(ModernColors.BG_PRIMARY);
         detailsPanel.setVisible(false);
 
-        // Estrutura um contêiner chaveável para alternar visões
+        
         CardLayout layout = new CardLayout();
         JPanel container = new JPanel(layout);
         container.setBackground(ModernColors.BG_PRIMARY);
@@ -63,7 +63,7 @@ public class TelaCadastroVeiculo extends JPanel {
         add(container, BorderLayout.CENTER);
     }
 
-    // Constrói a barra superior de ferramentas de filtragem (Busca textual por teclado e seletores de ordenação)
+    
     private JPanel criarPainelCabecalho() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(18, 0));
@@ -84,7 +84,7 @@ public class TelaCadastroVeiculo extends JPanel {
         tituloPanel.add(titulo);
         tituloPanel.add(subtitulo);
 
-        // Setor central: Ferramentas de input para buscas em tempo de execução
+        
         JPanel filtrosPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 8));
         filtrosPanel.setOpaque(false);
 
@@ -101,8 +101,10 @@ public class TelaCadastroVeiculo extends JPanel {
         ));
         txtPesquisaPlaca.setToolTipText("Busca por placa, marca ou modelo");
         txtPesquisaPlaca.setBackground(ModernColors.WHITE);
+        txtPesquisaPlaca.setForeground(ModernColors.DARK_GRAY);
+        txtPesquisaPlaca.setCaretColor(ModernColors.DARK_GRAY);
 
-        // Escuta em tempo real o input do usuário para redisparar a query de filtragem
+        
         txtPesquisaPlaca.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyReleased(java.awt.event.KeyEvent e) {
@@ -130,7 +132,7 @@ public class TelaCadastroVeiculo extends JPanel {
         JLabel lblTipo = criarLabelFiltro("Tipo");
         cmbFiltroTipo = new ModernComboBox<>();
         cmbFiltroTipo.addItem("Todos");
-        for (TipoVeiculo tipo : TipoVeiculo.values()) {
+        for (TipoVeiculo tipo : TipoVeiculo.valuesCadastro()) {
             cmbFiltroTipo.addItem(tipo.getDescricao());
         }
         cmbFiltroTipo.setPreferredSize(new Dimension(135, 36));
@@ -174,7 +176,7 @@ public class TelaCadastroVeiculo extends JPanel {
         return label;
     }
 
-    // Instancia a área com barra de rolagem injetando o WrapLayout para empilhar os cards quebrados por linha
+    
     private JScrollPane criarPainelCards() {
         cardsPanel = new JPanel();
         cardsPanel.setLayout(new WrapLayout(FlowLayout.LEFT, 18, 18));
@@ -193,16 +195,16 @@ public class TelaCadastroVeiculo extends JPanel {
         return scrollPane;
     }
 
-    // Faz o fetch de dados filtrados na controller e monta de forma incremental a coleção de cartões visuais
+    
     private void carregarCardsVeiculos(JPanel cardsPanel) {
-        cardsPanel.removeAll(); // Limpa instâncias velhas de cards para reconstrução limpa
+        cardsPanel.removeAll(); 
         try {
             List<Veiculo> veiculos = controller.obterVeiculosFiltradosOrdenados(
                     txtPesquisaPlaca != null ? txtPesquisaPlaca.getText() : "",
                     cmbFiltroTipo != null ? (String) cmbFiltroTipo.getSelectedItem() : "Todos",
                     cmbOrdenacao != null ? (String) cmbOrdenacao.getSelectedItem() : "ID / Ordem de cadastro");
 
-            // Estado Vazio: Trata o feedback visual caso a busca retorne uma lista vazia
+            
             if (veiculos.isEmpty()) {
                 RoundedPanel emptyPanel = new RoundedPanel(16, ModernColors.WHITE);
                 emptyPanel.setLayout(new BorderLayout());
@@ -215,7 +217,7 @@ public class TelaCadastroVeiculo extends JPanel {
                 emptyPanel.add(emptyLabel, BorderLayout.CENTER);
                 cardsPanel.add(emptyPanel);
             } else {
-                // Estado Populado: Cria e associa eventos de escuta a cada cartão injetado
+                
                 for (Veiculo v : veiculos) {
                     VehicleCard card = new VehicleCard(v);
                     card.addListener(new VehicleCard.VehicleCardListener() {
@@ -241,18 +243,18 @@ public class TelaCadastroVeiculo extends JPanel {
             JOptionPane.showMessageDialog(this, "Erro ao carregar veículos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
-        // Força o Swing a recomputar as métricas geométricas após a injeção ou remoção dinâmica dos elementos
+        
         cardsPanel.revalidate();
         cardsPanel.repaint();
     }
 
-    // Realiza a transição de visualização (chaveia do grid de listagem para a visão de perfil do veículo)
+    
     private void exibirDetalhesVeiculo(Veiculo veiculo) {
         detailsPanel.removeAll();
 
         VehicleDetailsPanel detailsView = new VehicleDetailsPanel(veiculo);
 
-        // Define ação para o botão "Voltar" (Limpa a tela interna e reabre o dashboard mestre)
+        
         detailsView.setOnBackCallback(() -> {
             Component comp = scrollCardsPanel.getViewport().getView();
             if (comp instanceof JPanel) {
@@ -323,7 +325,7 @@ public class TelaCadastroVeiculo extends JPanel {
         }
     }
 
-    // Intermediário de segurança para invocar o recarregamento do grid
+    
     private void aplicarFiltrosVeiculos() {
         if (cardsPanel == null) {
             return;

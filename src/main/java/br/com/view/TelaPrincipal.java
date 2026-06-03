@@ -11,25 +11,25 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-// Janela principal do ecossistema Swing que gerencia o ciclo de vida e a coordenação dos subpainéis
+
 public class TelaPrincipal extends JFrame {
 
     private JTabbedPane abas;
     private TipoDespesaController tipoDespesaController;
 
-    // Subpainéis acoplados à barra de navegação por abas
+    
     private TelaCadastroVeiculo telaCadastroVeiculo;
     private TelaMovimentacao telaMovimentacao;
     private TelaRelatorios telaRelatorios;
     private TelaAbout telaAbout;
 
-    // Constantes de dimensionamento estrutural da janela master
+    
     private static final int LARGURA_JANELA = 1200;
     private static final int ALTURA_JANELA = 750;
     private static final String TITULO_SISTEMA = "Sistema de Controle de Frotas - GynLog";
 
     public TelaPrincipal() {
-        // Inicializa as propriedades cromáticas globais e fontes do Look and Feel antes de desenhar a janela
+        
         configurarAparenciaGlobal();
 
         configurarJanela();
@@ -37,19 +37,19 @@ public class TelaPrincipal extends JFrame {
         construirInterface();
     }
 
-    // Configura os limites geométricos, o comportamento de fechamento e a centralização do frame na tela
+    
     private void configurarJanela() {
         setTitle(TITULO_SISTEMA);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Finaliza o processo JVM ao fechar a janela
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
         setSize(LARGURA_JANELA, ALTURA_JANELA);
-        setMinimumSize(new Dimension(1100, 700)); // Impede o estrangulamento dos subpainéis em redimensionamentos
+        setMinimumSize(new Dimension(1100, 700)); 
         setLocationRelativeTo(null);
         setResizable(true);
 
         getContentPane().setBackground(ModernColors.BG_PRIMARY);
     }
 
-    // Injeta chaves de propriedades customizadas no Look and Feel Nimbus para padronizar a identidade visual
+    
     private void configurarAparenciaGlobal() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -73,6 +73,16 @@ public class TelaPrincipal extends JFrame {
         UIManager.put("TextField.font", fontePadrao);
         UIManager.put("ComboBox.font", fontePadrao);
         UIManager.put("Label.font", fontePadrao);
+        UIManager.put("MenuBar.background", ModernColors.WHITE);
+        UIManager.put("Menu.background", ModernColors.WHITE);
+        UIManager.put("Menu.foreground", ModernColors.DARK_GRAY);
+        UIManager.put("MenuItem.background", ModernColors.WHITE);
+        UIManager.put("MenuItem.foreground", ModernColors.DARK_GRAY);
+        UIManager.put("OptionPane.background", ModernColors.WHITE);
+        UIManager.put("OptionPane.messageForeground", ModernColors.DARK_GRAY);
+        UIManager.put("Table.background", ModernColors.WHITE);
+        UIManager.put("Table.foreground", ModernColors.DARK_GRAY);
+        UIManager.put("Table.gridColor", ModernColors.BORDER_GRAY);
     }
 
     private void inicializarSistema() {
@@ -85,7 +95,7 @@ public class TelaPrincipal extends JFrame {
         criarAbas();
     }
 
-    // Instancia o contêiner de navegação superior e aninha os subpainéis funcionais
+    
     private void criarAbas() {
         abas = new ModernTabbedPane();
 
@@ -99,13 +109,13 @@ public class TelaPrincipal extends JFrame {
         abas.addTab("Relatórios", telaRelatorios);
         abas.addTab("Sobre", telaAbout);
 
-        // Escuta a troca de abas para disparar gatilhos de atualização incremental de dados
+        
         abas.addChangeListener(evento -> atualizarAbaSelecionada());
 
         add(abas);
     }
 
-    // Intercepta o ganho de foco de uma aba e força o refresh dos dados cadastrados nos arquivos locais
+    
     private void atualizarAbaSelecionada() {
         Component abaSelecionada = abas.getSelectedComponent();
 
@@ -116,7 +126,7 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    // Garante a integridade referencial inserindo categorias estáticas se o arquivo base estiver limpo
+    
     private void inicializarTiposDespesaPadrao() {
         try {
             List<TipoDespesa> tiposExistentes = tipoDespesaController.obterTodosTipos();
@@ -154,6 +164,7 @@ public class TelaPrincipal extends JFrame {
 
         barraMenu.add(criarMenuArquivo());
         barraMenu.add(criarMenuBancoDados());
+        barraMenu.add(criarMenuTema());
         barraMenu.add(criarMenuAjuda());
 
         setJMenuBar(barraMenu);
@@ -199,6 +210,18 @@ public class TelaPrincipal extends JFrame {
         return menuBanco;
     }
 
+    private JMenu criarMenuTema() {
+        JMenu menuTema = new JMenu("Tema");
+        estilizarMenu(menuTema);
+
+        JMenuItem itemAlternarTema = new JMenuItem(ModernColors.isDarkTheme() ? "Usar tema claro" : "Usar tema escuro");
+        estilizarMenuItem(itemAlternarTema);
+        itemAlternarTema.addActionListener(evento -> alternarTemaInterface());
+
+        menuTema.add(itemAlternarTema);
+        return menuTema;
+    }
+
     private JMenu criarMenuAjuda() {
         JMenu menuAjuda = new JMenu("Ajuda");
         estilizarMenu(menuAjuda);
@@ -220,7 +243,18 @@ public class TelaPrincipal extends JFrame {
         item.setFont(new Font("Segoe UI", Font.PLAIN, 12));
     }
 
-    // Aciona a rotina assíncrona ou síncrona de espelhamento dos arquivos locais para o servidor MySQL externo
+    
+    private void alternarTemaInterface() {
+        ModernColors.alternarTema();
+        configurarAparenciaGlobal();
+        getContentPane().removeAll();
+        getContentPane().setBackground(ModernColors.BG_PRIMARY);
+        construirInterface();
+        SwingUtilities.updateComponentTreeUI(this);
+        revalidate();
+        repaint();
+    }
+
     private void sincronizarMySQLAgora() {
         try {
             String resultado = MySQLSincronizador.sincronizarAgora();
@@ -230,7 +264,7 @@ public class TelaPrincipal extends JFrame {
                     "Banco de Dados MySQL",
                     JOptionPane.INFORMATION_MESSAGE
             );
-        } catch (ClassNotFoundException erro) { // Fornece feedback específico se a dependência do conector falhar
+        } catch (ClassNotFoundException erro) { 
             JOptionPane.showMessageDialog(
                     this,
                     "Driver do MySQL não encontrado. Adicione o mysql-connector-j ao projeto Maven ou ao classpath.",
@@ -273,7 +307,7 @@ public class TelaPrincipal extends JFrame {
         );
     }
 
-    // Inicializa a linha de execução da interface gráfica de forma segura dentro da Event Dispatch Thread
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TelaPrincipal telaPrincipal = new TelaPrincipal();

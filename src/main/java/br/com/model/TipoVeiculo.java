@@ -4,7 +4,7 @@ import java.text.Normalizer;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-// Enum dos Tipos de veículo com uma descrição simples redirecionando para o que eles são com um formato melhor
+
 public enum TipoVeiculo {
     CARRO("Carro"),
     MOTO("Moto"),
@@ -29,10 +29,14 @@ public enum TipoVeiculo {
         return descricao;
     }
 
-    /**
-     * Converte uma descrição em um TipoVeiculo, ignorando acentos e diferenças de maiúsculas/minúsculas.
-     * Retorna OUTRO se não encontrar correspondência.
-     */
+    public static TipoVeiculo[] valuesCadastro() {
+        return new TipoVeiculo[]{CARRO, MOTO, CAMINHAO, VAN, CAMINHONETE, ONIBUS};
+    }
+
+    
+
+
+
     public static TipoVeiculo fromDescricao(String descricao) {
         if (descricao == null || descricao.trim().isEmpty()) {
             return OUTRO;
@@ -49,7 +53,7 @@ public enum TipoVeiculo {
 
     private static final Pattern ACENTOS = Pattern.compile("\\p{M}");
 
-    // Para deixar o texto normal, sem acentos
+    
     private static String normalizar(String texto) {
         return ACENTOS.matcher(
                         Normalizer.normalize(texto, Normalizer.Form.NFD))

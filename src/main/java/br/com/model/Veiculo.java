@@ -102,7 +102,7 @@ public class Veiculo {
         return placa + " - " + marca + " " + modelo;
     }
 
-    // Um toString mais detalhado com todas as informações
+    
     public String toStringDetailed() {
         return "Veiculo{" +
                 "idVeiculo=" + idVeiculo +

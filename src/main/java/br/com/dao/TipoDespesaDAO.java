@@ -11,7 +11,7 @@ import java.util.List;
 
 public class TipoDespesaDAO {
 
-    // Caminho do arquivo responsável por armazenar os tipos de despesa
+    
     private static final String ARQUIVO_TIPOS = "dados/tipos_despesas.txt";
 
     public TipoDespesaDAO() {
@@ -19,7 +19,7 @@ public class TipoDespesaDAO {
         criarArquivoSeNaoExistir();
     }
 
-    // Cria o diretório de dados caso ele não exista
+    
     private void criarDiretorioSeNaoExistir() {
         File dir = new File("dados");
 
@@ -28,7 +28,7 @@ public class TipoDespesaDAO {
         }
     }
 
-    // Cria o arquivo de tipos de despesa caso ele não exista
+    
     private void criarArquivoSeNaoExistir() {
         File arquivo = new File(ARQUIVO_TIPOS);
 
@@ -41,7 +41,7 @@ public class TipoDespesaDAO {
         }
     }
 
-    // Salva um novo tipo de despesa ou atualiza um existente
+    
     public void salvar(TipoDespesa tipoDespesa) throws IOException {
         List<TipoDespesa> tipos = obterTodos();
 
@@ -61,17 +61,17 @@ public class TipoDespesaDAO {
 
         escreverArquivo(tipos);
 
-        // Mantém os dados sincronizados com o MySQL
+        
         MySQLSincronizador.sincronizarSilenciosamente();
     }
 
-    // Salva uma lista completa de tipos de despesa
+    
     public void salvarTodos(List<TipoDespesa> tipos) throws IOException {
         escreverArquivo(tipos);
         MySQLSincronizador.sincronizarSilenciosamente();
     }
 
-    // Grava todos os tipos de despesa no arquivo
+    
     private void escreverArquivo(List<TipoDespesa> tipos) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_TIPOS))) {
 
@@ -84,7 +84,7 @@ public class TipoDespesaDAO {
         }
     }
 
-    // Retorna todos os tipos de despesa cadastrados
+    
     public List<TipoDespesa> obterTodos() throws IOException {
         List<TipoDespesa> tipos = new ArrayList<>();
 
@@ -111,7 +111,7 @@ public class TipoDespesaDAO {
         return tipos;
     }
 
-    // Converte uma linha do arquivo em um objeto TipoDespesa
+    
     private TipoDespesa parseTipoDespesa(String linha) {
         try {
             String[] partes = linha.split(";", 2);
@@ -130,7 +130,7 @@ public class TipoDespesaDAO {
         return null;
     }
 
-    // Busca um tipo de despesa pelo identificador
+    
     public TipoDespesa obterPorId(Long id) throws IOException {
         List<TipoDespesa> tipos = obterTodos();
 
@@ -143,7 +143,7 @@ public class TipoDespesaDAO {
         return null;
     }
 
-    // Remove um tipo de despesa pelo identificador
+    
     public void deletar(Long id) throws IOException {
         List<TipoDespesa> tipos = obterTodos();
 
@@ -151,11 +151,11 @@ public class TipoDespesaDAO {
 
         escreverArquivo(tipos);
 
-        // Atualiza a base MySQL após a exclusão
+        
         MySQLSincronizador.sincronizarSilenciosamente();
     }
 
-    // Retorna o próximo ID disponível para cadastro
+    
     public Long obterProximoId() throws IOException {
         List<TipoDespesa> tipos = obterTodos();
 
