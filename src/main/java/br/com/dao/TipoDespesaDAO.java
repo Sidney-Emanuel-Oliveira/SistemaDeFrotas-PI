@@ -246,6 +246,7 @@ public class TipoDespesaDAO {
                 .orElse(0L) + 1;
     }
 
+    // Obtém o próximo ID disponível do banco de dados
     private Long obterProximoIdBanco() throws Exception {
         String sql = "SELECT MAX(id_tipo_despesa) FROM tipos_despesas";
         try (Connection conn = MySQLSincronizador.obterConexao();

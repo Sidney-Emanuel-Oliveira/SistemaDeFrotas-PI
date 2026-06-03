@@ -1,23 +1,39 @@
 package br.com.model;
 
+/**
+ * Classe modelo que representa uma Movimentação (transação financeira) de um veículo
+ * Registra despesas, consumo de combustível e distância percorrida
+ */
 public class Movimentacao {
+    // Identificador único da movimentação
     private Long idMovimentacao;
+    // ID do veículo associado a esta movimentação
     private Long idVeiculo;
+    // ID do tipo de despesa (Combustível, Seguro, Manutenção, etc)
     private Long idTipoDespesa;
+    // Descrição da movimentação (ex: "Abastecimento em SP")
     private String descricao;
+    // Data da movimentação (formato: dd/MM/yyyy)
     private String data;
+    // Valor em reais da movimentação
     private double valor;
+    // Tipo de movimentação (pode ser usado para categorização)
     private String tipo;
+    // Distância percorrida em quilômetros (para cálculo de consumo)
     private double distanciaPercorridaKm;
+    // Quantidade de litros de combustível consumidos
     private double litrosCombustivel;
 
+    // Construtor padrão
     public Movimentacao() {
     }
 
+    // Construtor sem dados de consumo (distância e litros)
     public Movimentacao(Long idMovimentacao, Long idVeiculo, Long idTipoDespesa, String descricao, String data, double valor, String tipo) {
         this(idMovimentacao, idVeiculo, idTipoDespesa, descricao, data, valor, tipo, 0.0, 0.0);
     }
 
+    // Construtor completo com todos os parâmetros incluindo dados de consumo
     public Movimentacao(Long idMovimentacao, Long idVeiculo, Long idTipoDespesa, String descricao, String data,
                         double valor, String tipo, double distanciaPercorridaKm, double litrosCombustivel) {
         this.idMovimentacao = idMovimentacao;
@@ -31,7 +47,7 @@ public class Movimentacao {
         this.litrosCombustivel = litrosCombustivel;
     }
 
-    
+    // Getters e Setters para cada atributo
     public Long getIdMovimentacao() {
         return idMovimentacao;
     }
@@ -104,11 +120,12 @@ public class Movimentacao {
         this.litrosCombustivel = litrosCombustivel;
     }
 
+    // Verifica se a movimentação possui dados válidos de consumo
     public boolean possuiDadosConsumo() {
         return distanciaPercorridaKm > 0 && litrosCombustivel > 0;
     }
 
-    
+    // Calcula e retorna o consumo médio em km/l (quilômetro por litro)
     public double calcularConsumoMedioKmPorLitro() {
         if (!possuiDadosConsumo()) {
             return 0.0;
@@ -116,6 +133,7 @@ public class Movimentacao {
         return distanciaPercorridaKm / litrosCombustivel;
     }
 
+    // Retorna uma representação em String com todos os atributos da movimentação
     @Override
     public String toString() {
         return "Movimentacao{" +

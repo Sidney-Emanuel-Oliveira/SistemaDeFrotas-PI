@@ -78,10 +78,12 @@ public class VeiculoController {
         veiculoDAO.salvar(veiculo);
     }
     
+    // Retorna todos os veículos cadastrados
     public List<Veiculo> obterTodosVeiculos() throws IOException {
         return veiculoDAO.obterTodos();
     }
     
+    // Retorna apenas veículos com status ativo
     public List<Veiculo> obterVeiculosAtivos() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         return veiculos.stream()
@@ -89,6 +91,7 @@ public class VeiculoController {
                 .toList();
     }
     
+    // Retorna apenas veículos com status inativo
     public List<Veiculo> obterVeiculosInativos() throws IOException {
         List<Veiculo> veiculos = veiculoDAO.obterTodos();
         return veiculos.stream()

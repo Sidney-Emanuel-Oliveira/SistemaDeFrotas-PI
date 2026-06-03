@@ -1,18 +1,31 @@
 package br.com.model;
 
+/**
+ * Classe modelo que representa um Veículo na frota
+ * Armazena informações como placa, marca, modelo, ano e tipo de veículo
+ */
 public class Veiculo {
+    // Identificador único do veículo
     private Long idVeiculo;
+    // Placa do veículo (ex: ABC-1234)
     private String placa;
+    // Marca/Fabricante do veículo (ex: Toyota, Ford)
     private String marca;
+    // Modelo do veículo (ex: Corolla, Fusion)
     private String modelo;
+    // Ano de fabricação do veículo
     private String fabricateYear;
+    // Status: true=ativo, false=inativo
     private Boolean ativo;
+    // Tipo de veículo (Carro, Moto, Caminhão, etc)
     private TipoVeiculo tipo;
 
+    // Construtor padrão
     public Veiculo() {
         this.tipo = TipoVeiculo.OUTRO;
     }
 
+    // Construtor com parâmetros (tipo como String)
     public Veiculo(Long idVeiculo, String placa, String marca, String modelo, String fabricateYear, Boolean ativo, String tipo) {
         this.idVeiculo = idVeiculo;
         this.placa = placa;
@@ -23,6 +36,7 @@ public class Veiculo {
         setTipo(tipo);
     }
 
+    // Construtor com parâmetros (tipo como Enum TipoVeiculo)
     public Veiculo(Long idVeiculo, String placa, String marca, String modelo, String fabricateYear, Boolean ativo, TipoVeiculo tipo) {
         this.idVeiculo = idVeiculo;
         this.placa = placa;
@@ -33,6 +47,7 @@ public class Veiculo {
         this.tipo = tipo != null ? tipo : TipoVeiculo.OUTRO;
     }
     
+    // Getters e Setters para cada atributo
     public Long getIdVeiculo() {
         return idVeiculo;
     }
@@ -98,11 +113,12 @@ public class Veiculo {
     }
 
     @Override
+    // Retorna uma representação em String simplificada do veículo (placa - marca modelo)
     public String toString() {
         return placa + " - " + marca + " " + modelo;
     }
 
-    
+    // Retorna uma representação detalhada com todos os atributos do veículo
     public String toStringDetailed() {
         return "Veiculo{" +
                 "idVeiculo=" + idVeiculo +

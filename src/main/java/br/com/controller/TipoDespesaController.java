@@ -48,17 +48,17 @@ public class TipoDespesaController {
         tipoDespesaDAO.salvar(tipoDespesa);
     }
 
-    
+    // Retorna todos os tipos de despesas cadastrados
     public List<TipoDespesa> obterTodosTipos() throws IOException {
         return tipoDespesaDAO.obterTodos();
     }
 
-    
+    // Busca um tipo de despesa específico pelo ID
     public TipoDespesa obterTipoPorId(Long id) throws IOException {
         return tipoDespesaDAO.obterPorId(id);
     }
 
-    
+    // Deleta um tipo de despesa pelo ID
     public void deletarTipoDespesa(Long id) throws IOException {
         tipoDespesaDAO.deletar(id);
     }

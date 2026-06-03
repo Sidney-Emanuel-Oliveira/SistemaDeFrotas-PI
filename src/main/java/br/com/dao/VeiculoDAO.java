@@ -10,15 +10,22 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO (Data Access Object) para gerenciar a persistência de Veículos
+ * Suporta armazenamento em arquivos de texto e sincronização com MySQL
+ */
 public class VeiculoDAO {
 
+    // Caminho do arquivo de armazenamento de veículos
     private static final String ARQUIVO_VEICULOS = "dados/veiculos.txt";
 
+    // Construtor que inicializa o diretório e arquivo
     public VeiculoDAO() {
         criarDiretorioSeNaoExistir();
         criarArquivoSeNaoExistir();
     }
 
+    // Cria o diretório "dados" se não existir
     private void criarDiretorioSeNaoExistir() {
         File dir = new File("dados");
 
@@ -27,6 +34,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Cria o arquivo de veículos se não existir
     private void criarArquivoSeNaoExistir() {
         File arquivo = new File(ARQUIVO_VEICULOS);
 
@@ -39,6 +47,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Salva ou atualiza um veículo (em arquivo e opcionalmente no banco)
     public void salvar(Veiculo veiculo) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -72,6 +81,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Salva um veículo no banco de dados MySQL (INSERT ou UPDATE)
     private void salvarBanco(Veiculo v) throws Exception {
         String sql = "INSERT INTO veiculos (id_veiculo, placa, marca, modelo, ano_fabricacao, ativo, tipo) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?) " +
@@ -97,6 +107,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Salva uma lista completa de veículos
     public void salvarTodos(List<Veiculo> veiculos) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -113,6 +124,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Escreve a lista de veículos no arquivo de texto
     private void escreverArquivo(List<Veiculo> veiculos) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_VEICULOS))) {
 
@@ -125,6 +137,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Formata um veículo para ser armazenado no arquivo (separado por ;)
     private String formatarVeiculo(Veiculo v) {
         return v.getIdVeiculo() + ";" +
                 v.getPlaca() + ";" +
@@ -135,6 +148,7 @@ public class VeiculoDAO {
                 (v.getTipo() != null ? v.getTipo() : "");
     }
 
+    // Obtém todos os veículos (do banco se habilitado, senão do arquivo)
     public List<Veiculo> obterTodos() throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -148,6 +162,7 @@ public class VeiculoDAO {
         return obterTodosArquivo();
     }
 
+    // Lê todos os veículos do arquivo de texto
     private List<Veiculo> obterTodosArquivo() throws IOException {
         List<Veiculo> veiculos = new ArrayList<>();
 
@@ -174,6 +189,7 @@ public class VeiculoDAO {
         return veiculos;
     }
 
+    // Lê todos os veículos do banco de dados MySQL
     private List<Veiculo> obterTodosBanco() throws Exception {
         List<Veiculo> veiculos = new ArrayList<>();
         String sql = "SELECT id_veiculo, placa, marca, modelo, ano_fabricacao, ativo, tipo FROM veiculos";
@@ -194,6 +210,7 @@ public class VeiculoDAO {
         return veiculos;
     }
 
+    // Converte uma linha do arquivo em objeto Veiculo
     private Veiculo parseVeiculo(String linha) {
         try {
             String[] partes = linha.split(";");
@@ -217,6 +234,7 @@ public class VeiculoDAO {
         return null;
     }
 
+    // Busca um veículo pelo ID
     public Veiculo obterPorId(Long id) throws IOException {
         List<Veiculo> veiculos = obterTodos();
 
@@ -229,6 +247,7 @@ public class VeiculoDAO {
         return null;
     }
 
+    // Busca um veículo pela placa
     public Veiculo obterPorPlaca(String placa) throws IOException {
         List<Veiculo> veiculos = obterTodos();
 
@@ -241,6 +260,7 @@ public class VeiculoDAO {
         return null;
     }
 
+    // Deleta um veículo pelo ID
     public void deletar(Long id) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -261,6 +281,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Deleta um veículo do banco de dados
     private void deletarBanco(Long id) throws Exception {
         String sql = "DELETE FROM veiculos WHERE id_veiculo = ?";
         try (Connection conn = MySQLSincronizador.obterConexao();
@@ -270,6 +291,7 @@ public class VeiculoDAO {
         }
     }
 
+    // Obtém o próximo ID disponível para um novo veículo
     public Long obterProximoId() throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -291,6 +313,7 @@ public class VeiculoDAO {
                 .orElse(0L) + 1;
     }
 
+    // Obtém o próximo ID disponível do banco de dados
     private Long obterProximoIdBanco() throws Exception {
         String sql = "SELECT MAX(id_veiculo) FROM veiculos";
         try (Connection conn = MySQLSincronizador.obterConexao();

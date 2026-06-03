@@ -12,16 +12,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO (Data Access Object) para gerenciar a persistência de Movimentações
+ * Suporta armazenamento em arquivos de texto e sincronização com MySQL
+ */
 public class MovimentacaoDAO {
 
+    // Caminho do arquivo de armazenamento de movimentações
     private static final String ARQUIVO_MOVIMENTACOES = "dados/movimentacoes.txt";
+    // Formato padrão de data utilizado (dd/MM/yyyy)
     private static final DateTimeFormatter FORMATO_DATA_BR = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    // Construtor que inicializa o diretório e arquivo
     public MovimentacaoDAO() {
         criarDiretorioSeNaoExistir();
         criarArquivoSeNaoExistir();
     }
 
+    // Cria o diretório "dados" se não existir
     private void criarDiretorioSeNaoExistir() {
         File dir = new File("dados");
 
@@ -30,6 +38,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Cria o arquivo de movimentações se não existir
     private void criarArquivoSeNaoExistir() {
         File arquivo = new File(ARQUIVO_MOVIMENTACOES);
 
@@ -42,6 +51,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Salva ou atualiza uma movimentação (em arquivo e opcionalmente no banco)
     public void salvar(Movimentacao movimentacao) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -75,6 +85,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Salva uma movimentação no banco de dados MySQL
     private void salvarBanco(Movimentacao m) throws Exception {
         String sql = "INSERT INTO movimentacoes (id_movimentacao, id_veiculo, id_tipo_despesa, descricao, " +
                 "data_movimentacao, valor, tipo, distancia_percorrida_km, litros_combustivel) " +
@@ -116,6 +127,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Salva uma lista completa de movimentações
     public void salvarTodos(List<Movimentacao> movimentacoes) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -132,6 +144,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Escreve a lista de movimentações no arquivo de texto
     private void escreverArquivo(List<Movimentacao> movimentacoes) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARQUIVO_MOVIMENTACOES))) {
 
@@ -144,6 +157,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Formata uma movimentação para armazenamento no arquivo (separado por ;)
     private String formatarMovimentacao(Movimentacao m) {
         return m.getIdMovimentacao() + ";" +
                 m.getIdVeiculo() + ";" +
@@ -156,6 +170,7 @@ public class MovimentacaoDAO {
                 m.getLitrosCombustivel();
     }
 
+    // Obtém todas as movimentações (do banco se habilitado, senão do arquivo)
     public List<Movimentacao> obterTodos() throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -169,6 +184,7 @@ public class MovimentacaoDAO {
         return obterTodosArquivo();
     }
 
+    // Lê todas as movimentações do arquivo de texto
     private List<Movimentacao> obterTodosArquivo() throws IOException {
         List<Movimentacao> movimentacoes = new ArrayList<>();
 
@@ -195,6 +211,7 @@ public class MovimentacaoDAO {
         return movimentacoes;
     }
 
+    // Lê todas as movimentações do banco de dados MySQL
     private List<Movimentacao> obterTodosBanco() throws Exception {
         List<Movimentacao> list = new ArrayList<>();
         String sql = "SELECT id_movimentacao, id_veiculo, id_tipo_despesa, descricao, data_movimentacao, " +
@@ -219,6 +236,7 @@ public class MovimentacaoDAO {
         return list;
     }
 
+    // Converte uma linha do arquivo em objeto Movimentacao
     private Movimentacao parseMovimentacao(String linha) {
         try {
             String[] partes = linha.split(";");
@@ -260,6 +278,7 @@ public class MovimentacaoDAO {
         return null;
     }
 
+    // Busca uma movimentação pelo ID
     public Movimentacao obterPorId(Long id) throws IOException {
         List<Movimentacao> movimentacoes = obterTodos();
 
@@ -272,6 +291,7 @@ public class MovimentacaoDAO {
         return null;
     }
 
+    // Obtém todas as movimentações de um veículo específico
     public List<Movimentacao> obterPorVeiculo(Long idVeiculo) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -293,6 +313,7 @@ public class MovimentacaoDAO {
         return resultado;
     }
 
+    // Lê movimentações de um veículo específico do banco de dados
     private List<Movimentacao> obterPorVeiculoBanco(Long idVeiculo) throws Exception {
         List<Movimentacao> list = new ArrayList<>();
         String sql = "SELECT id_movimentacao, id_veiculo, id_tipo_despesa, descricao, data_movimentacao, " +
@@ -318,6 +339,7 @@ public class MovimentacaoDAO {
         return list;
     }
 
+    // Obtém movimentações filtradas por tipo de despesa
     public List<Movimentacao> obterPorTipo(String tipo) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -339,6 +361,7 @@ public class MovimentacaoDAO {
         return resultado;
     }
 
+    // Lê movimentações por tipo de despesa do banco de dados
     private List<Movimentacao> obterPorTipoBanco(String tipo) throws Exception {
         List<Movimentacao> list = new ArrayList<>();
         String sql = "SELECT id_movimentacao, id_veiculo, id_tipo_despesa, descricao, data_movimentacao, " +
@@ -364,6 +387,7 @@ public class MovimentacaoDAO {
         return list;
     }
 
+    // Deleta uma movimentação pelo ID
     public void deletar(Long id) throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -384,6 +408,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Deleta uma movimentação do banco de dados
     private void deletarBanco(Long id) throws Exception {
         String sql = "DELETE FROM movimentacoes WHERE id_movimentacao = ?";
         try (Connection conn = MySQLSincronizador.obterConexao();
@@ -393,6 +418,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Obtém o próximo ID disponível para uma nova movimentação
     public Long obterProximoId() throws IOException {
         if (MySQLSincronizador.isHabilitado()) {
             try {
@@ -414,6 +440,7 @@ public class MovimentacaoDAO {
                 .orElse(0L) + 1;
     }
 
+    // Obtém o próximo ID disponível do banco de dados
     private Long obterProximoIdBanco() throws Exception {
         String sql = "SELECT MAX(id_movimentacao) FROM movimentacoes";
         try (Connection conn = MySQLSincronizador.obterConexao();
@@ -427,6 +454,7 @@ public class MovimentacaoDAO {
         return 1L;
     }
 
+    // Converte string de data no formato DD/MM/YYYY para java.sql.Date
     private Date converterData(String texto) {
         try {
             if (texto == null || texto.isBlank()) {
@@ -439,6 +467,7 @@ public class MovimentacaoDAO {
         }
     }
 
+    // Formata java.sql.Date para string no formato DD/MM/YYYY
     private String formatarData(Date data) {
         if (data == null) {
             return "";

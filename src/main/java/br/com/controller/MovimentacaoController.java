@@ -80,13 +80,12 @@ public class MovimentacaoController {
         }
     }
 
-    
+    // Converte string de valor em Double (aceita vírgula ou ponto como separador)
     private double parseValor(String valor) {
         return Double.parseDouble(valor.replace(",", "."));
     }
 
-    
-    
+    // Converte string de valor opcional em Double (retorna 0 se vazio)
     private double parseValorOpcional(String valor) {
         if (valor == null || valor.trim().isEmpty()) {
             return 0.0;
