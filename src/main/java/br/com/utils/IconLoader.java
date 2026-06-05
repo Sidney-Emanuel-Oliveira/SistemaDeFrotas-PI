@@ -7,20 +7,20 @@ import java.io.File;
 import java.text.Normalizer;
 
 public class IconLoader {
-    
+
     private static final String ICONS_PATH = "src/main/resources/icons/";
-    
+
     private static final String RESOURCE_PATH = "/icons/";
 
-    
+
     public static ImageIcon loadIcon(String iconName, int width, int height) {
-        
+
         ImageIcon icon = tryLoadIcon(iconName, width, height);
         if (icon != null) {
             return icon;
         }
 
-        
+
         icon = tryLoadSimilarFile(iconName, width, height);
         if (icon != null) {
             return icon;
@@ -29,7 +29,7 @@ public class IconLoader {
         return new ImageIcon();
     }
 
-    
+
     private static ImageIcon tryLoadIcon(String iconName, int width, int height) {
         if (iconName == null || iconName.trim().isEmpty()) {
             return null;
@@ -56,7 +56,7 @@ public class IconLoader {
         return null;
     }
 
-    
+
     private static ImageIcon tryLoadFirstAvailable(int width, int height, String... names) {
         for (String name : names) {
             ImageIcon icon = tryLoadIcon(name, width, height);
@@ -67,7 +67,7 @@ public class IconLoader {
         return new ImageIcon();
     }
 
-    
+
     private static ImageIcon tryLoadSimilarFile(String iconName, int width, int height) {
         try {
             File dir = new File(ICONS_PATH);
@@ -76,10 +76,10 @@ public class IconLoader {
                 return null;
             }
 
-            
+
             String target = normalizar(iconName);
             for (File file : files) {
-                
+
                 String current = normalizar(file.getName());
                 if (current.equals(target) || current.contains(target) || target.contains(current)) {
                     return scale(new ImageIcon(file.getAbsolutePath()), width, height);
@@ -91,13 +91,13 @@ public class IconLoader {
         return null;
     }
 
-    
+
     private static ImageIcon scale(ImageIcon icon, int width, int height) {
         Image scaledImage = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
         return new ImageIcon(scaledImage);
     }
 
-    
+
     private static String normalizar(String texto) {
         String semAcento = Normalizer.normalize(texto == null ? "" : texto, Normalizer.Form.NFD)
                 .replaceAll("\\p{M}", "");
@@ -111,7 +111,7 @@ public class IconLoader {
                 .toLowerCase();
     }
 
-    
+
     public static ImageIcon loadCarIcon(int width, int height) {
         return tryLoadFirstAvailable(width, height,
                 "carro.png",
@@ -119,7 +119,7 @@ public class IconLoader {
                 "—Pngtree—vector car icon_3989896.png");
     }
 
-    
+
     public static ImageIcon loadTruckIcon(int width, int height) {
         return tryLoadFirstAvailable(width, height,
                 "caminhao.png",
@@ -128,12 +128,12 @@ public class IconLoader {
                 "delivery-truck.png");
     }
 
-    
+
     public static ImageIcon loadMotoIcon(int width, int height) {
         return loadIcon("moto.png", width, height);
     }
 
-    
+
     public static ImageIcon loadVanIcon(int width, int height) {
         return loadIcon("delivery-truck.png", width, height);
     }
@@ -146,7 +146,7 @@ public class IconLoader {
         return loadIcon("onibus.png", width, height);
     }
 
-    
+
     public static ImageIcon loadCombustivelIcon(int width, int height) {
         return loadIcon("bomba-de-gasolina.png", width, height);
     }
@@ -178,7 +178,7 @@ public class IconLoader {
     public static ImageIcon loadIconForType(String tipo, int width, int height) {
         if (tipo == null) return new ImageIcon();
 
-        
+
         String lowerType = normalizar(tipo);
         if (lowerType.contains("carro") || lowerType.contains("car")) {
             return loadCarIcon(width, height);
@@ -197,11 +197,15 @@ public class IconLoader {
         return new ImageIcon();
     }
 
-    
+
+    public static ImageIcon loadNovaMovimentacaoIcon(int width, int height) {
+        return loadIcon("nova-movimentacao.png", width, height);
+    }
+
     public static ImageIcon loadIconForExpenseType(String tipo, int width, int height) {
         if (tipo == null) return new ImageIcon();
 
-        
+
         String lowerType = normalizar(tipo);
         if (lowerType.contains("combustivel")) {
             return loadCombustivelIcon(width, height);
@@ -215,8 +219,8 @@ public class IconLoader {
             return loadManutencaoIcon(width, height);
         } else if (lowerType.contains("multa")) {
             return loadIcon("notas.png", width, height);
+        } else{
+            return loadIcon("pngwing.com.png", width, height);
         }
-
-        return new ImageIcon();
     }
 }

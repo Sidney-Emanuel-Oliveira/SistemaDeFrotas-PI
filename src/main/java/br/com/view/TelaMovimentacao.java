@@ -29,6 +29,7 @@ public class TelaMovimentacao extends JPanel {
     private JPanel mainPanel;
     private JPanel cardsPanel;
     private JButton btnNovaMovimentacao;
+    private JButton btnGerenciarTipos;
 
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 13);
@@ -55,7 +56,7 @@ public class TelaMovimentacao extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
-    // Cria painel de cabeçalho com título e botão nova movimentação
+    // Cria painel de cabeçalho com título e botões de ação
     private JPanel criarPainelCabecalho() {
         RoundedPanel panel = new RoundedPanel(16, ModernColors.WHITE);
         panel.setLayout(new BorderLayout(20, 0));
@@ -76,17 +77,28 @@ public class TelaMovimentacao extends JPanel {
         tituloPanel.add(titulo);
         tituloPanel.add(subtitulo);
 
+        // Painel com os dois botões lado a lado
+        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        botoesPanel.setOpaque(false);
+
+        btnGerenciarTipos = new ModernButton("🏷 Tipos", ModernColors.TEAL);
+        btnGerenciarTipos.setPreferredSize(new Dimension(110, 46));
+        btnGerenciarTipos.addActionListener(e -> abrirDialogTiposMovimentacao());
+
         btnNovaMovimentacao = new ModernButton("+ Nova", ModernColors.PRIMARY_BLUE);
-        btnNovaMovimentacao.setPreferredSize(new Dimension(132, 46));
+        btnNovaMovimentacao.setPreferredSize(new Dimension(110, 46));
         btnNovaMovimentacao.addActionListener(e -> abrirDialogNovaMovimentacao());
 
+        botoesPanel.add(btnGerenciarTipos);
+        botoesPanel.add(btnNovaMovimentacao);
+
         panel.add(tituloPanel, BorderLayout.WEST);
-        panel.add(btnNovaMovimentacao, BorderLayout.EAST);
+        panel.add(botoesPanel, BorderLayout.EAST);
 
         return panel;
     }
 
-    
+
     private JScrollPane criarPainelCards() {
         cardsPanel = new JPanel();
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
@@ -105,14 +117,14 @@ public class TelaMovimentacao extends JPanel {
         return scrollPane;
     }
 
-    
+
     private void carregarMovimentacoes() {
         cardsPanel.removeAll();
 
         try {
             List<Movimentacao> movimentacoes = movimentacaoController.obterTodasMovimentacoes();
 
-            
+
             if (movimentacoes.isEmpty()) {
                 RoundedPanel emptyPanel = new RoundedPanel(16, ModernColors.WHITE);
                 emptyPanel.setLayout(new BorderLayout());
@@ -128,7 +140,7 @@ public class TelaMovimentacao extends JPanel {
 
                 cardsPanel.add(emptyPanel);
             } else {
-                
+
                 movimentacoes.sort((m1, m2) -> m2.getIdMovimentacao().compareTo(m1.getIdMovimentacao()));
 
                 for (Movimentacao m : movimentacoes) {
@@ -151,11 +163,11 @@ public class TelaMovimentacao extends JPanel {
                     });
 
                     cardsPanel.add(card);
-                    cardsPanel.add(Box.createVerticalStrut(10)); 
+                    cardsPanel.add(Box.createVerticalStrut(10));
                 }
             }
 
-            
+
             cardsPanel.add(Box.createVerticalGlue());
 
         } catch (IOException e) {
@@ -169,9 +181,17 @@ public class TelaMovimentacao extends JPanel {
         cardsPanel.repaint();
     }
 
-    
+
     public void atualizarDados() {
         carregarMovimentacoes();
+    }
+
+    private void abrirDialogTiposMovimentacao() {
+        TipoMovimentacaoDialog dialog = new TipoMovimentacaoDialog(
+                (JFrame) SwingUtilities.getWindowAncestor(this),
+                this::carregarMovimentacoes
+        );
+        dialog.setVisible(true);
     }
 
     private void abrirDialogNovaMovimentacao() {

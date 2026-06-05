@@ -24,7 +24,7 @@ public class MovementFormDialog extends JDialog {
     private MovimentacaoController movimentacaoController;
     private VeiculoController veiculoController;
     private TipoDespesaController tipoDespesaController;
-    private Movimentacao movimentacaoEdicao; 
+    private Movimentacao movimentacaoEdicao;
     private Runnable onSuccess;
 
     private JComboBox<Veiculo> cmbVeiculo;
@@ -47,13 +47,13 @@ public class MovementFormDialog extends JDialog {
 
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setSize(550, 720);
-        setLocationRelativeTo(owner); 
+        setLocationRelativeTo(owner);
         setResizable(false);
 
         initializeComponents();
     }
 
-    
+
     private void initializeComponents() {
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(ModernColors.BG_PRIMARY);
@@ -62,7 +62,7 @@ public class MovementFormDialog extends JDialog {
         JPanel headerPanel = criarPainelCabecalho();
         contentPanel.add(headerPanel, BorderLayout.NORTH);
 
-        
+
         JPanel mainPanel = new RoundedPanel(12, ModernColors.WHITE);
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -70,11 +70,11 @@ public class MovementFormDialog extends JDialog {
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1)
         ));
 
-        
+
         JPanel formPanel = criarPainelFormulario();
         JScrollPane scrollPane = new JScrollPane(formPanel);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16); 
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -90,7 +90,7 @@ public class MovementFormDialog extends JDialog {
         add(contentPanel);
     }
 
-    
+
     private JPanel criarPainelCabecalho() {
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : new Color(15, 23, 42));
@@ -105,7 +105,7 @@ public class MovementFormDialog extends JDialog {
                 icon = IconLoader.loadCombustivelIcon(40, 40);
             }
         } else {
-            icon = IconLoader.loadCombustivelIcon(40, 40);
+            icon = IconLoader.loadNovaMovimentacaoIcon(40, 40);
         }
 
         JPanel iconBox = new JPanel(new BorderLayout()) {
@@ -154,7 +154,7 @@ public class MovementFormDialog extends JDialog {
         return headerPanel;
     }
 
-    
+
     private JPanel criarPainelFormulario() {
         JPanel mainFormPanel = new JPanel();
         mainFormPanel.setLayout(new BoxLayout(mainFormPanel, BoxLayout.Y_AXIS));
@@ -168,7 +168,7 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(secaoInfo);
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        
+
         JPanel veiculoPanel = new JPanel(new BorderLayout(8, 5));
         veiculoPanel.setOpaque(false);
         veiculoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
@@ -192,7 +192,7 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(veiculoPanel);
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        
+
         JPanel tipoPanel = new JPanel(new BorderLayout(8, 5));
         tipoPanel.setOpaque(false);
         tipoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
@@ -229,7 +229,7 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(criarCampoFormulario("Valor (R$):", "txtValor"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-        
+
         JLabel secaoConsumo = new JLabel("Dados para Consumo Médio (opcional - somente combustível)");
         secaoConsumo.setFont(new Font("Segoe UI", Font.BOLD, 13));
         secaoConsumo.setForeground(ModernColors.PRIMARY_BLUE);
@@ -241,7 +241,7 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
         mainFormPanel.add(criarCampoFormulario("Litros abastecidos:", "txtLitrosCombustivel"));
 
-        
+
         if (movimentacaoEdicao != null) {
             try {
                 Veiculo veiculo = veiculoController.obterVeiculoPorId(movimentacaoEdicao.getIdVeiculo());
@@ -266,7 +266,7 @@ public class MovementFormDialog extends JDialog {
         return mainFormPanel;
     }
 
-    
+
     private JPanel criarCampoFormulario(String labelText, String fieldName) {
         JPanel panel = new JPanel(new BorderLayout(8, 5));
         panel.setOpaque(false);
@@ -312,7 +312,7 @@ public class MovementFormDialog extends JDialog {
         return panel;
     }
 
-    
+
     private JTextField criarCampoTexto() {
         JTextField field = new JTextField();
         field.setFont(FIELD_FONT);
@@ -328,7 +328,7 @@ public class MovementFormDialog extends JDialog {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
                 field.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(ModernColors.PRIMARY_BLUE, 2), 
+                        BorderFactory.createLineBorder(ModernColors.PRIMARY_BLUE, 2),
                         BorderFactory.createEmptyBorder(10, 12, 10, 12)
                 ));
             }
@@ -336,7 +336,7 @@ public class MovementFormDialog extends JDialog {
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 field.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1), 
+                        BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
                         BorderFactory.createEmptyBorder(10, 12, 10, 12)
                 ));
             }
@@ -367,7 +367,7 @@ public class MovementFormDialog extends JDialog {
         }
     }
 
-    
+
     private void salvar() {
         try {
             Veiculo veiculoSelecionado = (Veiculo) cmbVeiculo.getSelectedItem();
@@ -405,7 +405,7 @@ public class MovementFormDialog extends JDialog {
 
             double valorDouble;
             try {
-                
+
                 String valorNormalizado = valorStr.replace(",", ".");
                 valorDouble = Double.parseDouble(valorNormalizado);
 
@@ -417,17 +417,17 @@ public class MovementFormDialog extends JDialog {
                     throw new IllegalArgumentException("O valor não pode ser maior que R$ 1.000.000,00!");
                 }
 
-                
+
                 valorStr = String.format("%.2f", valorDouble).replace(".", ",");
 
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Valor inválido! Use o formato: 123.45 ou 123,45");
             }
 
-            
+
             String data = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            
+
             if (movimentacaoEdicao != null) {
                 movimentacaoController.atualizarMovimentacao(
                         movimentacaoEdicao.getIdMovimentacao(),
@@ -468,7 +468,7 @@ public class MovementFormDialog extends JDialog {
                         JOptionPane.INFORMATION_MESSAGE);
             }
 
-            
+
             if (onSuccess != null) onSuccess.run();
             dispose();
 
