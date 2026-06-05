@@ -126,3 +126,4 @@
 126;74;1;Abastecimento;22/03/2026;150.0;Combustivel;280.6;25.6
 127;74;3;Polimento Comercial;29/03/2026;300.0;Lavagem;0.0;0.0
 128;75;1;Abastecimento Van;05/01/2026;162.0;Combustivel;272.5;27.3
+129;1;1;sdfgsd;04/06/2026;325324.0;Combustível;0.0;0.0
