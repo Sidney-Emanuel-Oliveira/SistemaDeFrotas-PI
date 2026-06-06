@@ -15,6 +15,7 @@ import br.com.utils.GeradorCSV;
 import br.com.utils.IconLoader;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
@@ -415,11 +416,25 @@ public class TelaRelatorios extends JPanel {
         header.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : new Color(15, 23, 42));
         header.setForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.WHITE);
         header.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            {
+                setHorizontalAlignment(LEFT);
+            }
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : new Color(15, 23, 42));
+                setForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.WHITE);
+                setFont(new Font("Segoe UI", Font.BOLD, 12));
+                setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                return this;
+            }
+        });
 
         JScrollPane scrollTabela = new JScrollPane(tabelaRelatorio);
         scrollTabela.setPreferredSize(new Dimension(0, 390));
         scrollTabela.setBorder(BorderFactory.createLineBorder(ModernColors.BORDER_GRAY));
-        abas.addTab("Tabela", IconLoader.loadTableIcon(16, 16), scrollTabela);
+        abas.addTab("Tabela", scrollTabela);
 
         panel.add(abas, BorderLayout.CENTER);
 

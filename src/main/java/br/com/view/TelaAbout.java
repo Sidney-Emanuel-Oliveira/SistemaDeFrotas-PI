@@ -1,5 +1,7 @@
 package br.com.view;
 
+import br.com.ui.ModernColors;
+
 import javax.swing.*;
 
 
@@ -9,18 +11,22 @@ public class TelaAbout extends JPanel {
         
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        setBackground(ModernColors.BG_PRIMARY);
 
         
         JLabel titulo = new JLabel("Sistema de Controle de Frotas");
         titulo.setFont(titulo.getFont().deriveFont(28f));
+        titulo.setForeground(ModernColors.NAVY);
         titulo.setAlignmentX(CENTER_ALIGNMENT);
 
         JLabel versao = new JLabel("Versão 1.0");
         versao.setFont(versao.getFont().deriveFont(14f));
+        versao.setForeground(ModernColors.TEXT_GRAY);
         versao.setAlignmentX(CENTER_ALIGNMENT);
 
         JLabel empresa = new JLabel("Desenvolvido para: GynLog");
         empresa.setFont(empresa.getFont().deriveFont(14f));
+        empresa.setForeground(ModernColors.TEXT_GRAY);
         empresa.setAlignmentX(CENTER_ALIGNMENT);
 
         
@@ -49,9 +55,17 @@ public class TelaAbout extends JPanel {
         
         descricao.setEditable(false);
         descricao.setLineWrap(true);      
-        descricao.setWrapStyleWord(true); 
-        descricao.setBackground(new java.awt.Color(240, 240, 240));
-        descricao.setBorder(BorderFactory.createTitledBorder("Sobre"));
+        descricao.setWrapStyleWord(true);
+        descricao.setBackground(ModernColors.isDarkTheme() ? ModernColors.BG_SECONDARY : ModernColors.WHITE);
+        descricao.setForeground(ModernColors.isDarkTheme() ? ModernColors.DARK_GRAY : ModernColors.DARK_GRAY);
+        descricao.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(ModernColors.BORDER_GRAY),
+                "Sobre",
+                javax.swing.border.TitledBorder.LEFT,
+                javax.swing.border.TitledBorder.TOP,
+                new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12),
+                ModernColors.NAVY
+        ));
 
         add(descricao);
 

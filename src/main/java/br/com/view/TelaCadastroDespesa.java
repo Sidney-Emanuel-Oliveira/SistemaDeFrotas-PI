@@ -2,9 +2,11 @@ package br.com.view;
 
 import br.com.controller.TipoDespesaController;
 import br.com.model.TipoDespesa;
+import br.com.ui.ModernColors;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +35,7 @@ public class TelaCadastroDespesa extends JPanel {
         controller = new TipoDespesaController();
         setLayout(new BorderLayout(10, 10)); 
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
+        setBackground(ModernColors.BG_PRIMARY);
         
         JPanel painelEntrada = criarPainelEntrada();
         add(painelEntrada, BorderLayout.NORTH);
