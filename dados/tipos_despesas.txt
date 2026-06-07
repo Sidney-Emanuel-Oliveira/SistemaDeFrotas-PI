@@ -4,4 +4,3 @@
 4;Manutenção
 5;IPVA
 6;Multa
-7;Pneu Furou

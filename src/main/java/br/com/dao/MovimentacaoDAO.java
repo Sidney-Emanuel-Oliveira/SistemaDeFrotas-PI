@@ -93,7 +93,7 @@ public class MovimentacaoDAO {
                 "ON DUPLICATE KEY UPDATE id_veiculo = ?, id_tipo_despesa = ?, descricao = ?, " +
                 "data_movimentacao = ?, valor = ?, tipo = ?, distancia_percorrida_km = ?, litros_combustivel = ?";
         try (Connection conn = MySQLSincronizador.obterConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, m.getIdMovimentacao());
             stmt.setLong(2, m.getIdVeiculo());
             stmt.setLong(3, m.getIdTipoDespesa());
@@ -217,8 +217,8 @@ public class MovimentacaoDAO {
         String sql = "SELECT id_movimentacao, id_veiculo, id_tipo_despesa, descricao, data_movimentacao, " +
                 "valor, tipo, distancia_percorrida_km, litros_combustivel FROM movimentacoes";
         try (Connection conn = MySQLSincronizador.obterConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
                 Long id = rs.getLong("id_movimentacao");
                 Long idVeiculo = rs.getLong("id_veiculo");
@@ -319,7 +319,7 @@ public class MovimentacaoDAO {
         String sql = "SELECT id_movimentacao, id_veiculo, id_tipo_despesa, descricao, data_movimentacao, " +
                 "valor, tipo, distancia_percorrida_km, litros_combustivel FROM movimentacoes WHERE id_veiculo = ?";
         try (Connection conn = MySQLSincronizador.obterConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, idVeiculo);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -367,7 +367,7 @@ public class MovimentacaoDAO {
         String sql = "SELECT id_movimentacao, id_veiculo, id_tipo_despesa, descricao, data_movimentacao, " +
                 "valor, tipo, distancia_percorrida_km, litros_combustivel FROM movimentacoes WHERE tipo = ?";
         try (Connection conn = MySQLSincronizador.obterConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, tipo);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
@@ -412,10 +412,36 @@ public class MovimentacaoDAO {
     private void deletarBanco(Long id) throws Exception {
         String sql = "DELETE FROM movimentacoes WHERE id_movimentacao = ?";
         try (Connection conn = MySQLSincronizador.obterConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
         }
+    }
+
+    // Verifica se existe alguma movimentação vinculada a um tipo de despesa pelo ID
+    public boolean existeMovimentacaoPorIdTipo(Long idTipoDespesa) throws IOException {
+        if (MySQLSincronizador.isHabilitado()) {
+            try {
+                String sql = "SELECT COUNT(*) FROM movimentacoes WHERE id_tipo_despesa = ?";
+                try (Connection conn = MySQLSincronizador.obterConexao();
+                     PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setLong(1, idTipoDespesa);
+                    try (ResultSet rs = stmt.executeQuery()) {
+                        if (rs.next()) return rs.getInt(1) > 0;
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("[MovimentacaoDAO] Erro ao verificar vinculo por idTipo. Usando arquivo. Erro: " + e.getMessage());
+            }
+        }
+
+        List<Movimentacao> movimentacoes = obterTodosArquivo();
+        for (Movimentacao m : movimentacoes) {
+            if (idTipoDespesa.equals(m.getIdTipoDespesa())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Obtém o próximo ID disponível para uma nova movimentação
@@ -444,8 +470,8 @@ public class MovimentacaoDAO {
     private Long obterProximoIdBanco() throws Exception {
         String sql = "SELECT MAX(id_movimentacao) FROM movimentacoes";
         try (Connection conn = MySQLSincronizador.obterConexao();
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
                 long max = rs.getLong(1);
                 return max == 0 ? 1L : max + 1;

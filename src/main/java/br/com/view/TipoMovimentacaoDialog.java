@@ -319,9 +319,21 @@ public class TipoMovimentacaoDialog extends JDialog {
         Long id          = Long.parseLong(modeloTabela.getValueAt(linha, 0).toString());
         String descricao = modeloTabela.getValueAt(linha, 1).toString();
 
+        try {
+            if (controller.temMovimentacoesVinculadas(id)) {
+                mostrarErro("Não é possível excluir o tipo \"" + descricao + "\"\n" +
+                        "pois existem movimentações vinculadas a ele.\n\n" +
+                        "O tipo continuará disponível nos históricos existentes,\n" +
+                        "mas não aparecerá para novos lançamentos após ser removido.");
+                return;
+            }
+        } catch (IOException ex) {
+            mostrarErro("Erro ao verificar movimentações: " + ex.getMessage());
+            return;
+        }
+
         int confirmacao = JOptionPane.showConfirmDialog(this,
-                "Deseja excluir o tipo \"" + descricao + "\"?\n" +
-                        "Movimentações já cadastradas com este tipo não serão afetadas.",
+                "Deseja excluir o tipo \"" + descricao + "\"?",
                 "Confirmar Exclusão",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
@@ -329,7 +341,7 @@ public class TipoMovimentacaoDialog extends JDialog {
         if (confirmacao == JOptionPane.YES_OPTION) {
             try {
                 controller.deletarTipoDespesa(id);
-                mostrarSucesso("Tipo excluído com sucesso!");
+                mostrarSucesso("Tipo \"" + descricao + "\" excluído com sucesso!");
                 cancelarEdicao();
                 carregarTabela();
                 if (onClose != null) onClose.run();

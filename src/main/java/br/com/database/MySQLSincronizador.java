@@ -70,6 +70,7 @@ public final class MySQLSincronizador {
             conexao.setAutoCommit(false);
 
             criarEstruturaSeNecessario(conexao);
+            removerRegistrosDeletados(conexao, veiculos, tipos, movimentacoes);
             importarDados(conexao, veiculos, tipos, movimentacoes);
 
             conexao.commit();
@@ -192,9 +193,61 @@ public final class MySQLSincronizador {
         }
     }
 
+    private static void removerRegistrosDeletados(Connection conexao, List<Veiculo> veiculos,
+                                                  List<TipoDespesa> tipos, List<Movimentacao> movimentacoes) throws Exception {
+
+        // IDs presentes nos arquivos locais
+        Set<Long> idsVeiculosTxt = new HashSet<>();
+        for (Veiculo v : veiculos) idsVeiculosTxt.add(v.getIdVeiculo());
+
+        Set<Long> idsTiposTxt = new HashSet<>();
+        for (TipoDespesa t : tipos) idsTiposTxt.add(t.getIdTipoDespesa());
+
+        Set<Long> idsMovimentacoesTxt = new HashSet<>();
+        for (Movimentacao m : movimentacoes) idsMovimentacoesTxt.add(m.getIdMovimentacao());
+
+        // Deletar movimentações do banco que não estão mais no .txt
+        deletarRemovidosBanco(conexao,
+                "SELECT id_movimentacao FROM movimentacoes",
+                "DELETE FROM movimentacoes WHERE id_movimentacao = ?",
+                idsMovimentacoesTxt);
+
+        // Deletar tipos de despesa do banco que não estão mais no .txt
+        deletarRemovidosBanco(conexao,
+                "SELECT id_tipo_despesa FROM tipos_despesas",
+                "DELETE FROM tipos_despesas WHERE id_tipo_despesa = ?",
+                idsTiposTxt);
+
+        // Deletar veículos do banco que não estão mais no .txt
+        deletarRemovidosBanco(conexao,
+                "SELECT id_veiculo FROM veiculos",
+                "DELETE FROM veiculos WHERE id_veiculo = ?",
+                idsVeiculosTxt);
+    }
+
+    private static void deletarRemovidosBanco(Connection conexao, String sqlSelect,
+                                              String sqlDelete, Set<Long> idsLocais) throws Exception {
+        List<Long> idsBanco = new ArrayList<>();
+        try (PreparedStatement ps = conexao.prepareStatement(sqlSelect);
+             java.sql.ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                idsBanco.add(rs.getLong(1));
+            }
+        }
+        try (PreparedStatement ps = conexao.prepareStatement(sqlDelete)) {
+            for (Long idBanco : idsBanco) {
+                if (!idsLocais.contains(idBanco)) {
+                    ps.setLong(1, idBanco);
+                    ps.addBatch();
+                }
+            }
+            ps.executeBatch();
+        }
+    }
+
     private static void importarDados(Connection conexao, List<Veiculo> veiculos,
-            List<TipoDespesa> tipos,
-            List<Movimentacao> movimentacoes) throws Exception {
+                                      List<TipoDespesa> tipos,
+                                      List<Movimentacao> movimentacoes) throws Exception {
         inserirTipos(conexao, tipos);
         inserirVeiculos(conexao, veiculos);
         inserirMovimentacoes(conexao, movimentacoes);
