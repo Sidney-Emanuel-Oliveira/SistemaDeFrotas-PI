@@ -16,7 +16,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
 public class VehicleDetailsPanel extends RoundedPanel {
     private Veiculo veiculo;
     private VeiculoController veiculoController;
@@ -64,14 +63,12 @@ public class VehicleDetailsPanel extends RoundedPanel {
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
         buttonsPanel.setOpaque(false);
-
         
         ModernButton backBtn = new ModernButton("Voltar", ModernColors.TEXT_GRAY);
         backBtn.setPreferredSize(new Dimension(100, 38));
         backBtn.addActionListener(e -> {
             if (onBackCallback != null) onBackCallback.run();
         });
-
         
         ModernButton editBtn = new ModernButton("Editar", ModernColors.PRIMARY_BLUE);
         editBtn.setPreferredSize(new Dimension(100, 38));
@@ -85,7 +82,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
         headerPanel.add(leftHeaderPanel, BorderLayout.WEST);
         headerPanel.add(buttonsPanel, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
-
         
         JPanel centralPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         centralPanel.setOpaque(false);
@@ -100,7 +96,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
         add(centralPanel, BorderLayout.CENTER);
     }
 
-    
     private JPanel criarPainelInformacoes() {
         JPanel containerPanel = new JPanel(new BorderLayout(0, 15));
         containerPanel.setOpaque(false);
@@ -170,7 +165,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
         separador.setMaximumSize(new Dimension(Integer.MAX_VALUE, 12));
         return separador;
     }
-
     
     private JPanel criarLinhaInfoMelhorada(String label, String value) {
         JPanel panel = new JPanel(new BorderLayout(15, 0));
@@ -203,7 +197,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
         return panel;
     }
 
-    
     private JPanel criarPainelDespesas() {
         JPanel containerPanel = new JPanel(new BorderLayout(0, 15));
         containerPanel.setOpaque(false);
@@ -232,7 +225,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
                     .sorted((a, b) -> b.getIdMovimentacao().compareTo(a.getIdMovimentacao())) 
                     .limit(10)
                     .toList();
-
             
             if (movimentacoes.isEmpty()) {
                 JPanel emptyPanel = new JPanel(new BorderLayout());
@@ -280,7 +272,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
                 table.setSelectionBackground(new Color(232, 240, 254));
                 table.setSelectionForeground(ModernColors.DARK_GRAY);
 
-                
                 table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
                 table.getTableHeader().setBackground(new Color(248, 249, 250));
                 table.getTableHeader().setForeground(ModernColors.DARK_GRAY);
@@ -293,7 +284,6 @@ public class VehicleDetailsPanel extends RoundedPanel {
                 scrollPane.setBorder(BorderFactory.createEmptyBorder());
                 tableCard.add(scrollPane, BorderLayout.CENTER);
 
-                
                 if (totalDespesas > 0) {
                     JPanel footerContainer = new JPanel(new BorderLayout());
                     footerContainer.setOpaque(false);

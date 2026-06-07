@@ -12,12 +12,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-
 public class VehicleFormDialog extends JDialog {
     private VeiculoController controller;
     private Veiculo veiculoEdicao;
     private Runnable onSuccess;
-
     
     private JTextField txtPlaca;
     private JTextField txtMarca;
@@ -26,7 +24,6 @@ public class VehicleFormDialog extends JDialog {
     private JComboBox<TipoVeiculo> cmbTipo;
     private JCheckBox chkAtivo;
 
-    
     private static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 20);
     private static final Font LABEL_FONT = new Font("Segoe UI", Font.BOLD, 13);
     private static final Font FIELD_FONT = new Font("Segoe UI", Font.PLAIN, 13);
@@ -59,7 +56,6 @@ public class VehicleFormDialog extends JDialog {
                 BorderFactory.createEmptyBorder(20, 20, 20, 20),
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1)
         ));
-
         
         JPanel formPanel = criarPainelFormulario();
         JScrollPane scrollPane = new JScrollPane(formPanel);
@@ -249,7 +245,6 @@ public class VehicleFormDialog extends JDialog {
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1),
                 BorderFactory.createEmptyBorder(10, 12, 10, 12)
         ));
-
         
         field.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
@@ -292,7 +287,6 @@ public class VehicleFormDialog extends JDialog {
 
         return panel;
     }
-
     
     private void salvar() {
         try {

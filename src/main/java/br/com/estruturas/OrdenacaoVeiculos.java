@@ -8,22 +8,18 @@ import java.util.List;
 
 public class OrdenacaoVeiculos {
 
-
     public static List<Veiculo> ordenar(List<Veiculo> veiculos, String criterio) {
         List<Veiculo> ordenados = new ArrayList<>(veiculos);
         Comparator<Veiculo> comparador = obterComparador(criterio);
 
-        
         for (int i = 0; i < ordenados.size() - 1; i++) {
             int menorIndice = i;
 
-            
             for (int j = i + 1; j < ordenados.size(); j++) {
                 if (comparador.compare(ordenados.get(j), ordenados.get(menorIndice)) < 0) {
                     menorIndice = j;
                 }
             }
-
             
             if (menorIndice != i) {
                 Veiculo temporario = ordenados.get(i);
@@ -35,7 +31,6 @@ public class OrdenacaoVeiculos {
         return ordenados;
     }
 
-    
     private static Comparator<Veiculo> obterComparador(String criterio) {
         String c = criterio == null ? "ID / Ordem de cadastro" : criterio;
 
@@ -55,10 +50,8 @@ public class OrdenacaoVeiculos {
             return Comparator.comparing(v -> textoSeguro(v.getTipo()));
         }
 
-        
         return Comparator.comparingLong(v -> v.getIdVeiculo() == null ? 0L : v.getIdVeiculo());
     }
-
     
     private static String textoSeguro(String texto) {
         return texto == null ? "" : texto.toUpperCase();

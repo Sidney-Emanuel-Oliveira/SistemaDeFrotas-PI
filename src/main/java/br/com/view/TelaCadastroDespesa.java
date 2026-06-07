@@ -63,10 +63,8 @@ public class TelaCadastroDespesa extends JPanel {
         btnAtualizar = new JButton("Atualizar");
         btnDeletar = new JButton("Deletar Selecionado");
 
-        
         btnAtualizar.setVisible(false);
 
-        
         btnSalvar.addActionListener(e -> salvarTipoDespesa());
         btnLimpar.addActionListener(e -> limparCampos());
         btnEditar.addActionListener(e -> editarTipoSelecionado());
@@ -86,11 +84,9 @@ public class TelaCadastroDespesa extends JPanel {
         return painelCompleto;
     }
 
-    
     private JPanel criarPainelTabela() {
         JPanel painel = new JPanel(new BorderLayout());
         painel.setBorder(BorderFactory.createTitledBorder("Tipos de Despesas Cadastrados"));
-
         
         modeloTabela = new DefaultTableModel(new String[]{"ID", "Descrição"}, 0) {
             @Override
@@ -105,7 +101,6 @@ public class TelaCadastroDespesa extends JPanel {
 
         return painel;
     }
-
     
     private void salvarTipoDespesa() {
         try {
@@ -121,7 +116,6 @@ public class TelaCadastroDespesa extends JPanel {
         }
     }
 
-    
     private void atualizarTipoDespesa() {
         try {
             if (idSelecionado == null) {
@@ -133,7 +127,6 @@ public class TelaCadastroDespesa extends JPanel {
             controller.atualizarTipoDespesa(idSelecionado, descricao);
             JOptionPane.showMessageDialog(this, "Tipo de despesa updated com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
-            
             limparCampos();
             btnSalvar.setVisible(true);
             btnAtualizar.setVisible(false);
@@ -145,7 +138,6 @@ public class TelaCadastroDespesa extends JPanel {
         }
     }
 
-    
     private void editarTipoSelecionado() {
         int linhaSelecionada = tabela.getSelectedRow();
         if (linhaSelecionada == -1) { 
@@ -153,16 +145,13 @@ public class TelaCadastroDespesa extends JPanel {
             return;
         }
 
-        
         idSelecionado = Long.parseLong(modeloTabela.getValueAt(linhaSelecionada, 0).toString());
         txtDescricao.setText(modeloTabela.getValueAt(linhaSelecionada, 1).toString());
-
         
         btnSalvar.setVisible(false);
         btnAtualizar.setVisible(true);
     }
 
-    
     private void deletarTipoSelecionado() {
         int linhaSelecionada = tabela.getSelectedRow();
         if (linhaSelecionada == -1) {
@@ -184,7 +173,6 @@ public class TelaCadastroDespesa extends JPanel {
         }
     }
 
-    
     private void limparCampos() {
         txtDescricao.setText("");
         idSelecionado = null;
@@ -192,12 +180,10 @@ public class TelaCadastroDespesa extends JPanel {
         btnAtualizar.setVisible(false);
     }
 
-    
     private void carregarTabela() {
         try {
             modeloTabela.setRowCount(0); 
             List<TipoDespesa> tipos = controller.obterTodosTipos();
-
             
             for (TipoDespesa t : tipos) {
                 modeloTabela.addRow(new Object[]{

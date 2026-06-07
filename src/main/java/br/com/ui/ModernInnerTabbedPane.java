@@ -17,7 +17,6 @@ public class ModernInnerTabbedPane extends JTabbedPane {
         setFocusable(false); 
         setOpaque(true);
     }
-
     
     private static class ModernInnerTabbedPaneUI extends BasicTabbedPaneUI {
 
@@ -30,7 +29,6 @@ public class ModernInnerTabbedPane extends JTabbedPane {
             contentBorderInsets = new Insets(0, 0, 0, 0);
         }
 
-        
         @Override
         protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
                                           int x, int y, int w, int h, boolean isSelected) {
@@ -51,19 +49,16 @@ public class ModernInnerTabbedPane extends JTabbedPane {
             g2d.dispose();
         }
 
-        
         @Override
         protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex,
                                       int x, int y, int w, int h, boolean isSelected) {
         }
 
-        
         @Override
         protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
             g.setColor(ModernColors.BORDER_GRAY);
             g.drawLine(0, 0, tabPane.getWidth(), 0);
         }
-
         
         @Override
         protected void paintText(Graphics g, int tabPlacement, Font font, FontMetrics metrics,
@@ -82,21 +77,18 @@ public class ModernInnerTabbedPane extends JTabbedPane {
             } else {
                 g2d.setColor(ModernColors.DARK_GRAY);
             }
-
             
             int x = textRect.x + 6;
             int y = textRect.y + metrics.getAscent();
             g2d.drawString(title, x, y);
             g2d.dispose();
         }
-
         
         @Override
         protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
             return fontHeight + 20;
         }
 
-        
         @Override
         protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
             return super.calculateTabWidth(tabPlacement, tabIndex, metrics) + 24;

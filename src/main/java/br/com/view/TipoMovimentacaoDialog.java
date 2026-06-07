@@ -259,7 +259,6 @@ public class TipoMovimentacaoDialog extends JDialog {
     // -------------------------------------------------------------------------
     // Lógica
     // -------------------------------------------------------------------------
-
     private void salvar() {
         String descricao = txtDescricao.getText().trim();
         if (descricao.isEmpty()) {
@@ -366,7 +365,6 @@ public class TipoMovimentacaoDialog extends JDialog {
     // -------------------------------------------------------------------------
     // Helpers de UI
     // -------------------------------------------------------------------------
-
     private JTextField criarCampoTexto() {
         JTextField field = new JTextField();
         field.setFont(FIELD_FONT);

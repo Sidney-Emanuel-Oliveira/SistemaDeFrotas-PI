@@ -12,23 +12,16 @@ public class TipoDespesaController {
     private TipoDespesaDAO tipoDespesaDAO;
     private MovimentacaoDAO movimentacaoDAO;
 
-
-
-
-
     public TipoDespesaController() {
         this.tipoDespesaDAO = new TipoDespesaDAO();
         this.movimentacaoDAO = new MovimentacaoDAO();
     }
 
-
     public void salvarTipoDespesa(String descricao) throws IOException {
-
 
         if (!Validacoes.validarCampoVazio(descricao)) {
             throw new IllegalArgumentException("Descrição não pode estar vazia!");
         }
-
 
         Long novoId = tipoDespesaDAO.obterProximoId();
 

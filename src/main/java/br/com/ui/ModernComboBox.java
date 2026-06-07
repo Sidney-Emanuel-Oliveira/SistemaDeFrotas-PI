@@ -18,7 +18,6 @@ public class ModernComboBox<T> extends JComboBox<T> {
         personalizarComboBox();
     }
 
-    
     private void personalizarComboBox() {
         setFont(new Font("Segoe UI", Font.PLAIN, 12));
         setBackground(ModernColors.WHITE);
@@ -31,7 +30,6 @@ public class ModernComboBox<T> extends JComboBox<T> {
                 BorderFactory.createEmptyBorder(4, 8, 4, 8)
         ));
 
-        
         setUI(new BasicComboBoxUI() {
             @Override
             protected JButton createArrowButton() {
@@ -44,7 +42,6 @@ public class ModernComboBox<T> extends JComboBox<T> {
                 return button;
             }
         });
-
         
         setRenderer(new DefaultListCellRenderer() {
             @Override
@@ -62,7 +59,6 @@ public class ModernComboBox<T> extends JComboBox<T> {
                     setForeground(ModernColors.DARK_GRAY);
                 }
 
-                
                 setBorder(BorderFactory.createEmptyBorder(7, 8, 7, 8));
                 return c;
             }

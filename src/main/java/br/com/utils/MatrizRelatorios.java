@@ -9,14 +9,11 @@ import java.util.stream.Collectors;
 
 public class MatrizRelatorios {
 
-    
-    
     public static double[][] gerarMatrizA(List<Veiculo> veiculos, List<Movimentacao> movimentacoes, List<String> meses) {
         int m = veiculos.size();
         int n = meses.size();
         double[][] matrizA = new double[m][n];
 
-        
         List<Movimentacao> combustiveis = movimentacoes.stream()
                 .filter(mov -> mov.getTipo() != null &&
                         (mov.getTipo().equalsIgnoreCase("Combustível") ||
@@ -28,7 +25,6 @@ public class MatrizRelatorios {
             for (int j = 0; j < n; j++) {
                 String mes = meses.get(j);
 
-                
                 long quantidade = combustiveis.stream()
                         .filter(mov -> mov.getIdVeiculo().equals(veiculo.getIdVeiculo()))
                         .filter(mov -> {
@@ -41,18 +37,14 @@ public class MatrizRelatorios {
                 matrizA[i][j] = quantidade;
             }
         }
-
         return matrizA;
     }
 
-    
-    
     // Gera Matriz B: Custo médio de combustível por mês/marca (linhas=meses, colunas=marcas)
     public static double[][] gerarMatrizB(List<String> meses, List<String> marcas, List<Veiculo> veiculos, List<Movimentacao> movimentacoes) {
         int n = meses.size();
         int p = marcas.size();
         double[][] matrizB = new double[n][p];
-
         
         List<Movimentacao> combustiveis = movimentacoes.stream()
                 .filter(mov -> mov.getTipo() != null &&
@@ -60,7 +52,6 @@ public class MatrizRelatorios {
                          mov.getTipo().equalsIgnoreCase("Combustivel")))
                 .toList();
 
-        
         Map<Long, String> veiculoMarcaMap = new HashMap<>();
         for (Veiculo v : veiculos) {
             veiculoMarcaMap.put(v.getIdVeiculo(), v.getMarca());
@@ -71,7 +62,6 @@ public class MatrizRelatorios {
             for (int j = 0; j < p; j++) {
                 String marca = marcas.get(j);
 
-                
                 List<Movimentacao> movsMesMarca = combustiveis.stream()
                         .filter(mov -> {
                             String[] dataParts = mov.getData().split("/");
@@ -84,7 +74,6 @@ public class MatrizRelatorios {
                         })
                         .collect(Collectors.toList());
 
-                
                 if (!movsMesMarca.isEmpty()) {
                     double soma = movsMesMarca.stream().mapToDouble(Movimentacao::getValor).sum();
                     double custoMedio = soma / movsMesMarca.size();
@@ -94,14 +83,11 @@ public class MatrizRelatorios {
                 }
             }
         }
-
         return matrizB;
     }
 
-    
     public static double[][] gerarMatrizC(double[][] matrizA, double[][] matrizB) {
 
-        
         if (matrizA == null || matrizA.length == 0 || matrizA[0].length == 0) {
             return new double[0][0];
         }
@@ -115,7 +101,6 @@ public class MatrizRelatorios {
 
         double[][] matrizC = new double[m][p];
 
-        
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < p; j++) {
                 double soma = 0;
@@ -129,7 +114,6 @@ public class MatrizRelatorios {
         return matrizC;
     }
 
-    
     public static double calcularTotalGeral(double[][] matriz) {
         double total = 0;
         for (double[] linha : matriz) {
@@ -140,21 +124,18 @@ public class MatrizRelatorios {
         return total;
     }
 
-    
     public static String formatarMatriz(double[][] matriz, List<String> rotulos, List<String> colunas, String titulo) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("═══════════════════════════════════════════════════════════════\n");
         sb.append("  ").append(titulo).append("\n");
         sb.append("═══════════════════════════════════════════════════════════════\n\n");
-
         
         if (matriz == null || matriz.length == 0 || rotulos.isEmpty() || colunas.isEmpty()) {
             sb.append("Nenhum dado disponível para o período selecionado.\n");
             return sb.toString();
         }
 
-        
         sb.append(String.format("%-20s", ""));
         for (String coluna : colunas) {
             sb.append(String.format("│ %-12s ", coluna.length() > 12 ? coluna.substring(0, 12) : coluna));
@@ -176,7 +157,6 @@ public class MatrizRelatorios {
             }
             sb.append("\n");
         }
-
         
         sb.append("─".repeat(20));
         for (int i = 0; i < colunas.size(); i++) {
@@ -184,13 +164,11 @@ public class MatrizRelatorios {
         }
         sb.append("\n");
 
-        
         double total = calcularTotalGeral(matriz);
         sb.append(String.format("\nTOTAL GERAL: R$ %.2f\n", total));
 
         return sb.toString();
     }
-
     
     public static List<String> extrairMarcas(List<Veiculo> veiculos) {
         return veiculos.stream()
@@ -199,7 +177,6 @@ public class MatrizRelatorios {
                 .sorted()
                 .collect(Collectors.toList());
     }
-
     
     public static List<String> extrairMeses(List<Movimentacao> movimentacoes) {
         return movimentacoes.stream()
@@ -212,11 +189,9 @@ public class MatrizRelatorios {
                 .collect(Collectors.toList());
     }
 
-    
     public static String formatarRotuloVeiculo(Veiculo veiculo) {
         return veiculo.getPlaca() + " - " + veiculo.getMarca() + " " + veiculo.getModelo();
     }
-
     
     public static List<String> extrairMesesPorPeriodo(List<Movimentacao> movimentacoes,
                                                        int mesInicial, int anoInicial,
@@ -232,7 +207,6 @@ public class MatrizRelatorios {
                     int mes = Integer.parseInt(parts[0]);
                     int ano = Integer.parseInt(parts[1]);
 
-                    
                     int dataAtual = ano * 100 + mes;
                     int dataInicial = anoInicial * 100 + mesInicial;
                     int dataFinal = anoFinal * 100 + mesFinal;
@@ -240,7 +214,6 @@ public class MatrizRelatorios {
                     return dataAtual >= dataInicial && dataAtual <= dataFinal;
                 })
                 .sorted((a, b) -> {
-
                     
                     String[] partsA = a.split("/");
                     String[] partsB = b.split("/");
@@ -257,7 +230,6 @@ public class MatrizRelatorios {
                 })
                 .collect(Collectors.toList());
     }
-
     
     public static boolean estaNoPeriodo(Movimentacao movimentacao,
                                         int mesInicial, int anoInicial,

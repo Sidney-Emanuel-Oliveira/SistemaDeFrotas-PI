@@ -4,7 +4,6 @@ import br.com.ui.ModernColors;
 
 import javax.swing.*;
 
-
 public class TelaAbout extends JPanel {
 
     public TelaAbout() {
@@ -13,7 +12,6 @@ public class TelaAbout extends JPanel {
         setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         setBackground(ModernColors.BG_PRIMARY);
 
-        
         JLabel titulo = new JLabel("Sistema de Controle de Frotas");
         titulo.setFont(titulo.getFont().deriveFont(28f));
         titulo.setForeground(ModernColors.NAVY);
@@ -29,7 +27,6 @@ public class TelaAbout extends JPanel {
         empresa.setForeground(ModernColors.TEXT_GRAY);
         empresa.setAlignmentX(CENTER_ALIGNMENT);
 
-        
         add(Box.createVerticalStrut(30));
         add(titulo);
         add(Box.createVerticalStrut(10));
@@ -37,7 +34,6 @@ public class TelaAbout extends JPanel {
         add(Box.createVerticalStrut(10));
         add(empresa);
         add(Box.createVerticalStrut(50));
-
         
         JTextArea descricao = new JTextArea();
         descricao.setText("O Sistema de Controle de Frotas é uma solução completa para gerenciar gastos de frotas veiculares.\n\n" +
@@ -51,7 +47,6 @@ public class TelaAbout extends JPanel {
                 "\n" +
                 "Desenvolvido em Java com Interface Gráfica em Swing\n" +
                 "Dados armazenados em arquivos de texto");
-
         
         descricao.setEditable(false);
         descricao.setLineWrap(true);      
@@ -68,7 +63,6 @@ public class TelaAbout extends JPanel {
         ));
 
         add(descricao);
-
         
         add(Box.createVerticalGlue());
     }

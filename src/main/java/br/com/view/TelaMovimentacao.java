@@ -98,7 +98,6 @@ public class TelaMovimentacao extends JPanel {
         return panel;
     }
 
-
     private JScrollPane criarPainelCards() {
         cardsPanel = new JPanel();
         cardsPanel.setLayout(new BoxLayout(cardsPanel, BoxLayout.Y_AXIS));
@@ -116,7 +115,6 @@ public class TelaMovimentacao extends JPanel {
 
         return scrollPane;
     }
-
 
     private void carregarMovimentacoes() {
         cardsPanel.removeAll();
@@ -166,7 +164,6 @@ public class TelaMovimentacao extends JPanel {
                     cardsPanel.add(Box.createVerticalStrut(10));
                 }
             }
-
 
             cardsPanel.add(Box.createVerticalGlue());
 

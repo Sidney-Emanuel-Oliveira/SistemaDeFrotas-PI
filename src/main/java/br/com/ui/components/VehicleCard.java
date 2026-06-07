@@ -19,7 +19,6 @@ public class VehicleCard extends RoundedPanel {
     private List<VehicleCardListener> listeners = new ArrayList<>();
     private boolean isHovered = false;
 
-    
     public interface VehicleCardListener {
         void onEditClicked(Veiculo veiculo);
         void onDeleteClicked(Veiculo veiculo);
@@ -30,14 +29,12 @@ public class VehicleCard extends RoundedPanel {
         super(16, ModernColors.WHITE);
         this.veiculo = veiculo;
 
-        
         setPreferredSize(new Dimension(286, 194));
         setLayout(new BorderLayout(10, 8));
         setBorder(BorderFactory.createEmptyBorder(16, 16, 14, 16));
         setOpaque(false);
         setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        
         MouseAdapter mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -63,7 +60,6 @@ public class VehicleCard extends RoundedPanel {
         initializeComponents();
     }
 
-    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,7 +75,6 @@ public class VehicleCard extends RoundedPanel {
 
         g2d.dispose();
     }
-
     
     private void initializeComponents() {
         
@@ -152,7 +147,6 @@ public class VehicleCard extends RoundedPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    
     private JPanel criarPainelIcone() {
         JPanel iconWrapper = new JPanel(new BorderLayout()) {
             @Override
@@ -182,7 +176,6 @@ public class VehicleCard extends RoundedPanel {
         listeners.add(listener);
     }
 
-    
     private void notifyEditClicked() {
         for (VehicleCardListener listener : listeners) {
             listener.onEditClicked(veiculo);

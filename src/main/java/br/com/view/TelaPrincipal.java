@@ -11,19 +11,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
-
 public class TelaPrincipal extends JFrame {
 
     private JTabbedPane abas;
     private TipoDespesaController tipoDespesaController;
 
-    
     private TelaCadastroVeiculo telaCadastroVeiculo;
     private TelaMovimentacao telaMovimentacao;
     private TelaRelatorios telaRelatorios;
     private TelaAbout telaAbout;
 
-    
     private static final int LARGURA_JANELA = 1200;
     private static final int ALTURA_JANELA = 750;
     private static final String TITULO_SISTEMA = "Sistema de Controle de Frotas - GynLog";
@@ -36,7 +33,6 @@ public class TelaPrincipal extends JFrame {
         inicializarSistema();
         construirInterface();
     }
-
     
     private void configurarJanela() {
         setTitle(TITULO_SISTEMA);
@@ -49,7 +45,6 @@ public class TelaPrincipal extends JFrame {
         getContentPane().setBackground(ModernColors.BG_PRIMARY);
     }
 
-    
     // Configura o Look and Feel da aplicação (tema visual Nimbus)
     private void configurarAparenciaGlobal() {
         try {
@@ -95,7 +90,6 @@ public class TelaPrincipal extends JFrame {
         criarMenuBar();
         criarAbas();
     }
-
     
     private void criarAbas() {
         abas = new ModernTabbedPane();
@@ -116,7 +110,6 @@ public class TelaPrincipal extends JFrame {
         add(abas);
     }
 
-    
     private void atualizarAbaSelecionada() {
         Component abaSelecionada = abas.getSelectedComponent();
 
@@ -127,7 +120,6 @@ public class TelaPrincipal extends JFrame {
         }
     }
 
-    
     private void inicializarTiposDespesaPadrao() {
         try {
             List<TipoDespesa> tiposExistentes = tipoDespesaController.obterTodosTipos();
@@ -244,7 +236,6 @@ public class TelaPrincipal extends JFrame {
         item.setFont(new Font("Segoe UI", Font.PLAIN, 12));
     }
 
-    
     private void alternarTemaInterface() {
         ModernColors.alternarTema();
         configurarAparenciaGlobal();
@@ -308,7 +299,6 @@ public class TelaPrincipal extends JFrame {
         );
     }
 
-    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TelaPrincipal telaPrincipal = new TelaPrincipal();

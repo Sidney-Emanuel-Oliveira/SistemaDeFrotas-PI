@@ -19,7 +19,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
-
 public class MovementFormDialog extends JDialog {
     private MovimentacaoController movimentacaoController;
     private VeiculoController veiculoController;
@@ -53,7 +52,6 @@ public class MovementFormDialog extends JDialog {
         initializeComponents();
     }
 
-
     private void initializeComponents() {
         JPanel contentPanel = new JPanel(new BorderLayout());
         contentPanel.setBackground(ModernColors.BG_PRIMARY);
@@ -69,7 +67,6 @@ public class MovementFormDialog extends JDialog {
                 BorderFactory.createEmptyBorder(20, 20, 20, 20),
                 BorderFactory.createLineBorder(ModernColors.FIELD_BORDER, 1)
         ));
-
 
         JPanel formPanel = criarPainelFormulario();
         JScrollPane scrollPane = new JScrollPane(formPanel);
@@ -89,7 +86,6 @@ public class MovementFormDialog extends JDialog {
         contentPanel.add(wrapperPanel, BorderLayout.CENTER);
         add(contentPanel);
     }
-
 
     private JPanel criarPainelCabecalho() {
         JPanel headerPanel = new JPanel(new BorderLayout());
@@ -154,7 +150,6 @@ public class MovementFormDialog extends JDialog {
         return headerPanel;
     }
 
-
     private JPanel criarPainelFormulario() {
         JPanel mainFormPanel = new JPanel();
         mainFormPanel.setLayout(new BoxLayout(mainFormPanel, BoxLayout.Y_AXIS));
@@ -192,7 +187,6 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(veiculoPanel);
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-
         JPanel tipoPanel = new JPanel(new BorderLayout(8, 5));
         tipoPanel.setOpaque(false);
         tipoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
@@ -229,7 +223,6 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(criarCampoFormulario("Valor (R$):", "txtValor"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
 
-
         JLabel secaoConsumo = new JLabel("Dados para Consumo Médio (opcional - somente combustível)");
         secaoConsumo.setFont(new Font("Segoe UI", Font.BOLD, 13));
         secaoConsumo.setForeground(ModernColors.PRIMARY_BLUE);
@@ -240,7 +233,6 @@ public class MovementFormDialog extends JDialog {
         mainFormPanel.add(criarCampoFormulario("Distância percorrida (km):", "txtDistanciaKm"));
         mainFormPanel.add(Box.createRigidArea(new Dimension(0, 12)));
         mainFormPanel.add(criarCampoFormulario("Litros abastecidos:", "txtLitrosCombustivel"));
-
 
         if (movimentacaoEdicao != null) {
             try {
@@ -265,7 +257,6 @@ public class MovementFormDialog extends JDialog {
 
         return mainFormPanel;
     }
-
 
     private JPanel criarCampoFormulario(String labelText, String fieldName) {
         JPanel panel = new JPanel(new BorderLayout(8, 5));
@@ -311,7 +302,6 @@ public class MovementFormDialog extends JDialog {
 
         return panel;
     }
-
 
     private JTextField criarCampoTexto() {
         JTextField field = new JTextField();
@@ -366,7 +356,6 @@ public class MovementFormDialog extends JDialog {
             JOptionPane.showMessageDialog(this, "Erro ao carregar tipos", "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     private void salvar() {
         try {
@@ -424,9 +413,7 @@ public class MovementFormDialog extends JDialog {
                 throw new IllegalArgumentException("Valor inválido! Use o formato: 123.45 ou 123,45");
             }
 
-
             String data = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-
 
             if (movimentacaoEdicao != null) {
                 movimentacaoController.atualizarMovimentacao(
@@ -441,7 +428,7 @@ public class MovementFormDialog extends JDialog {
                         litrosCombustivel
                 );
                 JOptionPane.showMessageDialog(this,
-                        "✅ Movimentação atualizada com sucesso!\n\n" +
+                        "Movimentação atualizada com sucesso!\n\n" +
                                 "Veículo: " + veiculoSelecionado.getPlaca() + "\n" +
                                 "Tipo: " + tipoSelecionado.getDescricao() + "\n" +
                                 "Valor: R$ " + valorStr,
@@ -459,7 +446,7 @@ public class MovementFormDialog extends JDialog {
                         litrosCombustivel
                 );
                 JOptionPane.showMessageDialog(this,
-                        "✅ Movimentação cadastrada com sucesso!\n\n" +
+                        "Movimentação cadastrada com sucesso!\n\n" +
                                 "Veículo: " + veiculoSelecionado.getPlaca() + "\n" +
                                 "Tipo: " + tipoSelecionado.getDescricao() + "\n" +
                                 "Valor: R$ " + valorStr + "\n" +
@@ -474,18 +461,18 @@ public class MovementFormDialog extends JDialog {
 
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this,
-                    "❌ Erro de Validação:\n" + e.getMessage(),
+                    "Erro de Validação:\n" + e.getMessage(),
                     "Erro de Validação",
                     JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this,
-                    "❌ Erro ao salvar movimentação:\n" + e.getMessage() +
+                    "Erro ao salvar movimentação:\n" + e.getMessage() +
                             "\n\nVerifique a conexão com o banco de dados.",
                     "Erro de Sistema",
                     JOptionPane.ERROR_MESSAGE);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "❌ Erro inesperado:\n" + e.getMessage(),
+                    "Erro inesperado:\n" + e.getMessage(),
                     "Erro",
                     JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();

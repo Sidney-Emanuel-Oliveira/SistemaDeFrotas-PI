@@ -33,10 +33,6 @@ public enum TipoVeiculo {
         return new TipoVeiculo[]{CARRO, MOTO, CAMINHAO, VAN, CAMINHONETE, ONIBUS};
     }
 
-    
-
-
-
     public static TipoVeiculo fromDescricao(String descricao) {
         if (descricao == null || descricao.trim().isEmpty()) {
             return OUTRO;

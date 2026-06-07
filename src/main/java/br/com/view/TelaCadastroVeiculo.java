@@ -49,7 +49,6 @@ public class TelaCadastroVeiculo extends JPanel {
         controller = new VeiculoController();
         setLayout(new BorderLayout());
         setBackground(ModernColors.BG_PRIMARY);
-
         
         mainPanel = new JPanel(new BorderLayout(0, 18));
         mainPanel.setBackground(ModernColors.BG_PRIMARY);
@@ -60,13 +59,11 @@ public class TelaCadastroVeiculo extends JPanel {
 
         scrollCardsPanel = criarPainelCards();
         mainPanel.add(scrollCardsPanel, BorderLayout.CENTER);
-
         
         detailsPanel = new JPanel(new BorderLayout());
         detailsPanel.setBackground(ModernColors.BG_PRIMARY);
         detailsPanel.setVisible(false);
 
-        
         CardLayout layout = new CardLayout();
         JPanel container = new JPanel(layout);
         container.setBackground(ModernColors.BG_PRIMARY);
@@ -96,7 +93,6 @@ public class TelaCadastroVeiculo extends JPanel {
 
         tituloPanel.add(titulo);
         tituloPanel.add(subtitulo);
-
         
         JPanel filtrosPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 8));
         filtrosPanel.setOpaque(false);
@@ -116,7 +112,6 @@ public class TelaCadastroVeiculo extends JPanel {
         txtPesquisaPlaca.setBackground(ModernColors.WHITE);
         txtPesquisaPlaca.setForeground(ModernColors.DARK_GRAY);
         txtPesquisaPlaca.setCaretColor(ModernColors.DARK_GRAY);
-
         
         txtPesquisaPlaca.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -188,7 +183,6 @@ public class TelaCadastroVeiculo extends JPanel {
         label.setForeground(ModernColors.DARK_GRAY);
         return label;
     }
-
     
     private JScrollPane criarPainelCards() {
         cardsPanel = new JPanel();
@@ -207,7 +201,6 @@ public class TelaCadastroVeiculo extends JPanel {
 
         return scrollPane;
     }
-
     
     private void carregarCardsVeiculos(JPanel cardsPanel) {
         cardsPanel.removeAll(); 
@@ -216,7 +209,6 @@ public class TelaCadastroVeiculo extends JPanel {
                     txtPesquisaPlaca != null ? txtPesquisaPlaca.getText() : "",
                     cmbFiltroTipo != null ? (String) cmbFiltroTipo.getSelectedItem() : "Todos",
                     cmbOrdenacao != null ? (String) cmbOrdenacao.getSelectedItem() : "ID / Ordem de cadastro");
-
             
             if (veiculos.isEmpty()) {
                 RoundedPanel emptyPanel = new RoundedPanel(16, ModernColors.WHITE);
@@ -256,18 +248,15 @@ public class TelaCadastroVeiculo extends JPanel {
             JOptionPane.showMessageDialog(this, "Erro ao carregar veículos: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
 
-        
         cardsPanel.revalidate();
         cardsPanel.repaint();
     }
 
-    
     private void exibirDetalhesVeiculo(Veiculo veiculo) {
         detailsPanel.removeAll();
 
         VehicleDetailsPanel detailsView = new VehicleDetailsPanel(veiculo);
 
-        
         detailsView.setOnBackCallback(() -> {
             Component comp = scrollCardsPanel.getViewport().getView();
             if (comp instanceof JPanel) {
@@ -337,7 +326,6 @@ public class TelaCadastroVeiculo extends JPanel {
             }
         }
     }
-
     
     private void aplicarFiltrosVeiculos() {
         if (cardsPanel == null) {
