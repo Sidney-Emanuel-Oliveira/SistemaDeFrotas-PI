@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS veiculos (
     id_veiculo BIGINT PRIMARY KEY,
     placa VARCHAR(20) NOT NULL UNIQUE,
     marca VARCHAR(100) NOT NULL,
-    modelo VARCHAR(100) NOT NUgynlog_frotasLL,
-    ano_fabricacao VARCHAR(10) NOT NULL,gynlog_frotas
+    modelo VARCHAR(100) NOT NULL,
+    ano_fabricacao VARCHAR(10) NOT NULL,
     ativo BOOLEAN NOT NULL,
     tipo VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
