@@ -225,10 +225,40 @@ Para contribuir com o projeto, por favor, siga as diretrizes de contribuição p
 4.  Envie para o seu fork (`git push origin feature/minha-feature`).
 5.  Abra um Pull Request.
 
+
 ## Licença
 
-Este projeto está licenciado sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes. (Assumindo licença MIT, verificar no repositório original se existe um arquivo LICENSE ou informação sobre a licença.)
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
 
----
+## Contribuidores
 
-**Desenvolvido por:** Manus AI (com base na análise do repositório de Sidney Emanuel Oliveira)
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Sidney-Emanuel-Oliveira">
+        <img src="https://github.com/Sidney-Emanuel-Oliveira.png" width="80px;" alt="Sidney Emanuel"/><br/>
+        <sub><b>Sidney Emanuel</b></sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/GilvanPedro">
+        <img src="https://github.com/GilvanPedro.png" width="80px;" alt="Nome"/><br/>
+        <sub><b>Gilvan Pedro</b></sub>
+      </a>
+    </td>
+     <td align="center">
+      <a href="https://github.com/Joao-Paulo2007">
+        <img src="https://github.com/Joao-Paulo2007.png" width="80px;" alt="Nome"/><br/>
+        <sub><b>João Paulo</b></sub>
+      </a>
+    </td>
+      </td>
+     <td align="center">
+      <a href="https://github.com/Scarcela13">
+        <img src="https://github.com/Scarcela13.png" width="80px;" alt="Nome"/><br/>
+        <sub><b>Guilherme Scarcela</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
