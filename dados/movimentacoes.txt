@@ -25,7 +25,6 @@
 34;17;1;Abastecimento;10/10/2025;155.0;Combustivel;293.65;27.19
 35;18;1;Abastecimento;18/10/2025;98.0;Combustivel;128.93;17.19
 36;18;3;Combustivel;01/12/2025;70.0;Lavagem;0.0;0.0
-37;19;1;Cambio Estragado;03/06/2026;193.0;Combustivel;124.0;81.0imento Diesel;12/02/2026;310.0;Combustivel;490.2;52.9
 97;54;4;Geometria e Balanceamento;20/02/2026;180.0;Manutencao;495.0;0.0
 98;55;1;Abastecimento;27/02/2026;165.0;Combustivel;305.4;27.8
 99;56;1;Abastecimento Moto;06/03/2026;62.0;Combustivel;105.3;10.5
@@ -40,7 +39,7 @@
 108;62;1;Abastecimento Van;12/02/2026;170.0;Combustivel;290.4;28.9
 109;62;6;Velocidade Cruzamento;20/02/2026;130.16;Multas;0.0;0.0
 110;63;1;Abastecimento Moto;27/02/2026;58.0;Combustivel;96.5;9.8
-111;64;1;Abastecimento Ônibus;06/03/2026;390.0;Combustivel;615.4;66.8121;70;6;Sinal Vermelho;14/02/2026;293.47;Multas;0.0;0.0
+111;64;1;Abastecimento Ônibus;06/03/2026;390.0;Combustivel;615.4;66.8121
 122;71;1;Abastecimento Diesel;22/02/2026;340.0;Combustivel;540.8;58.2
 123;72;1;Abastecimento Ônibus;01/03/2026;410.0;Combustivel;690.1;70.1
 124;72;4;Troca de Lona Freio;08/03/2026;450.0;Manutencao;692.0;0.0
@@ -48,5 +47,9 @@
 126;74;1;Abastecimento;22/03/2026;150.0;Combustivel;280.6;25.6
 127;74;3;Polimento Comercial;29/03/2026;300.0;Lavagem;0.0;0.0
 128;75;1;Abastecimento Van;05/01/2026;162.0;Combustivel;272.5;27.3
-129;1;1;sdfgsd;04/06/2026;325324.0;Combustível;0.0;0.0
 130;15;7;Pneu furou;05/06/2026;43.69;Pneu Furou;0.0;0.0
+131;26;3;lavagem;27/06/2026;234.0;Lavagem;0.0;0.0
+132;1;5;pagando imposto;27/06/2026;5235.0;IPVA;0.0;0.0
+133;24;2;seguro;27/06/2026;1234.0;Seguro;0.0;0.0
+134;12;3;lavagem;27/06/2026;753.0;Lavagem;0.0;0.0
+135;4;1;abastecimento;27/06/2026;423.0;Combustível;534.0;123.0
