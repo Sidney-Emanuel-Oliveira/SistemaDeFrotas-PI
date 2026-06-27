@@ -16,36 +16,33 @@ public class TelaPrincipal extends JFrame {
     private JTabbedPane abas;
     private TipoDespesaController tipoDespesaController;
 
+    private TelaDashboard       telaDashboard;
     private TelaCadastroVeiculo telaCadastroVeiculo;
-    private TelaMovimentacao telaMovimentacao;
-    private TelaRelatorios telaRelatorios;
-    private TelaAbout telaAbout;
+    private TelaMovimentacao    telaMovimentacao;
+    private TelaRelatorios      telaRelatorios;
+    private TelaAbout           telaAbout;
 
-    private static final int LARGURA_JANELA = 1200;
-    private static final int ALTURA_JANELA = 750;
+    private static final int LARGURA_JANELA  = 1200;
+    private static final int ALTURA_JANELA   = 750;
     private static final String TITULO_SISTEMA = "Sistema de Controle de Frotas - GynLog";
 
     public TelaPrincipal() {
-        
         configurarAparenciaGlobal();
-
         configurarJanela();
         inicializarSistema();
         construirInterface();
     }
-    
+
     private void configurarJanela() {
         setTitle(TITULO_SISTEMA);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(LARGURA_JANELA, ALTURA_JANELA);
-        setMinimumSize(new Dimension(1100, 700)); 
+        setMinimumSize(new Dimension(1100, 700));
         setLocationRelativeTo(null);
         setResizable(true);
-
         getContentPane().setBackground(ModernColors.BG_PRIMARY);
     }
 
-    // Configura o Look and Feel da aplicação (tema visual Nimbus)
     private void configurarAparenciaGlobal() {
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -54,9 +51,7 @@ public class TelaPrincipal extends JFrame {
                     break;
                 }
             }
-        } catch (Exception ignored) {
-
-        }
+        } catch (Exception ignored) {}
 
         Font fontePadrao = new Font("Segoe UI", Font.PLAIN, 12);
         UIManager.put("defaultFont", fontePadrao);
@@ -90,32 +85,38 @@ public class TelaPrincipal extends JFrame {
         criarMenuBar();
         criarAbas();
     }
-    
+
     private void criarAbas() {
         abas = new ModernTabbedPane();
 
+        telaDashboard       = new TelaDashboard();
         telaCadastroVeiculo = new TelaCadastroVeiculo();
-        telaMovimentacao = new TelaMovimentacao();
-        telaRelatorios = new TelaRelatorios();
-        telaAbout = new TelaAbout();
+        telaMovimentacao    = new TelaMovimentacao();
+        telaRelatorios      = new TelaRelatorios();
+        telaAbout           = new TelaAbout();
 
-        abas.addTab("Veículos", telaCadastroVeiculo);
+        abas.addTab("Dashboard",    telaDashboard);
+        abas.addTab("Veículos",     telaCadastroVeiculo);
         abas.addTab("Movimentações", telaMovimentacao);
-        abas.addTab("Relatórios", telaRelatorios);
-        abas.addTab("Sobre", telaAbout);
+        abas.addTab("Relatórios",   telaRelatorios);
+        abas.addTab("Sobre",        telaAbout);
 
-        
         abas.addChangeListener(evento -> atualizarAbaSelecionada());
 
         add(abas);
+
+        // Carrega dashboard logo ao abrir o sistema
+        telaDashboard.atualizarDados();
     }
 
     private void atualizarAbaSelecionada() {
-        Component abaSelecionada = abas.getSelectedComponent();
+        Component selecionada = abas.getSelectedComponent();
 
-        if (abaSelecionada == telaMovimentacao) {
+        if (selecionada == telaDashboard) {
+            telaDashboard.atualizarDados();
+        } else if (selecionada == telaMovimentacao) {
             telaMovimentacao.atualizarDados();
-        } else if (abaSelecionada == telaRelatorios) {
+        } else if (selecionada == telaRelatorios) {
             telaRelatorios.atualizarDados();
         }
     }
@@ -123,7 +124,6 @@ public class TelaPrincipal extends JFrame {
     private void inicializarTiposDespesaPadrao() {
         try {
             List<TipoDespesa> tiposExistentes = tipoDespesaController.obterTodosTipos();
-
             if (tiposExistentes.isEmpty()) {
                 cadastrarTiposPadrao();
             }
@@ -134,14 +134,8 @@ public class TelaPrincipal extends JFrame {
 
     private void cadastrarTiposPadrao() throws IOException {
         String[] tiposPadrao = {
-                "Combustível",
-                "Seguro",
-                "Lavagem",
-                "Manutenção",
-                "IPVA",
-                "Multa"
+                "Combustível", "Seguro", "Lavagem", "Manutenção", "IPVA", "Multa"
         };
-
         for (String tipo : tiposPadrao) {
             tipoDespesaController.salvarTipoDespesa(tipo);
         }
@@ -154,12 +148,10 @@ public class TelaPrincipal extends JFrame {
 
     private void criarMenuBar() {
         JMenuBar barraMenu = criarBarraMenu();
-
         barraMenu.add(criarMenuArquivo());
         barraMenu.add(criarMenuBancoDados());
         barraMenu.add(criarMenuTema());
         barraMenu.add(criarMenuAjuda());
-
         setJMenuBar(barraMenu);
     }
 
@@ -180,7 +172,7 @@ public class TelaPrincipal extends JFrame {
 
         JMenuItem itemSair = new JMenuItem("Sair");
         estilizarMenuItem(itemSair);
-        itemSair.addActionListener(evento -> encerrarSistema());
+        itemSair.addActionListener(evento -> System.exit(0));
 
         menuArquivo.add(itemSair);
         return menuArquivo;
@@ -207,7 +199,8 @@ public class TelaPrincipal extends JFrame {
         JMenu menuTema = new JMenu("Tema");
         estilizarMenu(menuTema);
 
-        JMenuItem itemAlternarTema = new JMenuItem(ModernColors.isDarkTheme() ? "Usar tema claro" : "Usar tema escuro");
+        JMenuItem itemAlternarTema = new JMenuItem(
+                ModernColors.isDarkTheme() ? "Usar tema claro" : "Usar tema escuro");
         estilizarMenuItem(itemAlternarTema);
         itemAlternarTema.addActionListener(evento -> alternarTemaInterface());
 
@@ -250,53 +243,31 @@ public class TelaPrincipal extends JFrame {
     private void sincronizarMySQLAgora() {
         try {
             String resultado = MySQLSincronizador.sincronizarAgora();
-            JOptionPane.showMessageDialog(
-                    this,
-                    resultado,
-                    "Banco de Dados MySQL",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        } catch (ClassNotFoundException erro) { 
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this, resultado, "Banco de Dados MySQL",
+                    JOptionPane.INFORMATION_MESSAGE);
+        } catch (ClassNotFoundException erro) {
+            JOptionPane.showMessageDialog(this,
                     "Driver do MySQL não encontrado. Adicione o mysql-connector-j ao projeto Maven ou ao classpath.",
-                    "Erro ao sincronizar MySQL",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Erro ao sincronizar MySQL", JOptionPane.ERROR_MESSAGE);
         } catch (Exception erro) {
-            JOptionPane.showMessageDialog(
-                    this,
+            JOptionPane.showMessageDialog(this,
                     "Não foi possível sincronizar com o MySQL:\n" + erro.getMessage(),
-                    "Erro ao sincronizar MySQL",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Erro ao sincronizar MySQL", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void exibirConfiguracaoMySQL() {
-        JOptionPane.showMessageDialog(
-                this,
+        JOptionPane.showMessageDialog(this,
                 MySQLSincronizador.obterResumoConfiguracao(),
-                "Configuração MySQL",
-                JOptionPane.INFORMATION_MESSAGE
-        );
-    }
-
-    private void encerrarSistema() {
-        System.exit(0);
+                "Configuração MySQL", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void exibirSobre() {
         String mensagem = "Sistema de Controle de Frotas v2.0\n" +
                 "Desenvolvido para GynLog\n" +
                 "Gerenciamento completo de frotas de veículos";
-
-        JOptionPane.showMessageDialog(
-                this,
-                mensagem,
-                "Sobre o Sistema",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        JOptionPane.showMessageDialog(this, mensagem, "Sobre o Sistema",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {
